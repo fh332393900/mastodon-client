@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",
-    "@radix-ui/react-avatar": "^1.1.1",
-    "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-label": "latest",
     "@radix-ui/react-select": "latest",
     "@radix-ui/react-slider": "latest",
@@ -39,14 +37,13 @@
     "zustand": "latest"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^8",
     "eslint-config-next": "15.1.3",
     "postcss": "^8.5",
-    "tailwindcss": "^4.1.9",
+    "tailwindcss": "4.1.13",
     "typescript": "^5"
   }
 }
