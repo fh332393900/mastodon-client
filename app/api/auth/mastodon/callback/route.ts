@@ -15,13 +15,17 @@ export async function GET(request: NextRequest) {
 
     const client = createRestAPIClient({ url: serverUrl })
 
-    const token = await client.v1.oauth.token.create({
-      clientId,
-      clientSecret,
-      redirectUri: `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/auth/mastodon/callback`,
-      grantType: "authorization_code",
-      code,
-      scope: "read write follow push",
+    const params = new URLSearchParams();
+    params.append('grant_type', 'authorization_code');
+    params.append('code', code);
+    params.append('client_id', clientId!);
+    params.append('client_secret', clientSecret!);
+    params.append('redirect_uri',  `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/auth/mastodon/callback`);
+    params.append('scope', 'read write follow');
+
+    const token: any = await fetch(`https://${serverUrl}/oauth/token`, {
+      method: 'POST',
+      body: params
     })
 
     const response = NextResponse.redirect("/timeline")
