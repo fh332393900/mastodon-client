@@ -23,28 +23,19 @@ interface LoginModalProps {
 }
 
 export function LoginModal({ children }: LoginModalProps) {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [server, setServer] = useState('');
   const [open, setOpen] = useState(false)
   const [error, setError] = useState("")
   const { login, isLoading } = useAuth()
   const router = useRouter()
 
   const handleLogin = async () => {
-    if (!username || !password) {
-      setError("Please enter both username and password")
+    if (!server) {
+      setError("Please enter server address!")
       return
     }
 
-    setError("")
-    const success = await login(username, password)
-
-    if (success) {
-      setOpen(false)
-      router.push("/dashboard")
-    } else {
-      setError("Invalid credentials. Try: alice/password, bob/password, or carol/password")
-    }
+    router.push(`/api/auth/mastodon?server=${server}`)
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -72,36 +63,17 @@ export function LoginModal({ children }: LoginModalProps) {
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username" className="text-sm font-medium">
-                Username
+              <Label htmlFor="server" className="text-sm font-medium">
+                Srver
               </Label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  id="username"
+                  id="server"
                   type="text"
                   placeholder="alice"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  className="pl-10 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                  disabled={isLoading}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium">
-                Password
-              </Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={server}
+                  onChange={(e) => setServer(e.target.value)}
                   onKeyPress={handleKeyPress}
                   className="pl-10 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                   disabled={isLoading}
@@ -122,7 +94,7 @@ export function LoginModal({ children }: LoginModalProps) {
 
           <Button
             onClick={handleLogin}
-            disabled={!username || !password || isLoading}
+            disabled={!server || isLoading}
             className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 text-primary-foreground font-medium"
           >
             {isLoading ? (
