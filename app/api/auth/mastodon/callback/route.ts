@@ -5,11 +5,11 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const code = searchParams.get("code")
-    const clientId = searchParams.get("client_id")
-    const clientSecret = searchParams.get("client_secret")
-    const serverUrl = searchParams.get("server_url")
+    const clientId = process.env.CLIENT_ID
+    const clientSecret = process.env.CLIIENT_SECRET
+    const serverUrl = 'https://mastodon.social'
 
-    if (!code || !clientId || !clientSecret || !serverUrl) {
+    if (!code) {
       return NextResponse.redirect("/login?error=missing_params")
     }
 

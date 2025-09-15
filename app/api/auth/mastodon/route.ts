@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     })
     console.log(app, 'app')
 
-    const authUrl = `${serverUrl}/oauth/authorize?client_id=${app.clientId}&redirect_uri=${encodeURIComponent(app.redirectUri)}&response_type=code&scope=read+write+follow+push&?serverUrl=${serverUrl}&clientSecret=${app.clientSecret}`
+    const authUrl = `${serverUrl}/oauth/authorize?client_id=${app.clientId}&redirect_uri=${encodeURIComponent(app.redirectUri)}&response_type=code&scope=read+write+follow+push&serverUrl=${serverUrl}&clientSecret=${app.clientSecret}`
 
     return NextResponse.redirect(authUrl)
   } catch (error) {
