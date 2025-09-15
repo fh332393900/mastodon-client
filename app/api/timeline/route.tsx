@@ -9,8 +9,8 @@ export async function GET(request: NextRequest) {
     const limit = Number.parseInt(searchParams.get("limit") || "20")
 
     const cookieStore = cookies()
-    const token = cookieStore.get("mastodon_token")?.value
-    const serverUrl = cookieStore.get("mastodon_server")?.value
+    const token = (await cookieStore).get("mastodon_token")?.value
+    const serverUrl = (await cookieStore).get("mastodon_server")?.value
 
     if (!token || !serverUrl) {
       return NextResponse.json(getMockTimeline())

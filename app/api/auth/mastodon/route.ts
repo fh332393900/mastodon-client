@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     console.log(client.v1, '--')
     const app = await client.v1.apps.create({
       clientName: "MastoClient",
-      redirectUris: `urn:ietf:wg:oauth:2.0:oob`,
+      redirectUris: `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/auth/mastodon/callback`,
       scopes: "read write follow push",
       website: process.env.NEXTAUTH_URL || "http://localhost:3000",
     })

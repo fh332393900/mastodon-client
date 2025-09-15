@@ -5,8 +5,8 @@ import { cookies } from "next/headers"
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const cookieStore = cookies()
-    const token = cookieStore.get("mastodon_token")?.value
-    const serverUrl = cookieStore.get("mastodon_server")?.value
+    const token = (await cookieStore).get("mastodon_token")?.value
+    const serverUrl = (await cookieStore).get("mastodon_server")?.value
 
     if (!token || !serverUrl) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
@@ -28,8 +28,8 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const cookieStore = cookies()
-    const token = cookieStore.get("mastodon_token")?.value
-    const serverUrl = cookieStore.get("mastodon_server")?.value
+    const token = (await cookieStore).get("mastodon_token")?.value
+    const serverUrl = (await cookieStore).get("mastodon_server")?.value
 
     if (!token || !serverUrl) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
