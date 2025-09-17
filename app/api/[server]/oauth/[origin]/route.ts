@@ -39,9 +39,8 @@ export async function GET(
     })
 
     const token = await result.json()
-    console.log(token, 'token')
     const response = NextResponse.redirect(new URL("/timeline", request.url))
-    response.cookies.set("mastodon_token", token.accessToken, {
+    response.cookies.set("mastodon_token", token.access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 30, // 30 days
