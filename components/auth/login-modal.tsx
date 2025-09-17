@@ -40,7 +40,7 @@ export function LoginModal({ children }: LoginModalProps) {
         origin: location.origin,
       })
     })
-    const authUrl = await res.json()
+    const { authUrl } = await res.json()
     console.log(authUrl)
     location.href = authUrl
   }
