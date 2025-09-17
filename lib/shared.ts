@@ -9,6 +9,13 @@ export function getRedirectURI(origin: string, server: string) {
 async function fetchAppInfo(origin: string, server: string) {
   console.log(getRedirectURI(origin, server), '-----getRedirectURI(origin, server)-----')
   try {
+    console.log(`https://${server}/api/v1/apps`, '==url==')
+    console.log(JSON.stringify({
+      client_name: 'v0-mastodon-client',
+      website: 'https://v0-mastodon-client.vercel.app',
+      redirect_uris: getRedirectURI(origin, server),
+      scopes: 'read write follow push',
+    }), 'oooooooo')
     const res = await fetch(`https://${server}/api/v1/apps`, {
       method: 'POST',
       body: JSON.stringify({
@@ -19,6 +26,7 @@ async function fetchAppInfo(origin: string, server: string) {
       }),
     })
     const app: AppInfo = await res.json()
+    console.error(app, 'app****')
     return app
   } catch (error) {
     console.error(error)
