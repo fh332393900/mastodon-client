@@ -9,6 +9,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { LoginModal } from "@/components/auth/login-modal"
 import { MessageCircle, Users, Globe, Zap, Shield, Heart, ArrowRight, Sparkles } from "lucide-react"
 import { useAuth } from "@/hooks/use-auth"
+import { kvTest } from "@/lib/shared"
 
 export default function HomePage() {
   const { isAuthenticated, isLoading } = useAuth()
@@ -18,6 +19,8 @@ export default function HomePage() {
     if (!isLoading && isAuthenticated) {
       router.push("/dashboard")
     }
+    kvTest()
+    console.log(11111)
   }, [isAuthenticated, isLoading, router])
 
   const handleGuestMode = () => {
