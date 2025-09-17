@@ -36,6 +36,7 @@ export async function GET(
     })
 
     const token = await result.json()
+    console.log(token, 'token')
     const response = NextResponse.redirect(new URL("/timeline", request.url))
     response.cookies.set("mastodon_token", token.accessToken, {
       httpOnly: true,
