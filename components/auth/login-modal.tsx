@@ -34,12 +34,15 @@ export function LoginModal({ children }: LoginModalProps) {
       setError("Please enter server address!")
       return
     }
-    fetch(`/api/${server}/login`, {
+    const res = await fetch(`/api/${server}/login`, {
       method: 'POST',
       body: JSON.stringify({
         origin: location.origin,
       })
     })
+    const authUrl = await res.json()
+    console.log(authUrl)
+    location.href = authUrl
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

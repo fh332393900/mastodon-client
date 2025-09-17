@@ -21,15 +21,12 @@ async function fetchAppInfo(origin: string, server: string) {
     body: form.toString(),
   })
   const app: AppInfo = await res.json()
-  console.error(app, 'app****')
   return app
 }
 
 export async function getApp(origin: string, server: string) {
   const host = origin.replace(/^https?:\/\//, '').replace(/\W/g, '-').replace(/\?.*$/, '')
   const key = `servers:v3:${server}:${host}.json`.toLowerCase()
-  console.log(key)
-  console.log(host)
   try {
     if (await kv.get(key))
       return (kv.get(key) as Promise<AppInfo>)

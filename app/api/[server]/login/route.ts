@@ -23,7 +23,7 @@ export async function POST(
     })
 
     const authUrl = `https://${server}/oauth/authorize?${query}`
-    return NextResponse.redirect(authUrl)
+    return NextResponse.json({ authUrl })
   } catch (error) {
     console.log(error)
   }
