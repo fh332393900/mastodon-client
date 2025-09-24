@@ -7,6 +7,9 @@ import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
 import "./globals.css"
+import { cookies } from "next/headers";
+import { MastoProvider } from "@/components/auth/masto-provider";
+import { createRestAPIClient } from "masto"
 
 
 export const metadata: Metadata = {
@@ -15,17 +18,33 @@ export const metadata: Metadata = {
   generator: "v0.app",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const cookieStore = cookies();
+
+  const accessToken = (await cookieStore).get("mastodon_token")?.value ?? "";
+  const server = (await cookieStore).get("mastodon_server")?.value ?? "mastodon.social";
+  console.log(accessToken, 1)
+  console.log(server, 2)
+  const client = createRestAPIClient({
+    url: server,
+    accessToken: accessToken,
+  })
+
+  const res = await client.v1.preferences.fetch()
+  console.log(res, 'res---')
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange={false}>
-            {children}
+            <MastoProvider value={client}>
+              {children}
+            </MastoProvider>
           </ThemeProvider>
         </Suspense>
         <Analytics />
