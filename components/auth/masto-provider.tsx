@@ -15,4 +15,10 @@ export function useMasto() {
   return client;
 }
 
-export const MastoProvider = MastoContext.Provider;
+export function MastoProvider({ children, client }: { children: React.ReactNode, client: MastoClient }){
+  return (
+    <MastoContext.Provider value={client}>
+      {children}
+    </MastoContext.Provider>
+  )
+}

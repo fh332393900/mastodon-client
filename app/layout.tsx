@@ -33,16 +33,14 @@ export default async function RootLayout({
     url: `https://${server}`,
     accessToken: accessToken,
   })
-
-  const res = await client.v1.preferences.fetch()
-  console.log(res, 'res---')
+  console.log(client)
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange={false}>
-            <MastoProvider value={client}>
+            <MastoProvider client={client}>
               {children}
             </MastoProvider>
           </ThemeProvider>
