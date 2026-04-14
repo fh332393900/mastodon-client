@@ -13,7 +13,7 @@ const navigationItems = [
   { icon: Home, label: "Home", route: "timeline", color: "text-blue-500" },
   { icon: Heart, label: "Favorites", route: "favorites", color: "text-red-500" },
   { icon: Search, label: "Explore", route: "explore", color: "text-green-500" },
-  { icon: Settings, label: "Settings", route: "settings", color: "text-gray-500" },
+  { icon: Settings, label: "Settings", route: "settings", color: "text-yellow-500" },
 ]
 
 export function Sidebar() {
@@ -57,9 +57,9 @@ export function Sidebar() {
           "transition-all duration-200 lg:sticky lg:top-0 lg:h-screen",
         )}
       >
-        <div className="flex h-full flex-col">
+        <div className="flex h-full flex-col gap-4">
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-border">
+          <div className="flex items-center justify-between p-4">
             {!isCollapsed ? (
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -91,14 +91,14 @@ export function Sidebar() {
                     <Button
                       variant={isActive ? "default" : "ghost"}
                       className={cn(
-                        "w-full justify-start transition-all duration-200 hover:scale-[1.02]",
+                        "w-full justify-start transition-all duration-200 hover:scale-[1.02] py-5",
                         isCollapsed && "px-2",
                       )}
                       onClick={() => setIsMobileOpen(false)}
                     >
                       <item.icon
                         className={cn(
-                          "h-5 w-5 transition-colors duration-200",
+                          "h-7 w-7 transition-colors duration-200",
                           isActive ? item.color : "text-muted-foreground",
                           !isCollapsed && "mr-3",
                         )}
@@ -113,7 +113,7 @@ export function Sidebar() {
 
           {/* User Info */}
           {user && (
-            <div className="py-2 px-2 border-t border-border">
+            <div className="py-2 px-2">
               <div
                 className={cn(
                   "flex items-center space-x-3 p-3 rounded-lg",

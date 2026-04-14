@@ -30,7 +30,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased overflow-y-scroll`}>
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange={false}>
             <MastoProvider accessToken={accessToken} server={server}>
@@ -40,7 +40,7 @@ export default async function RootLayout({
             </MastoProvider>
           </ThemeProvider>
         </Suspense>
-        <Analytics />
+        {/* <Analytics /> */}
       </body>
     </html>
   )

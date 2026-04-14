@@ -102,7 +102,7 @@ function PostCard({ post, index }: { post: Post; index: number }) {
                   <h3 className="font-semibold text-foreground hover:text-primary transition-colors cursor-pointer">
                     {post.account.displayName}
                   </h3>
-                  <Badge variant="secondary" className="text-xs">
+                  <Badge variant="default" className="text-xs">
                     @{post.account.acct}
                   </Badge>
                 </div>

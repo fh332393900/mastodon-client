@@ -14,7 +14,7 @@ export function ThreeColumnLayout({ children }: ThreeColumnLayoutProps) {
       <Sidebar />
 
       <main className="flex-1 min-w-0 overflow-hidden">
-        <div className="h-full overflow-y-auto">
+        <div className="h-full overflow-y-scroll">
           <div className="container mx-auto p-4 md:p-6 max-w-2xl">{children}</div>
         </div>
       </main>

@@ -17,8 +17,8 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <header className="relative z-10 flex items-center justify-between p-6">
+    <div className="min-h-screen relative bg-gradient-to-br from-background via-background to-muted/20">
+      <header className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-background">
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
             <MessageCircle className="w-5 h-5 text-primary-foreground" />
