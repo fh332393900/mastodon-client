@@ -97,8 +97,9 @@ export function Sidebar() {
                       onClick={() => setIsMobileOpen(false)}
                     >
                       <item.icon
+                        size={28}
                         className={cn(
-                          "h-7 w-7 transition-colors duration-200",
+                          "!h-6 !w-6 transition-colors duration-200",
                           isActive ? item.color : "text-muted-foreground",
                           !isCollapsed && "mr-3",
                         )}
@@ -139,7 +140,7 @@ export function Sidebar() {
                     onClick={handleLogout}
                     className="h-8 w-8 text-muted-foreground hover:text-grey"
                   >
-                    <LogOut className="h-4 w-4" />
+                    <LogOut className="!h-5 !w-5" />
                   </Button>
                 )}
               </div>

@@ -91,7 +91,7 @@ function PostCard({ post, index }: { post: Post; index: number }) {
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-3">
-              <Avatar className="ring-2 ring-primary/20 transition-all duration-200 group-hover:ring-primary/40">
+              <Avatar className="ring-2 ring-primary/20 transition-all duration-200 group-hover:ring-primary/40 h-12 w-12">
                 <AvatarImage src={post.account.avatar || "/placeholder.svg"} alt={post.account.displayName} />
                 <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-primary-foreground">
                   {post.account.displayName.charAt(0)}
@@ -172,7 +172,7 @@ function PostCard({ post, index }: { post: Post; index: number }) {
                 onClick={handleLike}
                 className={cn(
                   "transition-all duration-200 space-x-2",
-                  isLiked ? "text-accent hover:text-accent/80" : "text-muted-foreground hover:text-accent",
+                  isLiked ? "text-red-500 hover:text-red-500/80" : "text-muted-foreground hover:text-red-500",
                 )}
               >
                 <Heart className={cn("w-4 h-4", isLiked && "fill-current animate-pulse")} />
