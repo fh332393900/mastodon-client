@@ -14,7 +14,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   return (
     <main className="container mx-auto max-w-4xl lg:max-w-7xl flex min-h-screen bg-background">
       <Sidebar />
-      <div className="flex-1 pr-[280px]">
+      <div className="flex-1">
         <div className="h-full">
           <div className="container p-4 md:p-6">{children}</div>
         </div>

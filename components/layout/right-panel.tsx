@@ -14,8 +14,8 @@ export function RightPanel() {
   const [searchQuery, setSearchQuery] = useState("")
 
   return (
-    <aside className="hidden lg:fixed lg:inset-y-0 lg:right-0 lg:z-40 lg:flex lg:w-[18rem] lg:flex-col bg-card/50 border-l border-border overflow-y-auto">
-      <div className="flex flex-col h-full p-4 space-y-4">
+    <aside className="hidden lg:flex lg:w-[18rem] lg:flex-col lg:sticky lg:top-0 lg:self-start h-screen bg-card/50 border-l border-border">
+      <div className="flex flex-col p-4 space-y-4">
         {/* Search Section */}
         <Card className="bg-card/50 backdrop-blur-sm border-border/50 shadow-lg shadow-primary/5 px-0">
           <CardContent className="pt-0">
@@ -32,7 +32,7 @@ export function RightPanel() {
         </Card>
 
         {/* Trending Tags */}
-        <Card className="h-60 bg-card/50 backdrop-blur-sm border-border/50 shadow-lg shadow-primary/5">
+        <Card className="flex-1 bg-card/50 backdrop-blur-sm border-border/50 shadow-lg shadow-primary/5">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium">Trending Tags</CardTitle>
           </CardHeader>
