@@ -1,11 +1,7 @@
 import type { AppInfo } from '@/types'
 import { kv } from '@vercel/kv'
 import fetch from 'node-fetch'
-import { HttpsProxyAgent } from 'https-proxy-agent'
-
-// 代理地址请根据你的实际情况修改
-  const proxy = process.env.HTTPS_PROXY || 'http://127.0.0.1:7890'
-  const agent = new HttpsProxyAgent(proxy)
+import { agent } from '@/lib/proxy-agent'
 
 export function getRedirectURI(origin: string, server: string) {
   origin = origin.replace(/\?.*$/, '')
