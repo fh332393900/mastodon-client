@@ -50,7 +50,13 @@ export function Sidebar() {
       )}
 
       {/* Sidebar */}
-      <aside className={isMobileOpen ? "fixed inset-y-0 left-0 z-50 w-72 bg-card border-r border-border lg:relative lg:w-72" : "hidden lg:block lg:w-72 bg-card border-r border-border"}>
+      <aside
+        className={cn(
+          isMobileOpen ? "inset-y-0 left-0 z-50 bg-card border-r border-border" : "hidden lg:block bg-card border-r border-border",
+          isCollapsed ? "w-20 lg:w-20" : "w-72 lg:w-72",
+          "transition-all duration-200",
+        )}
+      >
         <div className="flex h-full flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-border">
@@ -69,9 +75,9 @@ export function Sidebar() {
               </div>
             )}
 
-            <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)} className="hidden lg:flex">
+            {/* <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)} className="hidden lg:flex">
               <Menu className="h-5 w-5" />
-            </Button>
+            </Button> */}
           </div>
 
           {/* Navigation */}
@@ -111,19 +117,19 @@ export function Sidebar() {
             <div className="p-4 border-t border-border">
               <div
                 className={cn(
-                  "flex items-center space-x-3 p-3 rounded-lg bg-accent/50",
+                  "flex items-center space-x-3 p-3 rounded-lg",
                   isCollapsed && "justify-center",
                 )}
               >
-                <Avatar className="h-10 w-10">
+                <Avatar className="h-12 w-12">
                   <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.displayName} />
                   <AvatarFallback>{user.displayName.charAt(0)}</AvatarFallback>
                 </Avatar>
 
                 {!isCollapsed && (
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-sm truncate">{user.displayName}</div>
-                    <div className="text-xs text-muted-foreground truncate">@{user.username}</div>
+                    <div className="font-bold text-sm truncate text-orange-500 mb-1">{user.displayName}</div>
+                    <div className="text-xs text-muted-foreground truncate">@{user.username}@{server}</div>
                   </div>
                 )}
 
@@ -132,7 +138,7 @@ export function Sidebar() {
                     variant="ghost"
                     size="icon"
                     onClick={handleLogout}
-                    className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                    className="h-8 w-8 text-muted-foreground hover:text-grey"
                   >
                     <LogOut className="h-4 w-4" />
                   </Button>

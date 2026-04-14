@@ -14,7 +14,7 @@ export function RightPanel() {
   const [searchQuery, setSearchQuery] = useState("")
 
   return (
-    <aside className="hidden lg:flex w-80 flex-col bg-card/50 border-l border-border">
+    <aside className="hidden lg:flex w-70 flex-col bg-card/50 border-l border-border">
       <div className="flex flex-col h-full p-4 space-y-4">
         {/* Search Section */}
         <Card>
