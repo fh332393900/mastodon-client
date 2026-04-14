@@ -12,14 +12,14 @@ interface AppLayoutProps {
 
 export function AppLayout({ children }: AppLayoutProps) {
   return (
-    <div className="flex h-screen bg-background">
+    <main className="container mx-auto max-w-4xl lg:max-w-7xl flex min-h-screen bg-background">
       <Sidebar />
-      <main className="flex-1 overflow-hidden md:ml-0">
-        <div className="h-full overflow-y-auto">
-          <div className="container mx-auto p-4 md:p-6 max-w-4xl">{children}</div>
+      <div className="flex-1 pr-[280px]">
+        <div className="h-full">
+          <div className="container p-4 md:p-6">{children}</div>
         </div>
-      </main>
+      </div>
       <RightPanel />
-    </div>
+    </main>
   )
 }

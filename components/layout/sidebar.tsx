@@ -52,9 +52,9 @@ export function Sidebar() {
       {/* Sidebar */}
       <aside
         className={cn(
-          isMobileOpen ? "inset-y-0 left-0 z-50 bg-card border-r border-border" : "hidden lg:block bg-card border-r border-border",
+          isMobileOpen ? "fixed inset-y-0 left-0 z-50 bg-card border-r border-border" : "hidden lg:block bg-card border-r border-border",
           isCollapsed ? "w-20 lg:w-20" : "w-72 lg:w-72",
-          "transition-all duration-200",
+          "transition-all duration-200 lg:sticky lg:top-0 lg:h-screen",
         )}
       >
         <div className="flex h-full flex-col">
@@ -89,10 +89,9 @@ export function Sidebar() {
                 <div key={item.route}>
                   <Link href={href}>
                     <Button
-                      variant={isActive ? "secondary" : "ghost"}
+                      variant={isActive ? "default" : "ghost"}
                       className={cn(
                         "w-full justify-start transition-all duration-200 hover:scale-[1.02]",
-                        isActive && "bg-accent text-accent-foreground shadow-sm",
                         isCollapsed && "px-2",
                       )}
                       onClick={() => setIsMobileOpen(false)}
@@ -114,7 +113,7 @@ export function Sidebar() {
 
           {/* User Info */}
           {user && (
-            <div className="p-4 border-t border-border">
+            <div className="py-2 px-2 border-t border-border">
               <div
                 className={cn(
                   "flex items-center space-x-3 p-3 rounded-lg",

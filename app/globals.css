@@ -10,15 +10,20 @@
   --card-foreground: oklch(0.15 0 0);
   --popover: oklch(0.98 0 0);
   --popover-foreground: oklch(0.15 0 0);
-  --primary: oklch(0.55 0.15 200); /* Cyan primary */
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.65 0.25 330); /* Vibrant pink secondary */
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.95 0 0);
-  --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.75 0.2 85); /* Bright yellow accent */
-  --accent-foreground: oklch(0.15 0 0);
-  --destructive: oklch(0.6 0.25 25);
+  --primary: oklch(0.68 0.12 260); /* 柔和紫蓝（社区感很强） */
+  --primary-foreground: oklch(0.96 0.01 260);
+
+  --secondary: oklch(0.72 0.1 320); /* 活泼粉紫 */
+  --secondary-foreground: oklch(0.96 0.01 320);
+
+  --muted: oklch(0.93 0.015 250);
+  --muted-foreground: oklch(0.48 0.02 250);
+
+  --accent: oklch(0.78 0.11 180); /* 清新青绿（点缀用，很“活”） */
+  --accent-foreground: oklch(0.3 0.02 180);
+
+  --destructive: oklch(0.68 0.12 25); /* 柔和红（不刺） */
+  --destructive-foreground: oklch(0.98 0 0);
   --destructive-foreground: oklch(0.98 0 0);
   --border: oklch(0.9 0 0);
   --input: oklch(0.95 0 0);
