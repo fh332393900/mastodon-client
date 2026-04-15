@@ -11,7 +11,6 @@ import { cookies } from "next/headers";
 import { MastoProvider } from "@/components/auth/masto-provider";
 import { AuthProvider } from "@/components/auth/auth-provider"
 
-
 export const metadata: Metadata = {
   title: "Mastodon Client - Connect to the Fediverse",
   description: "A modern, beautiful Mastodon client with rich animations and premium dark theme",

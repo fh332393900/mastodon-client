@@ -1,7 +1,7 @@
 import { cookies } from "next/headers"
 import { createRestAPIClient } from "masto"
 
-function normalizeServerUrl(server: string) {
+export function normalizeServerUrl(server: string) {
   if (server.startsWith("http://") || server.startsWith("https://")) {
     return server
   }
@@ -34,5 +34,16 @@ export async function getMastodonClient() {
   return createRestAPIClient({
     url: auth.url,
     accessToken: auth.token,
+  })
+}
+
+export async function getScopedMastodonClient(server: string) {
+  const auth = await getMastodonAuth()
+  console.log(auth, 'auth========')
+  const url = normalizeServerUrl(server)
+
+  return createRestAPIClient({
+    url,
+    accessToken: auth?.server === server ? auth.token : undefined,
   })
 }

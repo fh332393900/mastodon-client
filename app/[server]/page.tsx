@@ -1,5 +1,10 @@
 import { redirect } from "next/navigation"
 
-export default function ServerIndexPage({ params }: { params: { server: string } }) {
-  redirect(`/${params.server}/timeline`)
+export default async function ServerIndexPage({
+  params,
+}: {
+  params: Promise<{ server: string }>
+}) {
+  const { server } = await params
+  redirect(`/${server}/timeline`)
 }
