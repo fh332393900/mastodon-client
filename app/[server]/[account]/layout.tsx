@@ -37,10 +37,10 @@ export default async function ProfileLayout({
   try {
     data = await getProfileViewData(server, normalizedAccount)
   } catch {
-    // notFound()
+    notFound()
   }
 
-  const { account = {}, relationship = {}, featuredTags = {} } = data || {}
+  const { account, relationship, featuredTags } = data
   const baseHref = `/${server}/@${normalizedAccount}`
 
   return (
