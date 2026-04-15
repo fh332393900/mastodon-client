@@ -9,6 +9,7 @@ import { Heart, MessageCircle, Repeat2, Share, MoreHorizontal, Clock, Globe } fr
 import { cn } from "@/lib/utils"
 import { useMasto } from "@/components/auth/masto-provider"
 import MastodonContent from '@/components/mastodon/MastodonContent'
+import { mastodon } from "masto"
 
 interface Post {
   id: string
@@ -34,7 +35,8 @@ interface Post {
   }>
 }
 
-function PostCard({ post, index }: { post: Post; index: number }) {
+function PostCard({ status, index }: { status: mastodon.v1.Status; index: number }) {
+  const post = status.reblog ?? status
   const [isLiked, setIsLiked] = useState(post.favourited)
   const [isReposted, setIsReposted] = useState(post.reblogged)
   const [likes, setLikes] = useState(post.favouritesCount)
@@ -85,6 +87,20 @@ function PostCard({ post, index }: { post: Post; index: number }) {
   return (
     <div className="group">
       <Card className="bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/20 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
+        <div>
+          {status.reblog ? (
+            <div className="px-6 mb-1 flex items-center gap-2 text-xs text-muted-foreground">
+              <Repeat2 className="h-5 w-5 text-accent" />
+              <Avatar className="ring-2 ring-primary/20 transition-all duration-200 group-hover:ring-primary/40 h-6 w-6">
+                <AvatarImage src={status.account.avatar || "/placeholder.svg"} alt={status.account.displayName} />
+                <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-primary-foreground">
+                  {status.account.displayName.charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+              <span>{status.account.displayName || status.account.username} {"\u8f6c\u53d1\u4e86\u8fd9\u6761\u8d34\u6587"}</span>
+            </div>
+          ) : null}
+        </div>
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-3">
@@ -125,17 +141,22 @@ function PostCard({ post, index }: { post: Post; index: number }) {
           </div>
 
           {post.mediaAttachments && post.mediaAttachments.length > 0 && (
-            <div className="space-y-2">
-              {post.mediaAttachments.map((item, mediaIndex) => (
-                <div
-                  key={mediaIndex}
-                  className="rounded-lg overflow-hidden border border-border/50"
-                >
-                  <img
-                    src={item.url || "/placeholder.svg"}
-                    alt={item.description || "Media attachment"}
-                    className="w-full h-auto max-h-96 object-cover hover:scale-105 transition-transform duration-300"
-                  />
+            <div className={`grid gap-3 ${
+              post.mediaAttachments.length === 1
+                ? "grid-cols-1"
+                : "sm:grid-cols-2"
+            }`}>
+              {post.mediaAttachments.map((item) => (
+                <div key={item.id} className="overflow-hidden rounded-2xl border border-border/60 bg-muted/40">
+                  {item.type === "image" ? (
+                    <img
+                      src={item.previewUrl || item.url || undefined}
+                      alt={item.description || "media"}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <video src={item.url || undefined} controls className="h-auto w-full" />
+                  )}
                 </div>
               ))}
             </div>
@@ -190,7 +211,7 @@ function PostCard({ post, index }: { post: Post; index: number }) {
 }
 
 export function TimelineFeed() {
-  const [posts, setPosts] = useState<Post[]>([])
+  const [posts, setPosts] = useState<mastodon.v1.Status[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [hasMore, setHasMore] = useState(true)
@@ -212,7 +233,7 @@ export function TimelineFeed() {
 
         // using home timeline endpoint as before; adapt per timelineType later if needed
         const res = await client.v1.timelines.home.list(params)
-        const newPosts = (res as Post[]) || []
+        const newPosts = (res as mastodon.v1.Status[]) || []
 
         setPosts((prev) => {
           if (!append) return newPosts
@@ -335,7 +356,7 @@ export function TimelineFeed() {
 
       <div className="space-y-6">
         {posts.map((post, index) => (
-          <PostCard key={post.id} post={post} index={index} />
+          <PostCard key={post.id} status={post} index={index} />
         ))}
       </div>
 
