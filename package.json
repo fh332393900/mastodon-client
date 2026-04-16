@@ -17,6 +17,8 @@
     "@radix-ui/react-slider": "latest",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-switch": "latest",
+    "@tanstack/react-query": "^5.99.0",
+    "@tanstack/react-query-devtools": "^5.99.0",
     "@vercel/analytics": "latest",
     "@vercel/kv": "latest",
     "class-variance-authority": "^0.7.1",

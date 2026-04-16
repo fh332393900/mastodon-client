@@ -10,6 +10,7 @@ import "./globals.css"
 import { cookies } from "next/headers";
 import { MastoProvider } from "@/components/auth/masto-provider";
 import { AuthProvider } from "@/components/auth/auth-provider"
+import { ReactQueryProvider } from "@/components/providers/react-query-provider"
 
 export const metadata: Metadata = {
   title: "Mastodon Client - Connect to the Fediverse",
@@ -32,11 +33,13 @@ export default async function RootLayout({
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased overflow-y-scroll`}>
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
-            <MastoProvider accessToken={accessToken} server={server}>
-              <AuthProvider>
-                {children}
-              </AuthProvider>
-            </MastoProvider>
+            <ReactQueryProvider>
+              <MastoProvider accessToken={accessToken} server={server}>
+                <AuthProvider>
+                  {children}
+                </AuthProvider>
+              </MastoProvider>
+            </ReactQueryProvider>
           </ThemeProvider>
         </Suspense>
         {/* <Analytics /> */}

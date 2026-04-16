@@ -1,6 +1,7 @@
 "use client"
 
-import { useCallback, useState, useEffect, useMemo } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useInfiniteQuery } from "@tanstack/react-query"
 import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
 import { InfiniteScroller } from "@/components/mastodon/infinite-scroller"
@@ -11,103 +12,131 @@ import type { mastodon } from "masto"
 
 type TimelineType = "public" | "home" | "local"
 
-// In-memory cache for timelines to achieve "keep-alive" effect
-const timelineCache = new Map<TimelineType, mastodon.v1.Status[]>()
-const scrollPositionCache = new Map<TimelineType, number>()
-
 export function TimelineFeed() {
   const [timelineType, setTimelineType] = useState<TimelineType>("home")
-  const [posts, setPosts] = useState<mastodon.v1.Status[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [isLoadingMore, setIsLoadingMore] = useState(false)
-  const [hasMore, setHasMore] = useState(true)
 
   const { client, isReady: isMastoReady } = useMasto()
   const { user, isInitialized: isAuthReady } = useAuth()
 
   const isReady = isMastoReady && isAuthReady
+  const limit = 20
 
-  // Restore from cache on mount or when switching timeline types
+  const queryKey = useMemo(() => ["timeline", timelineType, user ? "authed" : "public"] as const, [timelineType, user])
+
+  const fetchPage = useCallback(
+    async ({ pageParam }: { pageParam?: string }) => {
+      if (!client) return [] as mastodon.v1.Status[]
+
+      const params: any = { limit }
+      if (pageParam) params.max_id = pageParam
+
+      const timelineApi = client.v1.timelines
+      let res: mastodon.v1.Status[] = []
+
+      switch (timelineType) {
+        case "home":
+          if (user) res = await timelineApi.home.list(params)
+          else res = await timelineApi.public.list({ ...params, local: true })
+          break
+        case "local":
+          res = await timelineApi.public.list({ ...params, local: true })
+          break
+        case "public":
+        default:
+          res = await timelineApi.public.list(params)
+          break
+      }
+
+      return res ?? []
+    },
+    [client, timelineType, user],
+  )
+
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey,
+    queryFn: ({ pageParam }) => fetchPage({ pageParam }),
+    enabled: isReady && !!client && (timelineType !== "home" || !!user),
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage || lastPage.length < limit) return undefined
+      return lastPage[lastPage.length - 1]?.id
+    },
+    staleTime: 60_000,
+    gcTime: 30 * 60_000,
+    refetchOnWindowFocus: false,
+  })
+
+  const posts = useMemo(() => {
+    const pages = data?.pages ?? []
+    // flatten + de-dup
+    const seen = new Set<string>()
+    const out: mastodon.v1.Status[] = []
+    for (const page of pages) {
+      for (const s of page) {
+        if (!seen.has(s.id)) {
+          seen.add(s.id)
+          out.push(s)
+        }
+      }
+    }
+    return out
+  }, [data])
+
+  // Persist/restore scroll position per timelineType using sessionStorage.
+  const restoringRef = useRef(false)
+  const scrollPositionRef = useRef(0)
   useEffect(() => {
     if (!isReady) return
 
-    const cachedPosts = timelineCache.get(timelineType)
-    if (cachedPosts && cachedPosts.length > 0) {
-      setPosts(cachedPosts)
-      setIsLoading(false)
-      // Restore scroll position
-      setTimeout(() => {
-        window.scrollTo(0, scrollPositionCache.get(timelineType) || 0)
-      }, 0)
-    } else {
-      fetchTimeline(undefined, false)
+    const raw = sessionStorage.getItem(`timeline:scroll:${timelineType}`)
+    scrollPositionRef.current =  raw ? Number(raw) || 0 : 0
+
+    const handleScroll = () => {
+      scrollPositionRef.current = window.scrollY
+      sessionStorage.setItem(`timeline:scroll:${timelineType}`, String(scrollPositionRef.current))
     }
 
-    // Save scroll position on unmount/switch
+
+    restoringRef.current = true
+    requestAnimationFrame(() => {
+      try {
+        const raw = sessionStorage.getItem(`timeline:scroll:${timelineType}`)
+        const y = raw ? Number(raw) || 0 : 0
+        scrollPositionRef.current = y
+        window.scrollTo({ top: y })
+      } catch {
+        // ignore
+      } finally {
+        restoringRef.current = false
+      }
+    })
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+
     return () => {
-      scrollPositionCache.set(timelineType, window.scrollY)
+      window.removeEventListener("scroll", handleScroll)
     }
   }, [timelineType, isReady])
 
-  const fetchTimeline = useCallback(
-    async (maxId?: string, append = false) => {
-      if (!isReady || !client) return
-
-      if (append) setIsLoadingMore(true)
-      else setIsLoading(true)
-
-      try {
-        const params: any = { limit: 10 }
-        if (maxId) params.max_id = maxId
-
-        let res: mastodon.v1.Status[] = []
-        const timelineApi = client.v1.timelines
-        
-        switch (timelineType) {
-          case "home":
-            if (user) res = await timelineApi.home.list(params)
-            break
-          case "local":
-            res = await timelineApi.public.list({ ...params, local: true })
-            break
-          case "public":
-          default:
-            res = await timelineApi.public.list(params)
-            break
-        }
-
-        const newPosts = res || []
-        setPosts((prev) => {
-          const currentPosts = append ? prev : []
-          const uniqueNewPosts = newPosts.filter((p) => !currentPosts.some((cp) => cp.id === p.id))
-          const updatedPosts = [...currentPosts, ...uniqueNewPosts]
-          timelineCache.set(timelineType, updatedPosts) // Update cache
-          return updatedPosts
-        })
-        setHasMore(newPosts.length > 0)
-      } catch (error) {
-        console.error(`Failed to fetch ${timelineType} timeline:`, error)
-        setHasMore(false)
-      } finally {
-        setIsLoading(false)
-        setIsLoadingMore(false)
-      }
-    },
-    [client, isReady, user, timelineType],
-  )
-
   const handleLoadMore = () => {
-    if (posts.length > 0) {
-      const lastId = posts[posts.length - 1].id
-      fetchTimeline(lastId, true)
-    }
+    if (hasNextPage && !isFetchingNextPage) fetchNextPage()
   }
-  
+
   const handleTimelineChange = (type: TimelineType) => {
-    // Save current scroll position before switching
-    scrollPositionCache.set(timelineType, window.scrollY);
-    setTimelineType(type);
-  };
+    try {
+      sessionStorage.setItem(`timeline:scroll:${timelineType}`, String(window.scrollY))
+    } catch {
+      // ignore
+    }
+    setTimelineType(type)
+  }
 
 
   const timelineTitle = useMemo(() => {
@@ -118,7 +147,7 @@ export function TimelineFeed() {
     }
   }, [timelineType])
 
-  if (!isReady && isLoading) {
+  if (isLoading) {
     return (
       <div className="space-y-6">
         <h1 className="text-3xl font-bold">Loading Timeline...</h1>
@@ -157,13 +186,16 @@ export function TimelineFeed() {
           <Badge variant="outline" className="text-accent border-accent/50">
             {posts.length} posts
           </Badge>
+          <Button variant="ghost" size="sm" onClick={() => refetch()} className="text-xs">
+            Refresh
+          </Button>
         </div>
       </div>
 
       <InfiniteScroller
         onLoadMore={handleLoadMore}
-        hasMore={hasMore}
-        isLoadingMore={isLoadingMore}
+        hasMore={!!hasNextPage}
+        isLoadingMore={isFetchingNextPage}
       >
         <div className="space-y-6">
           {posts.map((post) => (
