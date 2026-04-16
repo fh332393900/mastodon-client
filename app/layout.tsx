@@ -25,7 +25,7 @@ export default async function RootLayout({
   const cookieStore = cookies();
 
   const accessToken = (await cookieStore).get("mastodon_token")?.value ?? ""
-  const server = (await cookieStore).get("mastodon_server")?.value ?? "mastodon.social"
+  const server = (await cookieStore).get("mastodon_server")?.value ?? process.env.DEFAULT_MASTODON_SERVER ?? "m.webtoo.ls"
 
   return (
     <html lang="en" suppressHydrationWarning>

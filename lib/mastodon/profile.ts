@@ -17,7 +17,7 @@ export function normalizeAccountParam(account: string) {
   return decodeAccount
 }
 
-export const getProfileViewData = async (server: string, account: string) => {
+export const getProfileViewData = cache(async (server: string, account: string) => {
   const client = await getScopedMastodonClient(server)
   const normalizedAccount = normalizeAccountParam(account)
   const lookupCandidates = getAccountLookupCandidates(server, normalizedAccount)
@@ -61,7 +61,7 @@ export const getProfileViewData = async (server: string, account: string) => {
     relationship: relationships[0] ?? null,
     featuredTags,
   }
-}
+})
 
 export async function getProfileStatuses(server: string, accountId: string) {
   const client = await getScopedMastodonClient(server)

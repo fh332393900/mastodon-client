@@ -11,6 +11,7 @@ import { useMasto } from "@/components/auth/masto-provider"
 import MastodonContent from '@/components/mastodon/MastodonContent'
 import { mastodon } from "masto"
 import Link from "next/link"
+import { useAuth } from "../auth/auth-provider"
 
 interface Post {
   id: string
@@ -214,6 +215,7 @@ export function TimelineFeed() {
   const [hasMore, setHasMore] = useState(true)
   const [timelineType, setTimelineType] = useState<"public" | "home" | "local">("public")
   const { client } = useMasto()
+  const { user } = useAuth()
 
   const limit = 20
   const sentinelRef = useRef<HTMLDivElement | null>(null)
@@ -227,9 +229,11 @@ export function TimelineFeed() {
 
         const params: any = { limit }
         if (maxId) params.max_id = maxId
-
+        if (!user) {
+          params.local = true
+        }
         // using home timeline endpoint as before; adapt per timelineType later if needed
-        const res = await client.v1.timelines.home.list(params)
+        const res = user ? await client.v1.timelines.home.list(params) :  await client.v1.timelines.public.list(params)
         const newPosts = (res as mastodon.v1.Status[]) || []
 
         setPosts((prev) => {

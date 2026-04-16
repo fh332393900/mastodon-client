@@ -8,12 +8,15 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { LoginModal } from "@/components/auth/login-modal"
 import { MessageCircle, Users, Globe, Zap, Shield, Heart, ArrowRight, Sparkles } from "lucide-react"
 import { useAuth } from "@/components/auth/auth-provider"
+import { useMasto } from "@/components/auth/masto-provider"
 
 export default function HomePage() {
+  const router = useRouter()
   const { isAuthenticated, isLoading } = useAuth()
+  const { server } = useMasto()
 
   const handleGuestMode = () => {
-    window.location.href = "/mastodon.social/timeline?mode=guest"
+    router.push(`/${server}/timeline`)
   }
 
   return (
