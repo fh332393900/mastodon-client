@@ -113,7 +113,7 @@ function PostCard({ status, index }: { status: mastodon.v1.Status; index: number
                 </AvatarFallback>
               </Avatar>
               <Link href={`/${server}/@${post.account.acct}`} className="space-y-1">
-                <div className="flex flex-wrap items-center space-x-2">
+                <div className="flex px-2 rounded-xl flex-wrap items-center space-x-2 hover:bg-primary-foreground">
                   <h3 className="font-semibold line-clamp-1 text-foreground hover:text-primary transition-colors cursor-pointer">
                     {post.account.displayName}
                   </h3>
@@ -124,8 +124,8 @@ function PostCard({ status, index }: { status: mastodon.v1.Status; index: number
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <Clock className="w-3 h-3" />
                   <span>{formatTimestamp(post.createdAt)}</span>
-                  <Globe className="w-3 h-3" />
-                  <span className="capitalize">{post.visibility || "public"}</span>
+                  {/* <Globe className="w-3 h-3" />
+                  <span className="capitalize">{post.visibility || "public"}</span> */}
                 </div>
               </Link>
             </div>
