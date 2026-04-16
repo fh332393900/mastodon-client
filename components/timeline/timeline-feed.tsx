@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 import { useMasto } from "@/components/auth/masto-provider"
 import MastodonContent from '@/components/mastodon/MastodonContent'
 import { mastodon } from "masto"
+import Link from "next/link"
 
 interface Post {
   id: string
@@ -42,7 +43,7 @@ function PostCard({ status, index }: { status: mastodon.v1.Status; index: number
   const [likes, setLikes] = useState(post.favouritesCount)
   const [reposts, setReposts] = useState(post.reblogsCount)
 
-  const { client } = useMasto()
+  const { client, server } = useMasto()
 
   const handleLike = async () => {
     try {
@@ -110,7 +111,7 @@ function PostCard({ status, index }: { status: mastodon.v1.Status; index: number
                   {post.account.displayName.charAt(0)}
                 </AvatarFallback>
               </Avatar>
-              <div className="space-y-1">
+              <Link href={`/${server}/@${post.account.acct}`} className="space-y-1">
                 <div className="flex flex-wrap items-center space-x-2">
                   <h3 className="font-semibold line-clamp-1 text-foreground hover:text-primary transition-colors cursor-pointer">
                     {post.account.displayName}
@@ -125,7 +126,7 @@ function PostCard({ status, index }: { status: mastodon.v1.Status; index: number
                   <Globe className="w-3 h-3" />
                   <span className="capitalize">{post.visibility || "public"}</span>
                 </div>
-              </div>
+              </Link>
             </div>
             <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity">
               <MoreHorizontal className="w-4 h-4" />

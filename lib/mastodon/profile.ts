@@ -84,7 +84,7 @@ export async function getProfileAccountsList(
 
 export function getAccountProfileHref(account: MastodonAccount, fallbackServer: string) {
   const serverFromUrl = safeHostname(account.url)
-  const server = serverFromUrl || acctServer(account.acct) || fallbackServer
+  const server = fallbackServer || serverFromUrl || acctServer(account.acct)
   const routeAccount = account.acct || account.username
   return `/${server}/@${routeAccount}`
 }

@@ -7,7 +7,8 @@ import { createRestAPIClient } from "masto"
 export type MastoClient = mastodon.rest.Client
 export type MastoStreamingClient = mastodon.streaming.Client
 export interface MastoContextType {
-  client: MastoClient,
+  client: MastoClient
+  server: string
   streamingClient?: MastoStreamingClient
 }
 
@@ -33,7 +34,7 @@ export function MastoProvider({ children, accessToken, server }: { children: Rea
   }, [server, accessToken])
 
   return (
-    <MastoContext.Provider value={{ client: client as MastoClient }}>
+    <MastoContext.Provider value={{ client: client as MastoClient, server: server }}>
       {children}
     </MastoContext.Provider>
   )
