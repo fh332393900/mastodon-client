@@ -31,8 +31,6 @@ export function MastoProvider({ children, accessToken, server }: { children: Rea
       accessToken,
     })
     setClient(c)
-
-    console.log(client, '*************')
   }, [server, accessToken])
 
   return (

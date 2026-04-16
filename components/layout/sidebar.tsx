@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Home, Heart, Search, Settings, Menu, X, LogOut } from "lucide-react"
+import { LoginModal } from "@/components/auth/login-modal"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -113,7 +114,21 @@ export function Sidebar() {
           </nav>
 
           {/* User Info */}
-          {user && (
+          {!user ? (
+            <div className="border-t border-border py-4 mx-4">
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  正在查看 <span className="font-semibold text-foreground">{server}</span> 的公共数据
+                </p>
+                <p className="text-xs text-muted-foreground/80">
+                  登录后可关注其他人或标签、点赞、分享和回复帖文，或与不同服务器上的账号交互。
+                </p>
+                <LoginModal>
+                  <Button className="w-full">登录</Button>
+                </LoginModal>
+              </div>
+            </div>
+          ) : (
             <div className="py-2 px-2">
               <div
                 className={cn(

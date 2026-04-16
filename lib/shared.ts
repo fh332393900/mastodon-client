@@ -23,11 +23,11 @@ async function fetchAppInfo(origin: string, server: string) {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       body: form.toString(),
-      agent
+      agent: agent as any
     })
-    const app: AppInfo = await res.json()
+    const app: AppInfo = await res.json() as AppInfo
     return app
-  } catch (error) {
+  } catch (error: any) {
     console.log(error.stack || error
       , '****fetchAppInfo error****')
   }

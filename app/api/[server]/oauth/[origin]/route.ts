@@ -38,10 +38,10 @@ export async function GET(
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       body: form.toString(),
-      agent
+      agent: agent as any
     })
 
-    const token = await result.json()
+    const token = await result.json() as any
     const response = NextResponse.redirect(new URL("/timeline", request.url))
     response.cookies.set("mastodon_token", token.access_token, {
       httpOnly: true,

@@ -1,6 +1,7 @@
 import { cache } from "react"
 import type { mastodon } from "masto"
-
+// Import to trigger proxy setup
+// import "@/lib/proxy-agent"
 import { getScopedMastodonClient } from "@/app/api/_lib/mastodon"
 
 export type MastodonAccount = mastodon.v1.Account

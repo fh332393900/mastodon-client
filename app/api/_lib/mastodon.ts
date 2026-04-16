@@ -1,5 +1,7 @@
 import { cookies } from "next/headers"
 import { createRestAPIClient } from "masto"
+// Import to trigger proxy setup
+import "@/lib/proxy-agent"
 
 export function normalizeServerUrl(server: string) {
   if (server.startsWith("http://") || server.startsWith("https://")) {
@@ -31,6 +33,7 @@ export async function getMastodonClient() {
   if (!auth) {
     return null
   }
+  
   return createRestAPIClient({
     url: auth.url,
     accessToken: auth.token,

@@ -229,6 +229,7 @@ export function TimelineFeed() {
 
         const params: any = { limit }
         if (maxId) params.max_id = maxId
+        console.log(user, 'user')
         if (!user) {
           params.local = true
         }
