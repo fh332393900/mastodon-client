@@ -1,7 +1,7 @@
 
 import { type NextRequest, NextResponse } from "next/server"
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   // Skip auth middleware for API routes, static files, and auth pages
   if (
