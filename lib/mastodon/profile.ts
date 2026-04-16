@@ -9,15 +9,12 @@ export type MastodonStatus = mastodon.v1.Status
 export type MastodonFeaturedTag = mastodon.v1.FeaturedTag
 
 export function normalizeAccountParam(account: string) {
-  if (account.startsWith('%40')) {
-    return account.slice(3)
+  const decodeAccount = decodeURIComponent(account)
+  if (decodeAccount.startsWith('@')) {
+    return decodeAccount.slice(1)
   }
 
-  if (account.startsWith('@')) {
-    return account.slice(1)
-  }
-
-  return account
+  return decodeAccount
 }
 
 export const getProfileViewData = async (server: string, account: string) => {
