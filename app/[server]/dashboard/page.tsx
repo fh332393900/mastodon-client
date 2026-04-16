@@ -2,8 +2,8 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useAuth } from "@/hooks/use-auth"
 import { TimelineFeed } from "@/components/timeline/timeline-feed"
+import { useAuth } from "@/components/auth/auth-provider"
 
 export default function DashboardPage() {
   const { isAuthenticated, isLoading } = useAuth()
