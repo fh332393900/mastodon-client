@@ -3,6 +3,7 @@ import { parse } from 'ultrahtml'
 import { decode } from 'tiny-decode'
 
 import { normalizeProps, extractText } from './utils'
+import type { mastodon } from 'masto'
 
 import AccountHoverWrapper from '@/components/mastodon/AccountHoverWrapper'
 import TagHoverWrapper from '@/components/mastodon/TagHoverWrapper'
@@ -28,39 +29,45 @@ const VOID_ELEMENTS = new Set([
 ])
 
 /** 把富文本字符串转换为React VNode */
-export function contentToReactNode(content: string): React.ReactNode {
+export function contentToReactNode(
+  content: string,
+  emojis: mastodon.v1.CustomEmoji[] = [],
+): React.ReactNode {
   const tree = parse(content)
+  const emojiMap = buildEmojiMap(emojis)
 
   return (
     <>
       {(tree.children || []).map((node: any, i: number) => (
-        <Fragment key={i}>{treeToReactNode(node)}</Fragment>
+        <Fragment key={i}>{treeToReactNode(node, emojiMap)}</Fragment>
       ))}
     </>
   )
 }
 
-function renderChildrenWithKeys(children: any[] = []): React.ReactNode[] {
+function renderChildrenWithKeys(children: any[] = [], emojiMap: EmojiMap = {}): React.ReactNode[] {
   return children.map((child: any, i: number) => (
-    <Fragment key={i}>{treeToReactNode(child)}</Fragment>
+    <Fragment key={i}>{treeToReactNode(child, emojiMap)}</Fragment>
   ))
 }
 
-function treeToReactNode(node: any): React.ReactNode {
+type EmojiMap = Record<string, { shortcode: string; url?: string | null }>
+
+function treeToReactNode(node: any, emojiMap: EmojiMap): React.ReactNode {
   if (!node) return null
 
   if (node.type === TEXT_NODE) {
-    return decode(node.value)
+    return renderTextWithEmojis(decode(node.value), emojiMap)
   }
 
   if (node.type === ELEMENT_NODE) {
-    return elementToReactNode(node)
+    return elementToReactNode(node, emojiMap)
   }
 
   return null
 }
 
-function elementToReactNode(node: any): React.ReactNode {
+function elementToReactNode(node: any, emojiMap: EmojiMap): React.ReactNode {
   const { name, attributes = {}, children = [] } = node
 
   // mention / hashtag
@@ -77,7 +84,7 @@ function elementToReactNode(node: any): React.ReactNode {
 
   // link
   if (name === 'a') {
-    return renderLink(node)
+    return renderLink(node, emojiMap)
   }
 
   if (VOID_ELEMENTS.has(name)) {
@@ -87,7 +94,7 @@ function elementToReactNode(node: any): React.ReactNode {
   return React.createElement(
     name,
     normalizeProps(attributes),
-    renderChildrenWithKeys(children),
+    renderChildrenWithKeys(children, emojiMap),
   )
 }
 
@@ -127,7 +134,7 @@ function handleMention(node: any): React.ReactNode | null {
   return null
 }
 
-function renderLink(node: any): React.ReactNode {
+function renderLink(node: any, emojiMap: EmojiMap): React.ReactNode {
   const { attributes = {}, children = [] } = node
 
   return (
@@ -138,10 +145,10 @@ function renderLink(node: any): React.ReactNode {
           child.name !== 'bdi' &&
           child.attributes?.class?.includes('ellipsis')
         ) {
-          return <bdi key={i}>{renderChildrenWithKeys(child.children)}</bdi>
+          return <bdi key={i}>{renderChildrenWithKeys(child.children, emojiMap)}</bdi>
         }
 
-        return <Fragment key={i}>{treeToReactNode(child)}</Fragment>
+        return <Fragment key={i}>{treeToReactNode(child, emojiMap)}</Fragment>
       })}
     </a>
   )
@@ -163,4 +170,52 @@ function handleCodeBlock(node: any): React.ReactNode | null {
   }
 
   return null
+}
+
+function buildEmojiMap(emojis: mastodon.v1.CustomEmoji[]): EmojiMap {
+  const map: EmojiMap = {}
+  for (const emoji of emojis) {
+    if (!emoji?.shortcode) continue
+    map[emoji.shortcode] = { shortcode: emoji.shortcode, url: emoji.url || emoji.staticUrl }
+  }
+  return map
+}
+
+function renderTextWithEmojis(text: string, emojiMap: EmojiMap) {
+  if (!text || !emojiMap || Object.keys(emojiMap).length === 0) return text
+
+  const nodes: React.ReactNode[] = []
+  const regex = /:([a-zA-Z0-9_+-]+):/g
+  let lastIndex = 0
+  let match: RegExpExecArray | null
+
+  while ((match = regex.exec(text))) {
+    const [full, code] = match
+    const start = match.index
+    const end = start + full.length
+
+    if (start > lastIndex) nodes.push(text.slice(lastIndex, start))
+
+    const emoji = emojiMap[code]
+    if (emoji?.url) {
+      nodes.push(
+        <img
+          key={`emoji-${code}-${start}`}
+          src={emoji.url}
+          alt={`${code}`}
+          title={`${code}`}
+          className="inline h-4 w-4"
+          loading="lazy"
+        />,
+      )
+    } else {
+      nodes.push(full)
+    }
+
+    lastIndex = end
+  }
+
+  if (lastIndex < text.length) nodes.push(text.slice(lastIndex))
+
+  return nodes.length === 1 ? nodes[0] : nodes
 }

@@ -103,7 +103,7 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
           ) : null}
 
           <div className="[&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_a]:text-primary [&_.prose_p]:my-2">
-            <MastodonContent content={renderedStatus.content} />
+            <MastodonContent content={renderedStatus.content} emojis={renderedStatus.emojis} />
           </div>
 
           {renderedStatus.mediaAttachments.length > 0 ? (

@@ -37,7 +37,7 @@ export function ProfileAccountListItem({
 
           {account.note ? (
             <div className="line-clamp-3 text-sm text-foreground/90 [&_.prose]:max-w-none [&_.prose]:text-sm">
-              <MastodonContent content={account.note} />
+              <MastodonContent content={account.note} emojis={account.emojis} />
             </div>
           ) : null}
 

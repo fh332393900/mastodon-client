@@ -102,7 +102,7 @@ export default async function ProfileLayout({
           <div className="mt-6 space-y-5">
             {account.note ? (
               <div className="[&_.prose]:max-w-none [&_.prose]:text-[15px] [&_.prose_a]:text-primary [&_.prose_p]:my-2">
-                <MastodonContent content={account.note} />
+                <MastodonContent content={account.note} emojis={account.emojis} />
               </div>
             ) : null}
 
@@ -130,7 +130,7 @@ export default async function ProfileLayout({
                       {field.name}
                     </p>
                     <div className="text-sm text-foreground [&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_p]:my-0">
-                      <MastodonContent content={field.value} />
+                      <MastodonContent content={field.value} emojis={account.emojis} />
                     </div>
                   </div>
                 ))}
