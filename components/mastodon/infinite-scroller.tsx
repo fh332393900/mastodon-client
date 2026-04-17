@@ -2,12 +2,18 @@
 
 import { useRef, useEffect, useCallback, type ReactNode } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { useQueryClient } from "@tanstack/react-query"
+import { throttle } from "@/lib/utils/throttle"
 
 interface InfiniteScrollerProps {
   children: ReactNode
   onLoadMore: () => void
   hasMore: boolean
   isLoadingMore: boolean
+  /** Optional cache key to persist/restore window scroll position. */
+  scrollCacheKey?: string
+  /** Optional throttle ms for scroll handler (defaults to 120ms). */
+  scrollThrottleMs?: number
 }
 
 export function LoadingSkeleton() {
@@ -36,8 +42,18 @@ export function LoadingSkeleton() {
   )
 }
 
-export function InfiniteScroller({ children, onLoadMore, hasMore, isLoadingMore }: InfiniteScrollerProps) {
+export function InfiniteScroller({
+  children,
+  onLoadMore,
+  hasMore,
+  isLoadingMore,
+  scrollCacheKey,
+  scrollThrottleMs = 120,
+}: InfiniteScrollerProps) {
   const sentinelRef = useRef<HTMLDivElement | null>(null)
+  const restoringRef = useRef(false)
+  const scrollPositionRef = useRef(0)
+  const queryClient = useQueryClient()
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -67,6 +83,48 @@ export function InfiniteScroller({ children, onLoadMore, hasMore, isLoadingMore 
       }
     }
   }, [handleObserver])
+
+  useEffect(() => {
+    if (!scrollCacheKey) return
+
+    const scrollKey = ["scroll", scrollCacheKey] as const
+    const cached = queryClient.getQueryData<number>(scrollKey)
+
+    let initial = 0
+    if (typeof cached === "number") {
+      initial = cached
+    }
+
+    scrollPositionRef.current = initial
+
+    const handleScroll = throttle(() => {
+      if (restoringRef.current) return
+      if (!window.scrollY) return
+      const y = window.scrollY
+      if (y === scrollPositionRef.current) return
+
+      scrollPositionRef.current = y
+      queryClient.setQueryData(scrollKey, y)
+    }, scrollThrottleMs)
+
+    restoringRef.current = true
+    requestAnimationFrame(() => {
+      try {
+        if (initial > 0) {
+          window.scrollTo({ top: initial })
+        }
+      } finally {
+        restoringRef.current = false
+      }
+    })
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      handleScroll.cancel?.()
+    }
+  }, [queryClient, scrollCacheKey, scrollThrottleMs])
 
   return (
     <div>

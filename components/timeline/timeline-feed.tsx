@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useMemo, useState } from "react"
 import { InfiniteScroller, LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
 import { StatusCard } from "@/components/mastodon/StatusCard"
 import { Button } from "@/components/ui/button"
@@ -10,52 +10,8 @@ import { useTimelineCache, type TimelineType } from "@/hooks/mastodon/useTimelin
 export function TimelineFeed() {
   const [timelineType, setTimelineType] = useState<TimelineType>("home")
 
-  const { posts, query, queryClient, isReady, user } = useTimelineCache({ timelineType })
+  const { posts, query, isReady, user } = useTimelineCache({ timelineType })
   const { isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } = query
-
-  // Persist/restore scroll position per timelineType using React Query cache.
-  const restoringRef = useRef(false)
-  const scrollPositionRef = useRef(0)
-  useEffect(() => {
-    if (!isReady) return
-
-    const scrollKey = ["timelineScroll", timelineType] as const
-    const cached = queryClient.getQueryData<number>(scrollKey)
-
-    let initial = 0
-    if (typeof cached === "number") {
-      initial = cached
-    }
-
-    scrollPositionRef.current = initial
-
-    const handleScroll = () => {
-      if (restoringRef.current) return
-      if (!window.scrollY) return
-      const y = window.scrollY
-      if (y === scrollPositionRef.current) return
-
-      scrollPositionRef.current = y
-      queryClient.setQueryData(scrollKey, y)
-    }
-
-    restoringRef.current = true
-    requestAnimationFrame(() => {
-      try {
-        if (initial > 0) {
-          window.scrollTo({ top: initial })
-        }
-      } finally {
-        restoringRef.current = false
-      }
-    })
-
-    window.addEventListener("scroll", handleScroll, { passive: true })
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [timelineType, isReady, queryClient])
 
   const handleLoadMore = () => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage()
@@ -113,6 +69,8 @@ export function TimelineFeed() {
         onLoadMore={handleLoadMore}
         hasMore={!!hasNextPage}
         isLoadingMore={isFetchingNextPage}
+        scrollCacheKey={`timeline:${timelineType}`}
+        scrollThrottleMs={120}
       >
         <div className="space-y-6">
           {posts.map((post) => (
