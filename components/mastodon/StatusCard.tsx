@@ -82,8 +82,8 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
           <div className="flex gap-2 md:gap-4 justify-between items-center">
             {profileHref ? (
               <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 px-2 rounded-xl hover:bg-primary-foreground dark:hover:bg-muted">
-                <span className="md:shrink-0 line-clamp-1 truncate">{author.displayName || author.username}</span>
-                <span className="text-sm ml-1 line-clamp-1 text-muted-foreground truncate">@{author.acct}</span>
+                <span className="block md:shrink-0 truncate">{author.displayName || author.username}</span>
+                <span className="block text-sm ml-1 text-muted-foreground truncate">@{author.acct}</span>
               </Link>
             ) : (
               <span className="font-semibold text-foreground">{author.displayName || author.username}</span>
