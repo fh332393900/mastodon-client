@@ -49,7 +49,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 
   if (isLoading || !data) {
     return (
-      <div className="mx-auto max-w-4xl space-y-6">
+      <div className="mx-auto max-w-4xl space-y-6 px-4 py-6">
         <section className="overflow-hidden rounded-[2rem] border border-border/70 bg-card/90 p-8">
           <div className="h-40 w-full animate-pulse rounded-2xl bg-muted/60" />
           <div className="mt-6 space-y-4">
@@ -65,7 +65,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   const baseHref = `/${server}/@${normalizedAccount}`
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6">
+    <div className="mx-auto max-w-4xl space-y-6 px-4 py-6">
       <section className="overflow-hidden rounded-[2rem] border border-border/70 bg-card/90 shadow-xl shadow-primary/5">
         <div className="relative h-44 overflow-hidden bg-gradient-to-r from-primary/30 via-secondary/20 to-accent/20 sm:h-56">
           {account.header ? (
