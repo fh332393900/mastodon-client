@@ -1,17 +1,41 @@
+"use client"
+
 import { Users } from "lucide-react"
+import { useParams } from "next/navigation"
 
 import { ProfileAccountListItem } from "@/components/mastodon/profile/ProfileAccountListItem"
-import { getProfileAccountsList, getProfileViewData, normalizeAccountParam } from "@/lib/mastodon/profile"
+import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
+import { useProfileAccountsList } from "@/hooks/mastodon/useProfileAccountsList"
 
-export default async function ProfileFollowingPage({
-  params,
-}: {
-  params: Promise<{ server: string; account: string }>
-}) {
-  const { server, account } = await params
-  const normalizedAccount = normalizeAccountParam(account)
-  const profile = await getProfileViewData(server, normalizedAccount)
-  const accounts = await getProfileAccountsList(server, profile.account.id, "following")
+export default function ProfileFollowingPage() {
+  const params = useParams()
+  const serverParam = params?.server
+  const accountParam = params?.account
+  const server = Array.isArray(serverParam) ? serverParam[0] : serverParam
+  const account = Array.isArray(accountParam) ? accountParam[0] : accountParam
+
+  const { data: profile, query: profileQuery } = useProfileViewData({
+    server,
+    account,
+  })
+  const { data: accounts, query } = useProfileAccountsList({
+    server,
+    accountId: profile?.account.id,
+    type: "following",
+  })
+
+  if (profileQuery.isLoading || query.isLoading) {
+    return (
+      <div className="rounded-3xl border border-dashed border-border/70 bg-card/70 p-10 text-center">
+        <Users className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
+        <p className="text-lg font-semibold">{"\u52a0\u8f7d\u4e2d..."}</p>
+      </div>
+    )
+  }
+
+  if (!profile || query.isError) {
+    return null
+  }
 
   if (accounts.length === 0) {
     return (
@@ -29,7 +53,7 @@ export default async function ProfileFollowingPage({
         <ProfileAccountListItem
           key={account.id}
           account={account}
-          currentServer={server}
+          currentServer={server ?? ""}
         />
       ))}
     </div>

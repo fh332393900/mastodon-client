@@ -1,14 +1,18 @@
+"use client"
+
+import { useEffect } from "react"
 import Link from "next/link"
 import { CalendarDays, ExternalLink, MapPin, Sparkles } from "lucide-react"
-import { notFound } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 
 import MastodonContent from "@/components/mastodon/MastodonContent"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ProfileFollowButton } from "@/components/mastodon/profile/ProfileFollowButton"
 import { ProfileTabs } from "@/components/mastodon/profile/ProfileTabs"
-import type { MastodonFeaturedTag } from "@/lib/mastodon/profile"
-import { getProfileViewData, normalizeAccountParam } from "@/lib/mastodon/profile"
+import type { MastodonFeaturedTag } from "@/lib/mastodon/account"
+import { normalizeAccountParam } from "@/lib/mastodon/account"
+import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
 
 function formatCount(value: number) {
   return new Intl.NumberFormat("zh-CN").format(value)
@@ -22,22 +26,39 @@ function formatJoinedDate(value: string) {
   }).format(new Date(value))
 }
 
-export default async function ProfileLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode
-  params: Promise<{ server: string; account: string }>
-}) {
-  const { server, account: accountParam } = await params
-  const normalizedAccount = normalizeAccountParam(accountParam)
-  console.log(normalizedAccount, 'normalizedAccount')
-  let data
+export default function ProfileLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter()
+  const params = useParams()
+  const serverParam = params?.server
+  const accountParam = params?.account
+  const server = Array.isArray(serverParam) ? serverParam[0] : serverParam
+  const rawAccount = Array.isArray(accountParam) ? accountParam[0] : accountParam
 
-  try {
-    data = await getProfileViewData(server, normalizedAccount)
-  } catch {
-    notFound()
+  const { data, query, normalizedAccount } = useProfileViewData({
+    server,
+    account: rawAccount,
+  })
+
+  const { isLoading, isError } = query
+
+  useEffect(() => {
+    if (isError) {
+      router.replace("/not-found?type=user")
+    }
+  }, [isError, router])
+
+  if (isLoading || !data) {
+    return (
+      <div className="mx-auto max-w-4xl space-y-6">
+        <section className="overflow-hidden rounded-[2rem] border border-border/70 bg-card/90 p-8">
+          <div className="h-40 w-full animate-pulse rounded-2xl bg-muted/60" />
+          <div className="mt-6 space-y-4">
+            <div className="h-6 w-40 animate-pulse rounded bg-muted/60" />
+            <div className="h-4 w-64 animate-pulse rounded bg-muted/60" />
+          </div>
+        </section>
+      </div>
+    )
   }
 
   const { account, relationship, featuredTags } = data

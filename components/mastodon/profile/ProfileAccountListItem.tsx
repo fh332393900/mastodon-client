@@ -1,10 +1,12 @@
+"use client"
+
 import Link from "next/link"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import MastodonContent from "@/components/mastodon/MastodonContent"
-import type { MastodonAccount } from "@/lib/mastodon/profile"
-import { getAccountProfileHref } from "@/lib/mastodon/profile"
+import type { MastodonAccount } from "@/lib/mastodon/account"
+import { getAccountProfileHref } from "@/lib/mastodon/account"
 
 export function ProfileAccountListItem({
   account,

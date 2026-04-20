@@ -1,10 +1,13 @@
+"use client"
+
 import Link from "next/link"
 import { Globe, MessageCircle, Repeat2, Heart, Pin } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import MastodonContent from "@/components/mastodon/MastodonContent"
-import { getAccountProfileHref, type MastodonStatus } from "@/lib/mastodon/profile"
+import { getAccountProfileHref } from "@/lib/mastodon/account"
+import type { MastodonStatus } from "@/lib/mastodon/account"
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("zh-CN", {

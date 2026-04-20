@@ -1,17 +1,40 @@
+"use client"
+
 import { MessageCircleMore } from "lucide-react"
+import { useParams } from "next/navigation"
 
 import { ProfileStatusCard } from "@/components/mastodon/profile/ProfileStatusCard"
-import { getProfileStatuses, getProfileViewData, normalizeAccountParam } from "@/lib/mastodon/profile"
+import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
+import { useProfileStatuses } from "@/hooks/mastodon/useProfileStatuses"
 
-export default async function ProfilePostsPage({
-  params,
-}: {
-  params: Promise<{ server: string; account: string }>
-}) {
-  const { server, account } = await params
-  const normalizedAccount = normalizeAccountParam(account)
-  const profile = await getProfileViewData(server, normalizedAccount)
-  const statuses = await getProfileStatuses(server, profile.account.id)
+export default function ProfilePostsPage() {
+  const params = useParams()
+  const serverParam = params?.server
+  const accountParam = params?.account
+  const server = Array.isArray(serverParam) ? serverParam[0] : serverParam
+  const account = Array.isArray(accountParam) ? accountParam[0] : accountParam
+
+  const { data: profile, query: profileQuery } = useProfileViewData({
+    server,
+    account,
+  })
+  const { data: statuses, query: statusQuery } = useProfileStatuses({
+    server,
+    accountId: profile?.account.id,
+  })
+
+  if (profileQuery.isLoading || statusQuery.isLoading) {
+    return (
+      <div className="rounded-3xl border border-dashed border-border/70 bg-card/70 p-10 text-center">
+        <MessageCircleMore className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
+        <p className="text-lg font-semibold">{"\u52a0\u8f7d\u4e2d..."}</p>
+      </div>
+    )
+  }
+
+  if (!profile || statusQuery.isError) {
+    return null
+  }
 
   if (statuses.length === 0) {
     return (
@@ -26,7 +49,7 @@ export default async function ProfilePostsPage({
   return (
     <div className="space-y-4">
       {statuses.map((status) => (
-        <ProfileStatusCard key={status.id} status={status} server={server} />
+        <ProfileStatusCard key={status.id} status={status} server={server ?? ""} />
       ))}
     </div>
   )
