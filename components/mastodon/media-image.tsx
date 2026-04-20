@@ -41,17 +41,17 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-muted/40">
+    <div className="relative h-full overflow-hidden rounded-2xl border border-border/60 bg-muted/40">
       <button
         type="button"
         onClick={handleOpen}
-        className="block w-full"
+        className="block w-full h-full"
         aria-label="预览图片"
       >
         <img
           src={ media.url || media.previewUrl || undefined}
           alt={media.description || "media"}
-          className="h-full w-full object-cover"
+          className="h-full object-cover"
         />
       </button>
 
