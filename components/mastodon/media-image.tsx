@@ -156,7 +156,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
               <div className="absolute bottom-4 left-1/2 z-50 w-[min(90%,600px)] -translate-x-1/2 px-4">
                 {canNavigate && (
                   <div className="mb-2 text-center">
-                    <span className="inline-flex items-center rounded-md bg-black/50 px-2.5 py-1 text-xs font-semibold text-white">
+                    <span className="inline-flex items-center rounded-full bg-black/50 px-2.5 py-1 text-xs font-semibold text-white">
                       {`${current + 1}/${images.length}`}
                     </span>
                   </div>
