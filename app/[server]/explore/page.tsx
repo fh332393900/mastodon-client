@@ -29,7 +29,7 @@ export default function ExplorePostsPage() {
   }
 
   return (
-    <div className="space-y-4 px-4 pb-2">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">{title}</h2>
         <Badge variant="outline" className="text-accent border-accent/50">

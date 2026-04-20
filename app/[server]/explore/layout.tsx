@@ -50,7 +50,7 @@ export default function ExploreLayout({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      <div>{children}</div>
+      <div className="px-4 pb-2">{children}</div>
     </div>
   )
 }
