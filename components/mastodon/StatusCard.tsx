@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import MastodonContent from "@/components/mastodon/MastodonContent"
+import { MediaImage } from "@/components/mastodon/media-image"
 import { cn } from "@/lib/utils"
 import type { mastodon } from "masto"
 import { useMasto } from "../auth/masto-provider"
@@ -108,13 +109,13 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
 
           {renderedStatus.mediaAttachments.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2">
-              {renderedStatus.mediaAttachments.map((item) => (
+              {renderedStatus.mediaAttachments.map((item, index) => (
                 <div key={item.id} className="overflow-hidden rounded-2xl border border-border/60 bg-muted/40">
                   {item.type === "image" ? (
-                    <img
-                      src={item.previewUrl || item.url || undefined}
-                      alt={item.description || "media"}
-                      className="h-full w-full object-cover"
+                    <MediaImage
+                      media={item}
+                      index={index}
+                      group={renderedStatus.mediaAttachments}
                     />
                   ) : (
                     <video src={item.url || undefined} controls className="h-full w-full" />
