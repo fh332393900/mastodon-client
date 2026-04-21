@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { InfiniteScroller, LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
-import { StatusCard } from "@/components/mastodon/StatusCard"
+import { StatusCard } from "@/components/mastodon/Status"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useTimelineCache, type TimelineType } from "@/hooks/mastodon/useTimelineCache"

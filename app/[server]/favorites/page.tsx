@@ -3,7 +3,7 @@
 import { useMemo } from "react"
 import { Heart } from "lucide-react"
 import { InfiniteScroller, LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
-import { StatusCard } from "@/components/mastodon/StatusCard"
+import { StatusCard } from "@/components/mastodon/Status"
 import { Badge } from "@/components/ui/badge"
 import { useFavoritesCache } from "@/hooks/mastodon/useFavoritesCache"
 

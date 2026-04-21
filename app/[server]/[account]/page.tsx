@@ -4,7 +4,7 @@ import { MessageCircleMore } from "lucide-react"
 import { useParams } from "next/navigation"
 
 import { InfiniteScroller } from "@/components/mastodon/infinite-scroller"
-import { StatusCard } from "@/components/mastodon/StatusCard"
+import { StatusCard } from "@/components/mastodon/Status"
 import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
 import { useProfileStatuses } from "@/hooks/mastodon/useProfileStatuses"
 
@@ -61,7 +61,7 @@ export default function ProfilePostsPage() {
     >
       <div className="space-y-4">
         {statuses.map((status) => (
-          <StatusCard key={status.id} status={status} server={server ?? ""} />
+          <StatusCard key={status.id} status={status} />
         ))}
       </div>
     </InfiniteScroller>

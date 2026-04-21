@@ -2,7 +2,7 @@
 
 import { useMemo } from "react"
 import { InfiniteScroller, LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
-import { StatusCard } from "@/components/mastodon/StatusCard"
+import { StatusCard } from "@/components/mastodon/Status"
 import { Badge } from "@/components/ui/badge"
 import { useExplorePostsCache } from "@/hooks/mastodon/useExplorePostsCache"
 import type { mastodon } from "masto"

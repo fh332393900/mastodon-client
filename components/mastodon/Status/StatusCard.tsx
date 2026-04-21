@@ -1,0 +1,142 @@
+"use client"
+
+import Link from "next/link"
+import { Repeat2, Pin } from "lucide-react"
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import MastodonContent from "@/components/mastodon/MastodonContent"
+import { UserHoverCard } from "@/components/mastodon/user-hover-card"
+import { cn } from "@/lib/utils"
+import { formatRelativeTime, formatFullDate } from "@/lib/utils"
+import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
+import type { mastodon } from "masto"
+import { useMasto } from "@/components/auth/masto-provider"
+import { getAccountProfileHref } from "@/lib/mastodon/account"
+import { useStatusActions } from "@/hooks/mastodon/useStatusActions"
+
+import { StatusPoll } from "./StatusPoll"
+import { StatusMedia } from "./StatusMedia"
+import { StatusActions } from "./StatusActions"
+
+type Status = mastodon.v1.Status
+
+type StatusCardProps = {
+  status: Status
+  showActions?: boolean
+}
+
+export function StatusCard({ status, showActions = true }: StatusCardProps) {
+  const { server } = useMasto()
+  const {
+    renderedStatus,
+    isLoading,
+    canReblog,
+    toggleReblog,
+    toggleFavourite,
+    toggleBookmark,
+  } = useStatusActions({ status })
+
+  const author = renderedStatus.account
+  const authorNameText = getDisplayNameText({
+    displayName: author.displayName,
+    username: author.username,
+  })
+  const reblogAuthorNameText = getDisplayNameText({
+    displayName: status.account.displayName,
+    username: status.account.username,
+  })
+
+  const profileHref = server ? getAccountProfileHref(author, server) : undefined
+
+  return (
+    <article className="rounded-3xl border border-border/70 bg-card/90 p-4 shadow-sm">
+      {status.reblog ? (
+        <div className="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
+          <Repeat2 className="h-5 w-5 text-accent" />
+          <Link
+            href={`/${server}/${status.account.acct}`}
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary"
+          >
+            <Avatar className="h-7 w-7 ring-2 ring-border/70">
+              <AvatarImage src={status.account.avatar} alt={reblogAuthorNameText} />
+              <AvatarFallback>{reblogAuthorNameText.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <span className="inline-flex flex-wrap items-center gap-1">
+              {renderDisplayName({
+                displayName: status.account.displayName,
+                username: status.account.username,
+                emojis: status.account.emojis,
+              })}
+              <span>转发了这条贴文</span>
+            </span>
+          </Link>
+        </div>
+      ) : null}
+
+      <div className="flex gap-4">
+        {profileHref ? (
+          <div>
+            <UserHoverCard account={author} profileHref={profileHref}>
+              <Link href={profileHref}>
+                <Avatar className="h-12 w-12 ring-2 ring-border/70">
+                  <AvatarImage src={author.avatar} alt={authorNameText} />
+                  <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
+                </Avatar>
+              </Link>
+            </UserHoverCard>
+          </div>
+        ) : (
+          <Avatar className="h-12 w-12 ring-2 ring-border/70">
+            <AvatarImage src={author.avatar} alt={authorNameText} />
+            <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
+          </Avatar>
+        )}
+
+        <div className="min-w-0 flex-1 space-y-3">
+          <div className="flex gap-2 md:gap-4 justify-between items-center">
+            <UserHoverCard account={author} profileHref={profileHref} className="" />
+            <span
+              className="text-sm text-muted-foreground shrink-0 whitespace-nowrap"
+              title={formatFullDate(renderedStatus.createdAt)}
+            >
+              {formatRelativeTime(renderedStatus.createdAt)}
+            </span>
+            {renderedStatus.pinned ? (
+              <Badge variant="outline">
+                <Pin className="mr-1 h-3 w-3" />置顶
+              </Badge>
+            ) : null}
+          </div>
+
+          {renderedStatus.spoilerText ? (
+            <div className="rounded-2xl bg-muted/70 px-4 py-3 text-sm text-muted-foreground">
+              {renderedStatus.spoilerText}
+            </div>
+          ) : null}
+
+          <div className="[&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_a]:text-primary [&_.prose_p]:my-2">
+            <MastodonContent content={renderedStatus.content} emojis={renderedStatus.emojis} />
+          </div>
+
+          {renderedStatus.poll ? (
+            <StatusPoll poll={renderedStatus.poll} />
+          ) : null}
+
+          <StatusMedia attachments={renderedStatus.mediaAttachments} />
+
+          {showActions ? (
+            <StatusActions
+              renderedStatus={renderedStatus}
+              isLoading={isLoading}
+              canReblog={canReblog}
+              toggleReblog={toggleReblog}
+              toggleFavourite={toggleFavourite}
+              toggleBookmark={toggleBookmark}
+            />
+          ) : null}
+        </div>
+      </div>
+    </article>
+  )
+}
