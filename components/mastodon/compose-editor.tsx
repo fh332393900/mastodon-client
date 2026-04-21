@@ -3,7 +3,6 @@
 import type React from "react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useComposeSearch } from "@/hooks/mastodon/useComposeSearch"
 import type { mastodon } from "masto"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -16,6 +15,11 @@ type TriggerState = {
   query: string
   start: number
   end: number
+}
+
+type CaretPosition = {
+  top: number
+  left: number
 }
 
 export type ComposeEditorHandle = {
@@ -90,6 +94,8 @@ export function ComposeEditor({
 }: ComposeEditorProps) {
   const rootRef = useRef<HTMLDivElement | null>(null)
   const [trigger, setTrigger] = useState<TriggerState | null>(null)
+  const [caretPosition, setCaretPosition] = useState<CaretPosition | null>(null)
+  const searchTimer = useRef<number | null>(null)
 
   const { isLoading, accounts, hashtags } = useComposeSearch(
     trigger?.query ?? "",
@@ -141,6 +147,7 @@ export function ComposeEditor({
 
     if (!match) {
       setTrigger(null)
+      setCaretPosition(null)
       return
     }
 
@@ -154,6 +161,18 @@ export function ComposeEditor({
       start,
       end: caretIndex,
     })
+
+    const selection = window.getSelection()
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0).cloneRange()
+      range.collapse(false)
+      const rect = range.getBoundingClientRect()
+      const rootRect = root.getBoundingClientRect()
+      setCaretPosition({
+        top: rect.bottom - rootRect.top + root.scrollTop + 6,
+        left: rect.left - rootRect.left + root.scrollLeft,
+      })
+    }
   }
 
   const insertEntity = (label: string, type: TriggerType) => {
@@ -216,19 +235,57 @@ export function ComposeEditor({
     )
   }
 
-  const renderHashtag = (tag: mastodon.v1.Tag) => (
+  const renderHashtagTrend = (tag: mastodon.v1.Tag) => {
+    const history = tag.history?.slice(-7) ?? []
+    if (history.length === 0) return null
+    const values = history.map((item) => Number(item.uses ?? 0))
+    const max = Math.max(...values, 1)
+    const points = values
+      .map((value, index) => {
+        const x = (index / Math.max(values.length - 1, 1)) * 60
+        const y = 24 - (value / max) * 20
+        return `${x},${y}`
+      })
+      .join(" ")
+
+    return (
+      <svg width="64" height="28" viewBox="0 0 60 24" className="text-primary">
+        <polyline
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          points={points}
+        />
+      </svg>
+    )
+  }
+
+  const renderHashtag = (tag: mastodon.v1.Tag) => {
+    const days = tag.history?.length ?? 0
+    const people = tag.history?.[0]?.accounts ?? tag.history?.[0]?.uses ?? 0
+
+    return (
     <button
       key={tag.name}
       type="button"
       onClick={() => insertEntity(tag.name, "hashtags")}
-      className="flex w-full items-center justify-between rounded-md px-2 py-2 text-left text-sm hover:bg-muted"
+      className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm hover:bg-muted"
     >
-      <span className="font-medium text-foreground">#{tag.name}</span>
-      {tag.history?.[0]?.uses ? (
-        <span className="text-xs text-muted-foreground">{tag.history[0].uses} 次</span>
-      ) : null}
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-lg font-bold text-primary">
+        #
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center justify-between gap-2">
+          <span className="truncate font-medium text-foreground">#{tag.name}</span>
+          {renderHashtagTrend(tag)}
+        </div>
+        <div className="mt-1 text-xs text-muted-foreground">
+          过去 {days} 天 {people} 人访问
+        </div>
+      </div>
     </button>
-  )
+    )
+  }
 
   const showPopover = !!trigger && (isLoading || accounts.length > 0 || hashtags.length > 0)
 
@@ -246,7 +303,7 @@ export function ComposeEditor({
 
     if (trigger.type === "accounts") {
       return (
-        <div className="space-y-1 p-1">
+        <div className="max-h-64 space-y-1 overflow-y-auto p-1">
           {accounts.length === 0 ? (
             <div className="px-2 py-2 text-xs text-muted-foreground">没有匹配用户</div>
           ) : (
@@ -268,29 +325,45 @@ export function ComposeEditor({
   }, [accounts, hashtags, isLoading, trigger])
 
   return (
-    <Popover open={showPopover} onOpenChange={(open) => !open && setTrigger(null)}>
-      <PopoverTrigger asChild>
+    <div className="relative">
+      <div
+        ref={rootRef}
+        role="textbox"
+        aria-label="编辑器"
+        contentEditable
+        suppressContentEditableWarning
+        data-placeholder={placeholder}
+        className={cn(
+          "min-h-[160px] w-full rounded-xl border border-border/70 bg-background px-4 py-3 text-sm outline-none",
+          "empty:before:content-[attr(data-placeholder)] empty:before:text-muted-foreground",
+          "empty:before:pointer-events-none",
+          className,
+        )}
+        onInput={() => {
+          if (searchTimer.current) {
+            window.clearTimeout(searchTimer.current)
+          }
+          searchTimer.current = window.setTimeout(handleInput, 150)
+        }}
+        onKeyUp={handleInput}
+        onBlur={() => {
+          if (searchTimer.current) {
+            window.clearTimeout(searchTimer.current)
+          }
+        }}
+      />
+      {showPopover && caretPosition ? (
         <div
-          ref={rootRef}
-          role="textbox"
-          aria-label="编辑器"
-          contentEditable
-          suppressContentEditableWarning
-          data-placeholder={placeholder}
-          className={cn(
-            "min-h-[160px] w-full rounded-xl border border-border/70 bg-background px-4 py-3 text-sm outline-none focus:outline-none focus:ring-0",
-            "focus:outline-none focus:ring-2 focus:ring-primary/40",
-            "empty:before:content-[attr(data-placeholder)] empty:before:text-muted-foreground",
-            "empty:before:pointer-events-none",
-            className,
-          )}
-          onInput={handleInput}
-          onKeyUp={handleInput}
-        />
-      </PopoverTrigger>
-      <PopoverContent align="start" side="bottom" className="w-80">
-        {popoverContent}
-      </PopoverContent>
-    </Popover>
+          className="absolute z-50 w-80 rounded-lg border border-border bg-popover text-popover-foreground shadow-md"
+          style={{
+            top: caretPosition.top,
+            left: caretPosition.left,
+          }}
+          onMouseDown={(event) => event.preventDefault()}
+        >
+          {popoverContent}
+        </div>
+      ) : null}
+    </div>
   )
 }
