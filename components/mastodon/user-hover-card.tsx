@@ -32,6 +32,7 @@ export function UserHoverCard({
   const [isHoveringButton, setIsHoveringButton] = useState(false)
   const openTimer = useRef<number | null>(null)
   const closeTimer = useRef<number | null>(null)
+  const fetchGuard = useRef(false)
   const canInteract = !!user && user.id !== account.id
 
   const nameText = getDisplayNameText({
@@ -117,13 +118,36 @@ export function UserHoverCard({
   )
 
   const clearTimers = () => {
+    fetchGuard.current = false
     if (openTimer.current) window.clearTimeout(openTimer.current)
     if (closeTimer.current) window.clearTimeout(closeTimer.current)
   }
 
   const scheduleOpen = () => {
     clearTimers()
-    openTimer.current = window.setTimeout(() => setOpen(true), 150)
+    openTimer.current = window.setTimeout(async () => {
+      // 不需要拉取关系（未登录 / 自己 / 已加载），直接打开
+      if (!canInteract || !client || isLoaded) {
+        setOpen(true)
+        return
+      }
+      // 先拉取关注关系，完成后再显示卡片
+      fetchGuard.current = true
+      try {
+        const rels = await client.v1.accounts.relationships.fetch({ id: [account.id] })
+        if (fetchGuard.current) {
+          setRelationship(rels[0] ?? null)
+          setIsLoaded(true)
+          setOpen(true)
+        }
+      } catch {
+        if (fetchGuard.current) {
+          setRelationship(null)
+          setIsLoaded(true)
+          setOpen(true)
+        }
+      }
+    }, 150)
   }
 
   const scheduleClose = () => {
