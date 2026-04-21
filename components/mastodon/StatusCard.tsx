@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import MastodonContent from "@/components/mastodon/MastodonContent"
 import { MediaImage } from "@/components/mastodon/media-image"
+import { UserHoverCard } from "@/components/mastodon/user-hover-card"
 import { cn } from "@/lib/utils"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import type { mastodon } from "masto"
@@ -97,26 +98,20 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
 
         <div className="min-w-0 flex-1 space-y-3">
           <div className="flex gap-2 md:gap-4 justify-between items-center">
-            {profileHref ? (
-              <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 px-2 rounded-xl hover:bg-primary-foreground dark:hover:bg-muted">
-                <span className="block md:shrink-0 truncate">
-                  {renderDisplayName({
-                    displayName: author.displayName,
-                    username: author.username,
-                    emojis: author.emojis,
-                  })}
-                </span>
-                <span className="block text-sm ml-1 text-muted-foreground truncate">@{author.acct}</span>
-              </Link>
-            ) : (
-              <span className="font-semibold text-foreground">
+            <UserHoverCard
+              account={author}
+              profileHref={profileHref}
+              className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 px-2 rounded-xl hover:bg-primary-foreground dark:hover:bg-muted"
+            >
+              <span className="block md:shrink-0 truncate">
                 {renderDisplayName({
                   displayName: author.displayName,
                   username: author.username,
                   emojis: author.emojis,
                 })}
               </span>
-            )}
+              <span className="block text-sm ml-1 text-muted-foreground truncate">@{author.acct}</span>
+            </UserHoverCard>
             <span className="text-sm text-muted-foreground shrink-0 whitespace-nowrap">{formatDate(renderedStatus.createdAt)}</span>
             {renderedStatus.pinned ? (
               <Badge variant="outline">
@@ -124,7 +119,7 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
               </Badge>
             ) : null}
           </div>
-
+          
           {renderedStatus.spoilerText ? (
             <div className="rounded-2xl bg-muted/70 px-4 py-3 text-sm text-muted-foreground">
               {renderedStatus.spoilerText}
