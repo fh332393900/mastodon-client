@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import MastodonContent from "@/components/mastodon/MastodonContent"
 import { MediaImage } from "@/components/mastodon/media-image"
 import { UserHoverCard } from "@/components/mastodon/user-hover-card"
+import { StatusPoll } from "@/components/mastodon/StatusPoll"
 import { cn } from "@/lib/utils"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import type { mastodon } from "masto"
@@ -129,6 +130,10 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
           <div className="[&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_a]:text-primary [&_.prose_p]:my-2">
             <MastodonContent content={renderedStatus.content} emojis={renderedStatus.emojis} />
           </div>
+
+          {renderedStatus.poll ? (
+            <StatusPoll poll={renderedStatus.poll} />
+          ) : null}
 
           {renderedStatus.mediaAttachments.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2">
