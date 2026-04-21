@@ -1,8 +1,9 @@
 "use client"
 
 import { useMemo } from "react"
+import Image from "next/image"
 import Link from "next/link"
-import { ExternalLink, Link2 } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
 import { cn } from "@/lib/utils"
@@ -42,34 +43,59 @@ export default function ExploreNewsPage() {
       ) : (
         <div className="space-y-3">
           {links.map((item: ExploreTrendingLink) => (
-            <div key={item.url} className="rounded-3xl border border-border/70 bg-card/90 p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <Link2 className="h-4 w-4 text-muted-foreground" />
-                    <div className="font-medium truncate">{item.title || item.url}</div>
+            <Link
+              key={item.url}
+              href={item.url}
+              target="_blank"
+              rel="noreferrer"
+              className="group flex gap-3 rounded-3xl border border-border/70 bg-card/90 p-4 transition hover:border-border hover:bg-card"
+            >
+              {/* 封面图 */}
+              <div className="relative shrink-0 w-20 h-20 rounded-xl overflow-hidden bg-muted">
+                {item.image ? (
+                  <Image
+                    src={item.image}
+                    alt={item.imageDescription || item.title || ""}
+                    fill
+                    sizes="80px"
+                    className="object-cover transition group-hover:scale-105"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-muted-foreground/40">
+                    <ExternalLink className="h-6 w-6" />
                   </div>
-                  {item.description ? (
-                    <div className="mt-2 text-sm text-muted-foreground line-clamp-2">{item.description}</div>
-                  ) : null}
-                  {item.authorName ? (
-                    <div className="mt-2 text-xs text-muted-foreground">by {item.authorName}</div>
-                  ) : null}
+                )}
+              </div>
+
+              {/* 文字区 */}
+              <div className="min-w-0 flex-1 flex flex-col justify-between gap-1">
+                <div>
+                  <p className="font-medium leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+                    {item.title || item.url}
+                  </p>
+                  {item.description && (
+                    <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+                      {item.description}
+                    </p>
+                  )}
                 </div>
 
-                <Link
-                  href={item.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={cn(
-                    "shrink-0 inline-flex items-center gap-2 rounded-full border border-border/60 px-3 py-2 text-xs text-muted-foreground hover:text-foreground",
+                {/* 来源行 */}
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  {item.providerName && (
+                    <>
+                      <span className="font-medium truncate max-w-[120px]">{item.providerName}</span>
+                      {item.authorName && <span>·</span>}
+                    </>
                   )}
-                >
-                  <ExternalLink className="h-4 w-4" />
-                  打开
-                </Link>
+                  {item.authorName && (
+                    <span className="truncate max-w-[120px]">{item.authorName}</span>
+                  )}
+                  <ExternalLink className="ml-auto h-3.5 w-3.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

@@ -14,6 +14,10 @@ export type ExploreTrendingLink = {
   title?: string
   description?: string
   authorName?: string
+  image?: string
+  imageDescription?: string
+  providerName?: string
+  providerUrl?: string
 }
 
 /** Trending links (Explore -> News/Links). */
@@ -40,6 +44,10 @@ export function useExploreNewsCache({ limit = 20 }: UseExploreNewsCacheOptions =
           title: x?.title,
           description: x?.description,
           authorName: x?.authorName ?? x?.author_name,
+          image: x?.image ?? x?.thumbnail?.url ?? x?.previewUrl ?? x?.preview_url,
+          imageDescription: x?.imageDescription ?? x?.image_description,
+          providerName: x?.providerName ?? x?.provider_name,
+          providerUrl: x?.providerUrl ?? x?.provider_url,
         }))
         .filter((x) => !!x.url)
     },

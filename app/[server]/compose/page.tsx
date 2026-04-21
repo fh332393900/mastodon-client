@@ -84,9 +84,9 @@ function ToolbarButton({ icon, label, onClick, disabled, active, children }: Too
           disabled={disabled}
           aria-label={label}
           className={cn(
-            "inline-flex h-9 w-9 items-center justify-center rounded-full text-black transition",
+            "inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground transition",
             "hover:bg-muted/70",
-            active && "bg-muted/70",
+            active && "bg-muted/70 text-primary",
             disabled && "opacity-50 cursor-not-allowed",
           )}
           onMouseEnter={() => setOpen(true)}

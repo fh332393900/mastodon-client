@@ -215,7 +215,7 @@ export function ComposeEditor({
         key={account.id}
         type="button"
         onClick={() => insertEntity(account.acct, "accounts")}
-        className="flex w-full items-center gap-3 rounded-md px-2 py-2 text-left text-sm hover:bg-muted"
+        className="flex w-full items-center gap-3 rounded-md px-2 py-2 text-left text-sm hover:bg-foreground/8 transition-colors"
       >
         <Avatar className="h-8 w-8">
           <AvatarImage src={account.avatar} alt={nameText} />
@@ -269,7 +269,7 @@ export function ComposeEditor({
       key={tag.name}
       type="button"
       onClick={() => insertEntity(tag.name, "hashtags")}
-      className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm hover:bg-muted"
+      className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm hover:bg-foreground/8 transition-colors"
     >
       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-lg font-bold text-primary">
         #
@@ -294,9 +294,9 @@ export function ComposeEditor({
     if (isLoading) {
       return (
         <div className="space-y-2 p-2">
-          <div className="h-4 w-full animate-pulse rounded bg-muted" />
-          <div className="h-4 w-5/6 animate-pulse rounded bg-muted" />
-          <div className="h-4 w-2/3 animate-pulse rounded bg-muted" />
+          <div className="h-8 w-full animate-pulse rounded-md bg-foreground/10" />
+          <div className="h-8 w-5/6 animate-pulse rounded-md bg-foreground/10" />
+          <div className="h-8 w-2/3 animate-pulse rounded-md bg-foreground/10" />
         </div>
       )
     }
@@ -354,7 +354,7 @@ export function ComposeEditor({
       />
       {showPopover && caretPosition ? (
         <div
-          className="absolute z-50 w-80 rounded-lg border border-border bg-popover text-popover-foreground shadow-md"
+          className="absolute z-50 w-80 rounded-lg border border-border bg-popover text-popover-foreground shadow-xl ring-1 ring-border/50"
           style={{
             top: caretPosition.top,
             left: caretPosition.left,

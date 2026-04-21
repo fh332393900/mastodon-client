@@ -10,6 +10,11 @@ export interface UseExploreSuggestedAccountsCacheOptions {
   limit?: number
 }
 
+export type AccountSuggestion = {
+  account: mastodon.v1.Account
+  sources: string[]
+}
+
 /** Suggested accounts (Explore -> Suggested). */
 export function useExploreSuggestedAccountsCache({ limit = 20 }: UseExploreSuggestedAccountsCacheOptions = {}) {
   const { client, isReady: isMastoReady } = useMasto()
@@ -21,12 +26,17 @@ export function useExploreSuggestedAccountsCache({ limit = 20 }: UseExploreSugge
   const query = useQuery({
     queryKey,
     queryFn: async () => {
-      if (!client) return [] as mastodon.v1.Account[]
-      const api: any = client.v1 as any
+      if (!client) return [] as AccountSuggestion[]
+      const api: any = client.v2 as any
 
       // Mastodon suggests are usually for authenticated users.
-      const res = (await api?.suggestions?.list?.({ limit })) as mastodon.v1.Account[] | undefined
-      return res ?? ([] as mastodon.v1.Account[])
+      const res = (await api?.suggestions?.list?.({ limit })) as any[] | undefined
+      const arr = res ?? []
+
+      return arr.map((x: any) => ({
+        account: (x?.account ?? x) as mastodon.v1.Account,
+        sources: Array.isArray(x?.sources) ? x.sources : [],
+      })) as AccountSuggestion[]
     },
     enabled: isReady && !!client,
     staleTime: 60_000,
@@ -34,10 +44,13 @@ export function useExploreSuggestedAccountsCache({ limit = 20 }: UseExploreSugge
     refetchOnWindowFocus: false,
   })
 
-  const accounts = query.data ?? ([] as mastodon.v1.Account[])
+  const suggestions = query.data ?? ([] as AccountSuggestion[])
+  // backwards compat
+  const accounts = suggestions.map((s) => s.account)
 
   return {
     queryKey,
+    suggestions,
     accounts,
     query,
     isReady,
