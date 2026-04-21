@@ -24,7 +24,7 @@ export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(true)
   const pathname = usePathname()
-  const { user, logout } = useAuth()
+  const { user, logout, isInitialized } = useAuth()
   const { server } = useMasto()
   const userNameText = user
     ? getDisplayNameText({ displayName: user.displayName, username: user.username })
@@ -119,7 +119,20 @@ export function Sidebar() {
           </nav>
 
           {/* User Info */}
-          {!user ? (
+          {!isInitialized ? (
+            /* 骨架屏：等待鉴权初始化完成，避免未登录/已登录状态闪烁 */
+            <div className="border-t border-border py-4 mx-4">
+              <div className={cn("flex items-center space-x-3 p-3 rounded-lg", isCollapsed && "justify-center")}>
+                <div className="h-12 w-12 shrink-0 rounded-full bg-muted animate-pulse" />
+                {!isCollapsed && (
+                  <div className="flex-1 space-y-2 min-w-0">
+                    <div className="h-3 w-24 rounded bg-muted animate-pulse" />
+                    <div className="h-3 w-32 rounded bg-muted animate-pulse" />
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : !user ? (
             <div className="border-t border-border py-4 mx-4">
               <div className="space-y-3">
                 <p className="text-sm text-muted-foreground">

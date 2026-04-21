@@ -25,10 +25,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(false)
   const [isInitialized, setIsInitialized] = useState(false)
 
-  const { client, isReady } = useMasto()
+  const { client, isReady, accessToken } = useMasto()
 
   useEffect(() => {
     if (!isReady) return
+
+    // 没有 token，无需请求个人信息，直接标记初始化完成
+    if (!accessToken) {
+      setIsInitialized(true)
+      return
+    }
 
     // In dev StrictMode this effect can run twice; guard to avoid duplicate verify calls.
     let cancelled = false

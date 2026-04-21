@@ -9,6 +9,7 @@ export type MastoStreamingClient = mastodon.streaming.Client
 export interface MastoContextType {
   client: MastoClient
   server: string
+  accessToken: string
   streamingClient?: MastoStreamingClient
   isReady: boolean
 }
@@ -35,7 +36,7 @@ export function MastoProvider({ children, accessToken, server }: { children: Rea
   }, [server, accessToken])
 
   return (
-    <MastoContext.Provider value={{ client: client as MastoClient, server: server, isReady: !!client }}>
+    <MastoContext.Provider value={{ client: client as MastoClient, server, accessToken, isReady: !!client }}>
       {children}
     </MastoContext.Provider>
   )
