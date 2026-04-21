@@ -7,6 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { Loader2, UserCheck, UserPlus, UserX } from "lucide-react"
 import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
@@ -204,21 +205,27 @@ export function UserHoverCard({
               disabled={isPending}
               variant={isFollowing || isRequested ? "outline" : "default"}
               className={cn(
-                "h-8 w-20 shrink-0 rounded-full px-3 text-xs",
+                "h-8 shrink-0 rounded-full px-3 text-xs",
                 isFollowing || isRequested ? "border-border text-foreground" : "bg-primary text-primary-foreground",
               )}
               onMouseEnter={() => setIsHoveringButton(true)}
               onMouseLeave={() => setIsHoveringButton(false)}
             >
-              {isFollowing
-                ? isHoveringButton
-                  ? "取消关注"
-                  : "已关注"
-                : isRequested
-                  ? "请求中"
-                  : account.locked
-                    ? "请求关注"
-                    : "关注"}
+                <span className="inline-flex min-w-[5.5rem] items-center justify-center gap-1">
+                  {isFollowing ? (
+                    isHoveringButton ? (
+                      <><UserX className="h-3.5 w-3.5" />取消关注</>
+                    ) : (
+                      <><UserCheck className="h-3.5 w-3.5" />已关注</>
+                    )
+                  ) : isRequested ? (
+                    <><Loader2 className="h-3.5 w-3.5 animate-spin" />请求中</>
+                  ) : account.locked ? (
+                    <><UserPlus className="h-3.5 w-3.5" />请求关注</>
+                  ) : (
+                    <><UserPlus className="h-3.5 w-3.5" />关注</>
+                  )}
+                </span>
             </Button>
           ) : null}
         </div>
