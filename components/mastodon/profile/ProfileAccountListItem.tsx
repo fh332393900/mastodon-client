@@ -55,9 +55,9 @@ export function ProfileAccountListItem({
           ) : null}
 
           <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
-            <span>{account.statusesCount} {"\u8d34\u6587"}</span>
-            <span>{account.followingCount} {"\u6b63\u5728\u5173\u6ce8"}</span>
-            <span>{account.followersCount} {"\u5173\u6ce8\u8005"}</span>
+            <span><span className="text-foreground font-bold">{account.statusesCount}</span> 贴文</span>
+            <span><span className="text-foreground font-bold">{account.followingCount}</span> 正在关注</span>
+            <span><span className="text-foreground font-bold">{account.followersCount}</span> 关注者</span>
           </div>
         </div>
       </div>

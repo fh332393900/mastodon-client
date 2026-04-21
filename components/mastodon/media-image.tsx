@@ -4,7 +4,7 @@ import { useMemo, useState } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import type { mastodon } from "masto"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { Dialog, DialogOverlay, DialogPortal } from "@/components/ui/dialog"
+import { Dialog, DialogOverlay, DialogPortal, DialogTitle } from "@/components/ui/dialog"
 import {
   Popover,
   PopoverContent,
@@ -101,6 +101,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
             data-slot="image-dialog"
             className="fixed inset-0 z-50 flex items-center justify-center outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
           >
+            <DialogTitle className="sr-only">图片预览</DialogTitle>
             <div className="relative flex h-[90vh] w-[100vw] items-center justify-center">
             {/* Image - no extra background or border */}
             <div className="flex max-h-full max-w-full items-center justify-center">
