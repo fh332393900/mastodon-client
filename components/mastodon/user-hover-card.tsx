@@ -5,15 +5,13 @@ import Link from "next/link"
 import type { mastodon } from "masto"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { Loader2, UserCheck, UserPlus, UserX } from "lucide-react"
 import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import MastodonContent from "@/components/mastodon/MastodonContent"
 import { formatCompactNumber } from "@/lib/format-number"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
+import { FollowButton } from "@/components/mastodon/FollowButton"
 
 export function UserHoverCard({
   account,
@@ -30,9 +28,7 @@ export function UserHoverCard({
   const { user } = useAuth()
   const [open, setOpen] = useState(false)
   const [relationship, setRelationship] = useState<mastodon.v1.Relationship | null>(null)
-  const [isPending, setIsPending] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
-  const [isHoveringButton, setIsHoveringButton] = useState(false)
   const openTimer = useRef<number | null>(null)
   const closeTimer = useRef<number | null>(null)
   const fetchGuard = useRef(false)
@@ -73,20 +69,6 @@ export function UserHoverCard({
 
   const isFollowing = !!relationship?.following
   const isRequested = !!relationship?.requested
-
-  const handleToggleFollow = async () => {
-    if (!client || !canInteract || isPending) return
-    setIsPending(true)
-    try {
-      const nextRelationship = isFollowing
-        ? await client.v1.accounts.$select(account.id).unfollow()
-        : await client.v1.accounts.$select(account.id).follow()
-      setRelationship(nextRelationship)
-    } finally {
-      setIsPending(false)
-      setIsHoveringButton(false)
-    }
-  }
 
   const stats = useMemo(() => {
     const base = server ? getAccountProfileHref(account, server) : profileHref ?? ""
@@ -220,34 +202,11 @@ export function UserHoverCard({
           )}
           
           {canInteract ? (
-            <Button
-              size="sm"
-              onClick={handleToggleFollow}
-              disabled={isPending}
-              variant={isFollowing || isRequested ? "outline" : "default"}
-              className={cn(
-                "h-8 shrink-0 rounded-full px-3 text-xs",
-                isFollowing || isRequested ? "border-border text-foreground" : "bg-primary text-primary-foreground",
-              )}
-              onMouseEnter={() => setIsHoveringButton(true)}
-              onMouseLeave={() => setIsHoveringButton(false)}
-            >
-                <span className="inline-flex min-w-[5.5rem] items-center justify-center gap-1">
-                  {isFollowing ? (
-                    isHoveringButton ? (
-                      <><UserX className="h-3.5 w-3.5" />取消关注</>
-                    ) : (
-                      <><UserCheck className="h-3.5 w-3.5" />已关注</>
-                    )
-                  ) : isRequested ? (
-                    <><Loader2 className="h-3.5 w-3.5 animate-spin" />请求中</>
-                  ) : account.locked ? (
-                    <><UserPlus className="h-3.5 w-3.5" />请求关注</>
-                  ) : (
-                    <><UserPlus className="h-3.5 w-3.5" />关注</>
-                  )}
-                </span>
-            </Button>
+            <FollowButton
+              account={account}
+              initialRelationship={relationship}
+              className="h-8 text-xs"
+            />
           ) : null}
         </div>
 

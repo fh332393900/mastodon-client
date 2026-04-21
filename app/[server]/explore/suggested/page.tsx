@@ -2,10 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
-import { Users, Loader2, UserPlus, UserCheck, UserX } from "lucide-react"
+import { Users, Loader2 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import { LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
 import { cn } from "@/lib/utils"
 import { useMasto } from "@/components/auth/masto-provider"
@@ -13,6 +12,7 @@ import { useAuth } from "@/components/auth/auth-provider"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import { UserHoverCard } from "@/components/mastodon/user-hover-card"
+import { FollowButton } from "@/components/mastodon/FollowButton"
 import { useExploreSuggestedAccountsCache } from "@/hooks/mastodon/useExploreSuggestedAccountsCache"
 import type { mastodon } from "masto"
 import type { AccountSuggestion } from "@/hooks/mastodon/useExploreSuggestedAccountsCache"
@@ -43,56 +43,10 @@ function SuggestionCard({
   initialRelationship: mastodon.v1.Relationship | null
   loadingRel: boolean
 }) {
-  const { client } = useMasto()
-  const { user } = useAuth()
-  const canInteract = !!client && !!user
-
   const a = suggestion.account
   const href = server ? getAccountProfileHref(a, server) : undefined
   const nameText = getDisplayNameText({ displayName: a.displayName, username: a.username })
   const reason = sourceLabel(suggestion.sources)
-
-  const [relationship, setRelationship] = useState<mastodon.v1.Relationship | null>(initialRelationship)
-  const [isPending, setIsPending] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
-
-  // 当外层批量结果到达时同步进来（仅首次，避免覆盖用户操作后的状态）
-  const [synced, setSynced] = useState(false)
-  useEffect(() => {
-    if (!synced && initialRelationship !== null) {
-      setRelationship(initialRelationship)
-      setSynced(true)
-    }
-  }, [initialRelationship, synced])
-
-  const isFollowing = !!relationship?.following
-  const isRequested = !!relationship?.requested
-
-  const handleToggleFollow = async () => {
-    if (!client || !canInteract || isPending) return
-    setIsPending(true)
-    try {
-      const next = isFollowing
-        ? await client.v1.accounts.$select(a.id).unfollow()
-        : await client.v1.accounts.$select(a.id).follow()
-      setRelationship(next)
-    } finally {
-      setIsPending(false)
-    }
-  }
-
-  const btnContent = () => {
-    if (isPending || loadingRel) return <><Loader2 className="h-4 w-4 animate-spin" />请求中</>
-    if (isFollowing) {
-      return isHovering ? (
-        <><UserX className="h-4 w-4" />取消关注</>
-      ) : (
-        <><UserCheck className="h-4 w-4" />已关注</>
-      )
-    }
-    if (isRequested) return <><Loader2 className="h-4 w-4" />待审核</>
-    return <><UserPlus className="h-4 w-4" />关注</>
-  }
 
   return (
     <div className="rounded-3xl border border-border/70 bg-card/90 p-4 transition hover:border-border hover:bg-card">
@@ -136,21 +90,11 @@ function SuggestionCard({
         </div>
 
         {/* 关注按钮 */}
-        <Button
-          size="sm"
-          variant={isFollowing ? "outline" : "default"}
-          className={cn(
-            "shrink-0 w-28 gap-1.5 transition-all rounded-full",
-            isFollowing && isHovering && "hover:text-destructive",
-            !canInteract && "opacity-50 cursor-not-allowed",
-          )}
-          disabled={!canInteract || isPending || loadingRel || isRequested}
-          onClick={handleToggleFollow}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
-          {btnContent()}
-        </Button>
+        <FollowButton
+          account={a}
+          initialRelationship={initialRelationship}
+          loadingRel={loadingRel}
+        />
       </div>
     </div>
   )
@@ -162,7 +106,6 @@ export default function ExploreSuggestedPage() {
   const { server, client } = useMasto()
   const { user } = useAuth()
   const { isLoading } = query
-
   const title = useMemo(() => "Suggested", [])
 
   // 批量拉取所有账号的 relationship（一次请求）
