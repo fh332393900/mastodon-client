@@ -329,7 +329,7 @@ function ThreadPostItem({
         {!error && notice && <p className="mt-1.5 text-xs text-muted-foreground">{notice}</p>}
 
         {/* Toolbar */}
-        <div className="mt-2 flex flex-wrap items-center gap-0.5 border-t border-border/40 pt-2">
+        <div className="mt-2 flex flex-wrap items-center gap-1 border-t border-border/40 pt-2">
           <ToolbarButton icon={<Smile className="h-4 w-4" />} label="Emoji">
             <div className="space-y-2">
               <div className="text-xs font-semibold text-muted-foreground">Emoji</div>
