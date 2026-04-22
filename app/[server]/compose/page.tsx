@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import {
   AlertTriangle,
   BarChart3,
@@ -22,29 +22,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
-import { useComposeActions } from "@/hooks/mastodon/useComposeActions"
-import { useInstanceConfig } from "@/hooks/mastodon/useInstanceConfig"
+import { useComposeThread, type LocalMedia, type ThreadItem } from "@/hooks/mastodon/useComposeThread"
 
-// ─── Types ─────────────────────────────────────────────────────────────────────
-
-type LocalMedia = {
-  id: string
-  file: File
-  previewUrl: string
-  type: "image" | "video"
-}
-
-type ThreadItem = {
-  id: string
-  content: string
-  mediaList: LocalMedia[]
-  pollEnabled: boolean
-  pollOptions: string[]
-  pollMultiple: boolean
-  pollExpiresIn: number
-  showSpoiler: boolean
-  spoilerText: string
-}
+// ─── Local types ────────────────────────────────────────────────────────────────
 
 type ToolbarButtonProps = {
   icon: React.ReactNode
@@ -108,7 +88,7 @@ function ToolbarButton({ icon, label, onClick, disabled, active, children }: Too
           disabled={disabled}
           aria-label={label}
           className={cn(
-            "inline-flex h-8 w-8 items-center justify-center rounded-full text-foreground transition",
+            "inline-flex cursor-pointer h-8 w-8 items-center justify-center rounded-full text-foreground transition",
             "hover:bg-muted/70",
             active && "bg-muted/70 text-primary",
             disabled && "opacity-50 cursor-not-allowed",
@@ -434,7 +414,7 @@ function ThreadPostItem({
                 onClick={onAddPost}
                 disabled={isSubmitting}
                 aria-label="继续嘟文串"
-                className="group flex items-center gap-1 rounded-l-lg px-2 py-1 transition hover:bg-primary/10 disabled:opacity-40"
+                className="group cursor-pointer flex items-center gap-1 rounded-l-lg px-2 py-1 transition hover:bg-primary/10 disabled:opacity-40"
               >
                 <MessageSquarePlus className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition" />
               </button>
@@ -454,7 +434,7 @@ function ThreadPostItem({
                   onClick={onRemove}
                   disabled={isSubmitting}
                   aria-label="删除此条"
-                  className="group flex items-center rounded-r-lg px-2 py-1 transition hover:bg-destructive/15 disabled:opacity-40"
+                  className="group cursor-pointer flex items-center rounded-r-lg px-2 py-1 transition hover:bg-destructive/15 disabled:opacity-40"
                 >
                   <X className="h-3 w-3 text-muted-foreground group-hover:text-destructive transition" />
                 </button>
@@ -465,8 +445,8 @@ function ThreadPostItem({
           {/* Publish button — only on last post, with left margin */}
           {isLast && (
             <Button
-              size="sm"
-              className="ml-1 h-7 px-3 text-xs"
+              size="lg"
+              className="ml-1 h-7 px-5 text-xs rounded-full"
               onClick={onSubmit}
               disabled={!canSubmitAll || isSubmitting}
             >
@@ -512,108 +492,23 @@ function ThreadPostItem({
 export default function ComposePage() {
   const { isAuthenticated, isLoading, user } = useAuth()
   const { server } = useMasto()
-  const { maxCharacters, maxMediaAttachments, maxPollOptions } = useInstanceConfig()
-  const { isReady, uploadMedia, createStatus } = useComposeActions()
-
-  const [posts, setPosts] = useState<ThreadItem[]>(() => [createEmptyPost()])
-  const [visibility, setVisibility] = useState<mastodon.v1.StatusVisibility>("public")
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submittingIndex, setSubmittingIndex] = useState(-1)
-  const [error, setError] = useState<string | null>(null)
-  const [notice, setNotice] = useState<string | null>(null)
-
-  const canSubmitAll = useMemo(() => {
-    if (!isReady || isSubmitting) return false
-    // Every post must have content or media or poll — no empty boxes allowed
-    const allFilled = posts.every(
-      (p) => p.content.trim().length > 0 || p.mediaList.length > 0 || p.pollEnabled,
-    )
-    if (!allFilled) return false
-    // No post exceeds character limit
-    if (posts.some((p) => p.content.length > maxCharacters)) return false
-    return true
-  }, [posts, isReady, isSubmitting, maxCharacters])
-
-  const updatePost = useCallback((id: string, update: Partial<ThreadItem>) => {
-    setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, ...update } : p)))
-  }, [])
-
-  const removePost = useCallback((id: string) => {
-    setPosts((prev) => {
-      const removed = prev.find((p) => p.id === id)
-      removed?.mediaList.forEach((m) => URL.revokeObjectURL(m.previewUrl))
-      const next = prev.filter((p) => p.id !== id)
-      return next.length === 0 ? [createEmptyPost()] : next
-    })
-  }, [])
-
-  const addPost = () => {
-    setPosts((prev) => [...prev, createEmptyPost()])
-    setNotice(null)
-    setError(null)
-  }
-
-  const handleSubmit = async () => {
-    if (!canSubmitAll) return
-    setError(null)
-    setNotice(null)
-    setIsSubmitting(true)
-
-    let replyToId: string | null = null
-
-    try {
-      let published = 0
-      for (let i = 0; i < posts.length; i++) {
-        const post = posts[i]
-        setSubmittingIndex(i)
-
-        // Upload media files
-        const mediaIds: string[] = []
-        for (const media of post.mediaList) {
-          const attachment = await uploadMedia(media.file)
-          if (attachment?.id) mediaIds.push(attachment.id)
-        }
-
-        const validPollOptions = post.pollOptions.map((o) => o.trim()).filter(Boolean)
-
-        const basePayload = {
-          status: post.content,
-          visibility,
-          spoilerText: post.showSpoiler ? post.spoilerText.trim() : undefined,
-          sensitive: post.showSpoiler && !!post.spoilerText.trim(),
-          inReplyToId: replyToId ?? undefined,
-        }
-
-        const payload = mediaIds.length
-          ? { ...basePayload, mediaIds }
-          : {
-              ...basePayload,
-              poll:
-                post.pollEnabled && validPollOptions.length >= 2
-                  ? {
-                      options: validPollOptions,
-                      expiresIn: post.pollExpiresIn,
-                      multiple: post.pollMultiple,
-                    }
-                  : undefined,
-            }
-
-        const result = await createStatus(payload)
-        replyToId = result?.id ?? null
-        published += 1
-      }
-
-      // Clean up object URLs and reset
-      posts.forEach((p) => p.mediaList.forEach((m) => URL.revokeObjectURL(m.previewUrl)))
-      setPosts([createEmptyPost()])
-      setNotice(published > 1 ? `已成功发布 ${published} 条嘟文串 🎉` : "已成功发布 🎉")
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "发布失败，请重试")
-    } finally {
-      setIsSubmitting(false)
-      setSubmittingIndex(-1)
-    }
-  }
+  const {
+    posts,
+    visibility,
+    setVisibility,
+    isSubmitting,
+    submittingIndex,
+    error,
+    notice,
+    canSubmitAll,
+    maxCharacters,
+    maxMediaAttachments,
+    maxPollOptions,
+    updatePost,
+    addPost,
+    removePost,
+    handleSubmit,
+  } = useComposeThread()
 
   // ── Loading / auth guard ────────────────────────────────────────────────────
 
