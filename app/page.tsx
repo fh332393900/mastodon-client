@@ -25,7 +25,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (accessToken) {
-      router.replace(`/${server}/timeline`)
+      // router.replace(`/${server}/timeline`)
     }
   }, [accessToken, router, server])
 
@@ -33,7 +33,7 @@ export default function HomePage() {
     router.push(`/${server}/timeline`)
   }
 
-  if (accessToken) return null
+  // if (accessToken) return null
 
   return (
     <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#0a0a0f] text-foreground antialiased">
@@ -278,7 +278,7 @@ export default function HomePage() {
                           </svg>
                         </div>
                       ))}
-                      <div className="text-[9px] text-muted-foreground/50 flex items-center gap-0.5 cursor-pointer hover:text-violet-500 transition-colors">
+                      <div className="text-[9px] text-muted-foreground/50 flex items-center gap-0.5 cursor-pointer hover:text-primary transition-colors">
                         查看更多热门标签 →
                       </div>
                     </div>
