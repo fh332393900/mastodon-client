@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,6 +8,55 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { LoginModal } from "@/components/auth/login-modal"
 import { MessageCircle, Users, Globe, Zap, Shield, Heart, ArrowRight, Sparkles, Bell, Search, Hash } from "lucide-react"
 import { useMasto } from "@/components/auth/masto-provider"
+
+// 逐字母手写动画
+function HandwrittenText({ text }: { text: string }) {
+  return (
+    <span className="handwritten-font">
+      {text.split("").map((char, i) => (
+        <span
+          key={i}
+          className="letter-draw-anim"
+          style={{ animationDelay: `${0.3 + i * 0.09}s` }}
+        >
+          {char}
+        </span>
+      ))}
+    </span>
+  )
+}
+
+// 3D 鼠标跟随翻转卡片
+function TiltCard({ children, className }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = ref.current
+    if (!el) return
+    const { left, top, width, height } = el.getBoundingClientRect()
+    const x = (e.clientX - left - width / 2) / (width / 2)
+    const y = (e.clientY - top - height / 2) / (height / 2)
+    el.style.transform = `perspective(700px) rotateX(${-y * 7}deg) rotateY(${x * 7}deg) scale(1.03)`
+  }
+
+  const onLeave = () => {
+    const el = ref.current
+    if (!el) return
+    el.style.transform = "perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)"
+  }
+
+  return (
+    <div
+      ref={ref}
+      className={className}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={{ transition: "transform 0.18s ease", willChange: "transform" }}
+    >
+      {children}
+    </div>
+  )
+}
 
 export default function HomePage() {
   const router = useRouter()
@@ -41,7 +90,10 @@ export default function HomePage() {
 
       <main className="container mx-auto px-8 py-16">
         {/* Hero Section */}
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="relative grid lg:grid-cols-2 gap-16 items-center">
+          <span className="hero-decor-circle -left-10 top-10 h-36 w-36 bg-primary/30" />
+          <span className="hero-decor-circle -right-8 top-32 h-44 w-44 bg-secondary/30" />
+          <span className="hero-decor-circle left-1/2 -bottom-4 h-28 w-28 bg-accent/20" />
           <div className="space-y-8">
             <div className="space-y-5">
               <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary border border-primary/20 px-4 py-2 rounded-full text-sm font-medium">
@@ -49,9 +101,9 @@ export default function HomePage() {
                 <span>去中心化社交网络</span>
               </div>
 
-              <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+              <h1 className="text-4xl lg:text-6xl font-bold leading-tight animate-slide-in-up">
                 更好的方式<br />体验{" "}
-                <span className="text-primary">Mastodon</span>
+                <HandwrittenText text="Mastodon" />
               </h1>
 
               <p className="text-lg text-muted-foreground leading-relaxed">
@@ -134,7 +186,7 @@ export default function HomePage() {
         {/* 功能特性 */}
         <section className="mt-28 space-y-12">
           <div className="text-center space-y-3">
-            <h2 className="text-3xl lg:text-4xl font-bold">为什么选择 MastoClient？</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold shadow-3d-text">为什么选择 MastoClient？</h2>
             <p className="text-lg text-muted-foreground max-w-xl mx-auto">
               专为现代 Web 打造，注重细节与用户体验。
             </p>
@@ -185,24 +237,24 @@ export default function HomePage() {
                 bg: "bg-orange-500/10",
               },
             ].map((feature) => (
-              <div key={feature.title} className="group">
-                <Card className="h-full bg-card/40 border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5">
+              <TiltCard key={feature.title}>
+                <Card className="h-full bg-card/60 border-border/50 hover:border-primary/30 transition-colors duration-300">
                   <CardContent className="p-6 space-y-3">
-                    <div className={`w-11 h-11 rounded-xl ${feature.bg} border border-current/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}>
+                    <div className={`w-11 h-11 rounded-xl ${feature.bg} border border-current/10 flex items-center justify-center`}>
                       <feature.icon className={`w-5 h-5 ${feature.color}`} />
                     </div>
                     <h3 className="text-base font-semibold">{feature.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
                   </CardContent>
                 </Card>
-              </div>
+              </TiltCard>
             ))}
           </div>
         </section>
 
         {/* CTA */}
         <section className="mt-24 text-center space-y-6 py-16 rounded-3xl bg-primary/5 border border-primary/10">
-          <h2 className="text-3xl font-bold">准备好加入联邦宇宙了吗？</h2>
+          <h2 className="text-3xl font-bold shadow-3d-text">准备好加入联邦宇宙了吗？</h2>
           <p className="text-muted-foreground max-w-md mx-auto">
             注册任意 Mastodon 实例，即可连接到整个去中心化社交网络。
           </p>
