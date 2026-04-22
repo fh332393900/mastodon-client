@@ -82,7 +82,7 @@ export function UserHoverCard({
   const trigger = children ? (
     <span className={className}>{children}</span>
   ) : profileHref ? (
-    <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
+    <Link href={profileHref} className="font-semibold text-foreground flex flex-1 flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 -ml-3 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
       <span className="block md:shrink-0 line-clamp-1 truncate max-w-full">
         {renderDisplayName({
           displayName: account.displayName,
@@ -150,7 +150,7 @@ export function UserHoverCard({
           onMouseLeave={scheduleClose}
           onFocus={scheduleOpen}
           onBlur={scheduleClose}
-          className="inline-flex min-w-0 overflow-hidden"
+          className="inline-flex min-w-0"
         >
           {trigger}
         </span>
