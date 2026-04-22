@@ -19,6 +19,7 @@ import { StatusPoll } from "./StatusPoll"
 import { StatusMedia } from "./StatusMedia"
 import { StatusActions } from "./StatusActions"
 import { StatusRepostHeader } from "./StatusRepostHeader"
+import { StatusPreviewCard } from "./StatusPreviewCard"
 
 type Status = mastodon.v1.Status
 
@@ -102,6 +103,10 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
           ) : null}
 
           <StatusMedia attachments={renderedStatus.mediaAttachments} />
+
+          {renderedStatus.card ? (
+            <StatusPreviewCard card={renderedStatus.card} />
+          ) : null}
 
           {showActions ? (
             <StatusActions
