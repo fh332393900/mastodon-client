@@ -2,12 +2,13 @@
 
 import { useMemo, useState } from "react"
 import { InfiniteScroller, LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
-import { StatusCard } from "@/components/mastodon/Status"
+import { StatusCard, StatusThread } from "@/components/mastodon/Status"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useTimelineCache, type TimelineType } from "@/hooks/mastodon/useTimelineCache"
 import { useAuth } from "@/components/auth/auth-provider"
 import { useMasto } from "@/components/auth/masto-provider"
+import { groupThreadPosts } from "@/lib/mastodon/groupThreads"
 
 export function TimelineFeed() {
   const { accessToken } = useMasto()
@@ -15,6 +16,8 @@ export function TimelineFeed() {
 
   const { posts, query, isReady, user } = useTimelineCache({ timelineType })
   const { isLoading, isFetchingNextPage, fetchNextPage, hasNextPage, refetch } = query
+
+  const groupedPosts = useMemo(() => groupThreadPosts(posts), [posts])
 
   const handleLoadMore = () => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage()
@@ -76,9 +79,13 @@ export function TimelineFeed() {
         scrollThrottleMs={120}
       >
         <div className="space-y-6">
-          {posts.map((post) => (
-            <StatusCard key={post.id} status={post} />
-          ))}
+          {groupedPosts.map((group) =>
+            group.length > 1 ? (
+              <StatusThread key={group[0].id} statuses={group} />
+            ) : (
+              <StatusCard key={group[0].id} status={group[0]} />
+            )
+          )}
         </div>
       </InfiniteScroller>
     </div>

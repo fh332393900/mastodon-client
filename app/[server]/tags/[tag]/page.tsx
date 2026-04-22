@@ -4,13 +4,14 @@ import { useEffect, useMemo, useState } from "react"
 import { useParams } from "next/navigation"
 import { Star } from "lucide-react"
 import { InfiniteScroller, LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
-import { StatusCard } from "@/components/mastodon/Status"
+import { StatusCard, StatusThread } from "@/components/mastodon/Status"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/components/auth/auth-provider"
 import { useMasto } from "@/components/auth/masto-provider"
 import { useTagTimelineCache } from "@/hooks/mastodon/useTagTimelineCache"
+import { groupThreadPosts } from "@/lib/mastodon/groupThreads"
 
 export default function TagPage() {
   const params = useParams()
@@ -68,6 +69,7 @@ export default function TagPage() {
   }
 
   const headerTitle = useMemo(() => `#${tagName}`, [tagName])
+  const groupedPosts = useMemo(() => groupThreadPosts(posts), [posts])
 
   if (!isReady || isLoading) {
     return (
@@ -115,9 +117,13 @@ export default function TagPage() {
         scrollThrottleMs={120}
       >
         <div className="space-y-6 px-4 pb-2">
-          {posts.map((post) => (
-            <StatusCard key={post.id} status={post} />
-          ))}
+          {groupedPosts.map((group) =>
+            group.length > 1 ? (
+              <StatusThread key={group[0].id} statuses={group} />
+            ) : (
+              <StatusCard key={group[0].id} status={group[0]} />
+            )
+          )}
         </div>
       </InfiniteScroller>
     </div>

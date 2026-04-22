@@ -1,12 +1,14 @@
 "use client"
 
+import { useMemo } from "react"
 import { MessageCircleMore } from "lucide-react"
 import { useParams } from "next/navigation"
 
 import { InfiniteScroller } from "@/components/mastodon/infinite-scroller"
-import { StatusCard } from "@/components/mastodon/Status"
+import { StatusCard, StatusThread } from "@/components/mastodon/Status"
 import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
 import { useProfileStatuses } from "@/hooks/mastodon/useProfileStatuses"
+import { groupThreadPosts } from "@/lib/mastodon/groupThreads"
 
 export default function ProfilePostsPage() {
   const params = useParams()
@@ -26,11 +28,13 @@ export default function ProfilePostsPage() {
 
   const { isFetchingNextPage, fetchNextPage, hasNextPage } = statusQuery
 
+  const groupedStatuses = useMemo(() => groupThreadPosts(statuses), [statuses])
+
   if (profileQuery.isLoading || statusQuery.isLoading) {
     return (
       <div className="rounded-3xl border border-dashed border-border/70 bg-card/70 p-10 text-center">
         <MessageCircleMore className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
-        <p className="text-lg font-semibold">{"\u52a0\u8f7d\u4e2d..."}</p>
+        <p className="text-lg font-semibold">加载中...</p>
       </div>
     )
   }
@@ -43,8 +47,8 @@ export default function ProfilePostsPage() {
     return (
       <div className="rounded-3xl border border-dashed border-border/70 bg-card/70 p-10 text-center">
         <MessageCircleMore className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
-        <p className="text-lg font-semibold">{"\u8fd8\u6ca1\u6709\u516c\u5f00\u8d34\u6587"}</p>
-        <p className="mt-2 text-sm text-muted-foreground">{"\u8fd9\u4e2a\u8d26\u53f7\u76ee\u524d\u6ca1\u6709\u53ef\u5c55\u793a\u7684\u516c\u5f00\u5185\u5bb9\u3002"}</p>
+        <p className="text-lg font-semibold">还没有公开贴文</p>
+        <p className="mt-2 text-sm text-muted-foreground">这个账号目前没有可展示的公开内容。</p>
       </div>
     )
   }
@@ -60,9 +64,13 @@ export default function ProfilePostsPage() {
       scrollThrottleMs={120}
     >
       <div className="space-y-4">
-        {statuses.map((status) => (
-          <StatusCard key={status.id} status={status} />
-        ))}
+        {groupedStatuses.map((group) =>
+          group.length > 1 ? (
+            <StatusThread key={group[0].id} statuses={group} />
+          ) : (
+            <StatusCard key={group[0].id} status={group[0]} />
+          )
+        )}
       </div>
     </InfiniteScroller>
   )

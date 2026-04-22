@@ -2,9 +2,10 @@
 
 import { useMemo } from "react"
 import { InfiniteScroller, LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
-import { StatusCard } from "@/components/mastodon/Status"
+import { StatusCard, StatusThread } from "@/components/mastodon/Status"
 import { Badge } from "@/components/ui/badge"
 import { useExplorePostsCache } from "@/hooks/mastodon/useExplorePostsCache"
+import { groupThreadPosts } from "@/lib/mastodon/groupThreads"
 import type { mastodon } from "masto"
 
 export default function ExplorePostsPage() {
@@ -12,6 +13,7 @@ export default function ExplorePostsPage() {
   const { isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = query
 
   const title = useMemo(() => "Trending Posts", [])
+  const groupedPosts = useMemo(() => groupThreadPosts(posts), [posts])
 
   const handleLoadMore = () => {
     if (hasNextPage && !isFetchingNextPage) fetchNextPage()
@@ -50,9 +52,13 @@ export default function ExplorePostsPage() {
           scrollThrottleMs={120}
         >
           <div className="space-y-6">
-            {posts.map((post: mastodon.v1.Status) => (
-              <StatusCard key={post.id} status={post} />
-            ))}
+            {groupedPosts.map((group) =>
+              group.length > 1 ? (
+                <StatusThread key={group[0].id} statuses={group} />
+              ) : (
+                <StatusCard key={group[0].id} status={group[0]} />
+              )
+            )}
           </div>
         </InfiniteScroller>
       )}

@@ -1,4 +1,5 @@
 export { StatusCard } from "./StatusCard"
+export { StatusThread } from "./StatusThread"
 export { StatusPoll } from "./StatusPoll"
 export { StatusMedia } from "./StatusMedia"
 export { StatusActions } from "./StatusActions"
