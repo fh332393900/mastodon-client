@@ -1,31 +1,20 @@
 "use client"
 
-import { useState } from "react"
-import { Search, Github, Shield, Info } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { Github, Shield, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Card, CardContent } from "@/components/ui/card"
 import { TrendingTagsPanel } from "@/components/layout/trending-tags-panel"
+import { SearchPopover } from "@/components/search/search-popover"
 
 export function RightPanel() {
-  const [searchQuery, setSearchQuery] = useState("")
-
   return (
     <aside className="hidden lg:flex lg:w-[18rem] lg:flex-col lg:sticky lg:top-0 lg:self-start h-screen bg-card/50 border-l border-border overflow-hidden">
       <div className="flex h-full flex-col p-4 space-y-4 overflow-hidden">
         {/* Search Section */}
         <Card className="bg-card/50 backdrop-blur-sm border-border/50 shadow-lg shadow-primary/5 px-0">
-          <CardContent className="pt-0">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search hashtags..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
+          <CardContent className="pt-0 px-4">
+            <SearchPopover placeholder="Search" />
           </CardContent>
         </Card>
 

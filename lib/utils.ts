@@ -10,8 +10,21 @@ export function cn(...inputs: ClassValue[]) {
  * 刚刚 / 3分钟前 / 2小时前 / 5天前 / 3个月前 / 2年前
  * 超过 1 年时追加完整日期作为 title 属性可用
  */
-export function formatRelativeTime(value: string | Date): string {
-  const date = typeof value === "string" ? new Date(value) : value
+function toValidDate(value: unknown): Date | null {
+  if (value instanceof Date) {
+    return Number.isFinite(value.getTime()) ? value : null
+  }
+  if (typeof value === "string") {
+    const d = new Date(value)
+    return Number.isFinite(d.getTime()) ? d : null
+  }
+  return null
+}
+
+export function formatRelativeTime(value: string | Date | null | undefined): string {
+  const date = toValidDate(value)
+  if (!date) return ""
+
   const now = Date.now()
   const diffMs = now - date.getTime()
   const diffSec = Math.floor(diffMs / 1000)
@@ -33,7 +46,8 @@ export function formatRelativeTime(value: string | Date): string {
  * 完整日期时间，用于 title tooltip
  */
 export function formatFullDate(value: string | Date): string {
-  const date = typeof value === "string" ? new Date(value) : value
+  const date = toValidDate(value)
+  if (!date) return ""
   return new Intl.DateTimeFormat("zh-CN", {
     year: "numeric",
     month: "long",
