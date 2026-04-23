@@ -17,30 +17,48 @@ import type { mastodon } from "masto"
 export function groupThreadPosts(
   posts: mastodon.v1.Status[],
 ): mastodon.v1.Status[][] {
-  const result: mastodon.v1.Status[][] = []
-  let i = 0
+  const byId = new Map<string, mastodon.v1.Status>()
+  const groupMap = new Map<string, mastodon.v1.Status[]>()
+  const groupOrder = new Map<string, number>()
 
-  while (i < posts.length) {
-    const group: mastodon.v1.Status[] = [posts[i]]
+  posts.forEach((post) => {
+    byId.set(post.id, post)
+  })
 
-    // Extend the group while the current post replies to the next post (same author)
-    while (
-      i + 1 < posts.length &&
-      posts[i].inReplyToId === posts[i + 1].id &&
-      posts[i].account.id === posts[i + 1].account.id
-    ) {
-      i++
-      group.push(posts[i])
+  const getRootId = (post: mastodon.v1.Status) => {
+    let current: mastodon.v1.Status | undefined = post
+    while (current?.inReplyToId) {
+      const parent = byId.get(current.inReplyToId)
+      if (!parent) break
+      if (
+        current.inReplyToAccountId &&
+        current.inReplyToAccountId !== current.account.id
+      ) {
+        break
+      }
+      if (parent.account.id !== current.account.id) break
+      current = parent
     }
-
-    // Reverse so the original post renders first (chronological order)
-    if (group.length > 1) {
-      group.reverse()
-    }
-
-    result.push(group)
-    i++
+    return current?.id ?? post.id
   }
+
+  posts.forEach((post, index) => {
+    const rootId = getRootId(post)
+    const group = groupMap.get(rootId) ?? []
+    if (!group.find((item) => item.id === post.id)) {
+      group.push(post)
+    }
+    groupMap.set(rootId, group)
+    if (!groupOrder.has(rootId)) {
+      groupOrder.set(rootId, index)
+    }
+  })
+
+  const result = Array.from(groupMap.entries())
+    .sort(([rootA], [rootB]) => (groupOrder.get(rootA) ?? 0) - (groupOrder.get(rootB) ?? 0))
+    .map(([, group]) =>
+      group.slice().sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()),
+    )
 
   return result
 }
