@@ -19,7 +19,7 @@ export default function ExploreLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="space-y-4">
-      <div className="sticky top-0 z-20 -mx-4 bg-background/80 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="sticky top-0 z-20 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div>
           <nav className="grid grid-cols-4 border-b border-border">
           {tabs.map((t) => {

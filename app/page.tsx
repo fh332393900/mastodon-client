@@ -69,9 +69,9 @@ export default function HomePage() {
           <div className="mx-auto max-w-6xl pb-16 grid md:grid-cols-2 gap-12 items-center">
             {/* ── Left: text ── */}
             <div className="space-y-7">
-              <div className="inline-flex items-center gap-2 rounded-full border border-violet-200 dark:border-violet-800/60 bg-violet-50 dark:bg-violet-950/40 px-4 py-1.5 text-xs font-medium text-violet-600 dark:text-violet-400">
+              <div className="inline-flex items-center gap-2 rounded-full border border-violet-200 dark:border-violet-500/60 bg-violet-50 dark:bg-primary/20 px-4 py-1.5 text-xs font-medium text-primary">
                 <span className="h-1.5 w-1.5 rounded-full bg-violet-500 animate-pulse" />
-                Decentralized Social Mediea
+                Decentralized Social Media
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-foreground">
@@ -434,7 +434,7 @@ export default function HomePage() {
                   size="lg"
                   variant="outline"
                   onClick={handleGuestMode}
-                  className="h-12 px-8 rounded-full font-medium border-white/30 text-white bg-transparent"
+                  className="h-12 px-8 rounded-full font-medium border-white/30 text-white bg-transparent dark:hover:text-white"
                 >
                   Browse as Guest
                 </Button>
