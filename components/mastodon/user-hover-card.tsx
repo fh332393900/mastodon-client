@@ -90,7 +90,7 @@ export function UserHoverCard({
           emojis: account.emojis,
         })}
       </span>
-      <span className="block text-sm ml-1 line-clamp-1 text-muted-foreground truncate">@{account.acct}</span>
+      <span className="block text-sm ml-1 line-clamp-1 text-muted-foreground/70 truncate">@{account.acct}</span>
     </Link>
   ) : (
     <span className={className}>
@@ -180,7 +180,7 @@ export function UserHoverCard({
                     emojis: account.emojis,
                   })}
                 </div>
-                <div className="text-xs truncate text-muted-foreground">@{account.acct}</div>
+                <div className="text-xs truncate text-muted-foreground/70">@{account.acct}</div>
               </div>
             </Link>
           ) : (
