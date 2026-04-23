@@ -48,7 +48,7 @@
   --popover: oklch(0.105 0.010 280);
   --popover-foreground: oklch(0.92 0.006 280);
   --primary: #5966f3;           /* violet-400 */
-  --primary-foreground: oklch(0.10 0.01 282);
+  --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.68 0.20 265);         /* indigo-400 */
   --secondary-foreground: oklch(0.10 0.01 282);
   --muted: oklch(0.14 0.010 280);

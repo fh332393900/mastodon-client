@@ -406,7 +406,7 @@ export default function HomePage() {
                   size="lg"
                   variant="outline"
                   onClick={handleGuestMode}
-                  className="h-12 px-8 rounded-full font-medium border-white/30 text-white hover:bg-white/10 bg-transparent"
+                  className="h-12 px-8 rounded-full font-medium border-white/30 text-white bg-transparent"
                 >
                   Browse as Guest
                 </Button>
