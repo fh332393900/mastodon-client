@@ -115,7 +115,7 @@ export function SearchPopover({ className, placeholder = "Search…" }: Props) {
       <PopoverContent
         align="start"
         side="bottom"
-        className="w-[400px] max-w-120 p-0 overflow-hidden"
+        className="w-full max-w-120 p-0 overflow-hidden"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <div className="max-h-[70vh] overflow-y-auto">

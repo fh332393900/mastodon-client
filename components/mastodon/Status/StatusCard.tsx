@@ -55,8 +55,10 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
   const handleContentClick = (event: MouseEvent<HTMLDivElement>) => {
     if (!detailHref) return
     const target = event.target as HTMLElement
-    console.log(target.closest("a, button, [role='link'], [data-clickable]"))
-    if (target.closest("a, button")) return
+    const interaction = target.closest("a, button, [data-clickable]")
+    if (interaction && interaction !== event.currentTarget) return
+    const selection = window.getSelection()
+    if (selection && selection.toString().trim().length > 0) return
     router.push(detailHref)
   }
 
