@@ -18,10 +18,12 @@ import {
   Users,
 } from "lucide-react"
 import { useMasto } from "@/components/auth/masto-provider"
+import { useAuth } from "@/components/auth/auth-provider"
 
 export default function HomePage() {
   const router = useRouter()
   const { server, accessToken } = useMasto()
+  const { isAuthenticated } = useAuth()
 
   useEffect(() => {
     if (accessToken) {
@@ -31,6 +33,12 @@ export default function HomePage() {
 
   const handleGuestMode = () => {
     router.push(`/${server}/timeline`)
+  }
+
+  const handleEnter = () => {
+    if (isAuthenticated) {
+      router.push(`/${server}/timeline`)
+    }
   }
 
   // if (accessToken) return null
@@ -78,15 +86,27 @@ export default function HomePage() {
               </p>
 
               <div className="flex flex-wrap gap-3">
-                <LoginModal>
+                {isAuthenticated ? (
                   <Button
                     size="lg"
+                    onClick={handleEnter}
                     className="h-11 px-7 rounded-full font-medium bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-xl shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-300 hover:scale-[1.02]"
                   >
-                    Get Started
+                    Go to Timeline
                     <ArrowRight className="w-4 h-4 ml-1.5" />
                   </Button>
-                </LoginModal>
+                ) : (
+                  <LoginModal>
+                    <Button
+                      size="lg"
+                      className="h-11 px-7 rounded-full font-medium bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-xl shadow-violet-500/25 hover:shadow-violet-500/40 transition-all duration-300 hover:scale-[1.02]"
+                    >
+                      Get Started
+                      <ArrowRight className="w-4 h-4 ml-1.5" />
+                    </Button>
+                  </LoginModal>
+                )}
+                {!isAuthenticated && (
                 <Button
                   size="lg"
                   variant="outline"
@@ -96,6 +116,7 @@ export default function HomePage() {
                   <Globe className="w-4 h-4 mr-1.5" />
                   Browse as Guest
                 </Button>
+                )}
               </div>
 
               {/* stats */}
@@ -391,12 +412,24 @@ export default function HomePage() {
                 Sign up for any Mastodon instance to connect to the entire decentralized social network.
               </p>
               <div className="flex flex-wrap gap-3 justify-center pt-2">
-                <LoginModal>
-                  <Button size="lg" className="h-12 px-8 rounded-full font-medium bg-white text-primary hover:bg-white/90 shadow-lg transition-all duration-200 hover:scale-[1.02]">
+                {isAuthenticated ? (
+                  <Button
+                    size="lg"
+                    onClick={handleEnter}
+                    className="h-12 px-8 rounded-full font-medium bg-white text-primary hover:bg-white/90 shadow-lg transition-all duration-200 hover:scale-[1.02]"
+                  >
                     <MessageCircle className="w-4 h-4 mr-2" />
-                    Sign In Now
+                    Go to Timeline
                   </Button>
-                </LoginModal>
+                ) : (
+                  <LoginModal>
+                    <Button size="lg" className="h-12 px-8 rounded-full font-medium bg-white text-primary hover:bg-white/90 shadow-lg transition-all duration-200 hover:scale-[1.02]">
+                      <MessageCircle className="w-4 h-4 mr-2" />
+                      Sign In Now
+                    </Button>
+                  </LoginModal>
+                )}
+                {!isAuthenticated && (
                 <Button
                   size="lg"
                   variant="outline"
@@ -405,6 +438,7 @@ export default function HomePage() {
                 >
                   Browse as Guest
                 </Button>
+                )}
               </div>
             </div>
           </div>
