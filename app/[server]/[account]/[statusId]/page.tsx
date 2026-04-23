@@ -303,7 +303,7 @@ export default function StatusDetailPage() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 bg-card/90 px-4 py-6 rounded-3xl">
         <h3 className="text-base font-semibold text-muted-foreground">全部回复</h3>
         {replyGroups.length === 0 ? (
           <div className="rounded-3xl border border-border/60 bg-card/90 p-6 text-sm text-muted-foreground">
