@@ -167,7 +167,7 @@ export function UserHoverCard({
         <div className="absolute -top-2 left-0 h-2 w-full" />
         <div className="flex items-center gap-3">
           {profileHref ? (
-            <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 py-1 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
+            <Link href={profileHref} className="font-semibold text-foreground flex flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 py-1 rounded-full hover:bg-primary-foreground dark:hover:bg-foreground/20 overflow-hidden">
               <Avatar className="h-12 w-12">
                 <AvatarImage src={account.avatar} alt={nameText} />
                 <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
@@ -228,7 +228,7 @@ export function UserHoverCard({
               <Link
                 key={item.label}
                 href={item.href}
-                className="text-center rounded-md px-4 py-1 hover:bg-muted transition-colors"
+                className="text-center rounded-md px-4 py-1 hover:bg-muted dark:hover:bg-foreground/20 transition-colors"
               >
                 <div className="text-base font-semibold text-foreground">{formatCompactNumber(item.value)}</div>
                 <div className="text-xs text-muted-foreground">{item.label}</div>
