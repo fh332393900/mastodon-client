@@ -53,11 +53,13 @@ export function StatusActions({
               }
             }}
             className={cn(
-              "inline-flex items-center gap-1.5 transition-colors cursor-pointer",
+              "inline-flex items-center gap-1.5 transition-colors cursor-pointer group",
               "hover:text-primary",
             )}
           >
-            <MessageCircle className="h-5 w-5" />
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full transition-colors group-hover:bg-primary/10">
+              <MessageCircle className="h-5 w-5" />
+            </span>
             {renderedStatus.repliesCount}
           </button>
 
@@ -66,12 +68,14 @@ export function StatusActions({
             onClick={() => requireAuth(toggleReblog)}
             disabled={!canReblog || isLoading.reblogged}
             className={cn(
-              "inline-flex items-center gap-1.5 transition-colors cursor-pointer",
+              "inline-flex items-center gap-1.5 transition-colors cursor-pointer group",
               renderedStatus.reblogged ? "text-green-500" : "hover:text-green-500",
               (!canReblog || isLoading.reblogged) && "opacity-60 cursor-not-allowed",
             )}
           >
-            <Repeat2 className="h-5 w-5" />
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full transition-colors group-hover:bg-green-500/10">
+              <Repeat2 className="h-5 w-5" />
+            </span>
             {renderedStatus.reblogsCount}
           </button>
 
@@ -80,12 +84,14 @@ export function StatusActions({
             onClick={() => requireAuth(toggleFavourite)}
             disabled={isLoading.favourited}
             className={cn(
-              "inline-flex items-center gap-1.5 transition-colors cursor-pointer",
+              "inline-flex items-center gap-1.5 transition-colors cursor-pointer group",
               renderedStatus.favourited ? "text-red-500" : "hover:text-red-500",
               isLoading.favourited && "opacity-60 cursor-not-allowed",
             )}
           >
-            <Heart className={cn("h-5 w-5", renderedStatus.favourited && "fill-current")} />
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full transition-colors group-hover:bg-red-500/10">
+              <Heart className={cn("h-5 w-5", renderedStatus.favourited && "fill-current")} />
+            </span>
             {renderedStatus.favouritesCount}
           </button>
 
@@ -94,12 +100,14 @@ export function StatusActions({
             onClick={() => requireAuth(toggleBookmark)}
             disabled={isLoading.bookmarked}
             className={cn(
-              "inline-flex items-center gap-1.5 transition-colors cursor-pointer",
+              "inline-flex items-center gap-1.5 transition-colors cursor-pointer group",
               renderedStatus.bookmarked ? "text-yellow-500" : "hover:text-yellow-500",
               isLoading.bookmarked && "opacity-60 cursor-not-allowed",
             )}
           >
-            <Bookmark className={cn("h-5 w-5", renderedStatus.bookmarked && "fill-current")} />
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full transition-colors group-hover:bg-yellow-500/10">
+              <Bookmark className={cn("h-5 w-5", renderedStatus.bookmarked && "fill-current")} />
+            </span>
           </button>
         </div>
       </div>
