@@ -46,6 +46,7 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
   })
 
   const profileHref = server ? getAccountProfileHref(author, server) : undefined
+  const detailHref = server ? `/${server}/@${author.username}/${renderedStatus.id}` : undefined
 
   return (
     <article className="rounded-3xl border border-border/70 bg-card/90 p-4 shadow-sm">
@@ -73,40 +74,81 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
         )}
 
         <div className="min-w-0 flex-1 space-y-3">
-          <div className="flex gap-2 md:gap-4 justify-between items-center">
-            <UserHoverCard account={author} profileHref={profileHref} className="" />
-            <span
-              className="text-sm text-muted-foreground shrink-0 whitespace-nowrap"
-              title={formatFullDate(renderedStatus.createdAt)}
-            >
-              {formatRelativeTime(renderedStatus.createdAt)}
-            </span>
-            {renderedStatus.pinned ? (
-              <Badge variant="outline">
-                <Pin className="mr-1 h-3 w-3" />置顶
-              </Badge>
-            ) : null}
-          </div>
+          {detailHref ? (
+            <Link href={detailHref} className="block group">
+              <div className="flex gap-2 md:gap-4 justify-between items-center">
+                <UserHoverCard account={author} profileHref={profileHref} className="" />
+                <span
+                  className="text-sm text-muted-foreground shrink-0 whitespace-nowrap group-hover:text-primary transition-colors"
+                  title={formatFullDate(renderedStatus.createdAt)}
+                >
+                  {formatRelativeTime(renderedStatus.createdAt)}
+                </span>
+                {renderedStatus.pinned ? (
+                  <Badge variant="outline">
+                    <Pin className="mr-1 h-3 w-3" />置顶
+                  </Badge>
+                ) : null}
+              </div>
 
-          {renderedStatus.spoilerText ? (
-            <div className="rounded-2xl bg-muted/70 px-4 py-3 text-sm text-muted-foreground">
-              {renderedStatus.spoilerText}
-            </div>
-          ) : null}
+              {renderedStatus.spoilerText ? (
+                <div className="rounded-2xl bg-muted/70 px-4 py-3 text-sm text-muted-foreground">
+                  {renderedStatus.spoilerText}
+                </div>
+              ) : null}
 
-          <div className="[&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_a]:text-primary [&_.prose_p]:my-2">
-            <MastodonContent content={renderedStatus.content} emojis={renderedStatus.emojis} />
-          </div>
+              <div className="[&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_a]:text-primary [&_.prose_p]:my-2">
+                <MastodonContent content={renderedStatus.content} emojis={renderedStatus.emojis} />
+              </div>
 
-          {renderedStatus.poll ? (
-            <StatusPoll poll={renderedStatus.poll} />
-          ) : null}
+              {renderedStatus.poll ? (
+                <StatusPoll poll={renderedStatus.poll} />
+              ) : null}
 
-          <StatusMedia attachments={renderedStatus.mediaAttachments} />
+              <StatusMedia attachments={renderedStatus.mediaAttachments} />
 
-          {renderedStatus.card ? (
-            <StatusPreviewCard card={renderedStatus.card} />
-          ) : null}
+              {renderedStatus.card ? (
+                <StatusPreviewCard card={renderedStatus.card} />
+              ) : null}
+            </Link>
+          ) : (
+            <>
+              <div className="flex gap-2 md:gap-4 justify-between items-center">
+                <UserHoverCard account={author} profileHref={profileHref} className="" />
+                <span
+                  className="text-sm text-muted-foreground shrink-0 whitespace-nowrap"
+                  title={formatFullDate(renderedStatus.createdAt)}
+                >
+                  {formatRelativeTime(renderedStatus.createdAt)}
+                </span>
+                {renderedStatus.pinned ? (
+                  <Badge variant="outline">
+                    <Pin className="mr-1 h-3 w-3" />置顶
+                  </Badge>
+                ) : null}
+              </div>
+
+              {renderedStatus.spoilerText ? (
+                <div className="rounded-2xl bg-muted/70 px-4 py-3 text-sm text-muted-foreground">
+                  {renderedStatus.spoilerText}
+                </div>
+              ) : null}
+
+              <div className="[&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_a]:text-primary [&_.prose_p]:my-2">
+                <MastodonContent content={renderedStatus.content} emojis={renderedStatus.emojis} />
+              </div>
+
+              {renderedStatus.poll ? (
+                <StatusPoll poll={renderedStatus.poll} />
+              ) : null}
+
+              <StatusMedia attachments={renderedStatus.mediaAttachments} />
+
+              {renderedStatus.card ? (
+                <StatusPreviewCard card={renderedStatus.card} />
+              ) : null}
+            </>
+          )}
 
           {showActions ? (
             <StatusActions

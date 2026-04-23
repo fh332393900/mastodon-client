@@ -32,8 +32,14 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   const params = useParams()
   const serverParam = params?.server
   const accountParam = params?.account
+  const statusIdParam = params?.statusId
   const server = Array.isArray(serverParam) ? serverParam[0] : serverParam
   const rawAccount = Array.isArray(accountParam) ? accountParam[0] : accountParam
+  const statusId = Array.isArray(statusIdParam) ? statusIdParam[0] : statusIdParam
+
+  if (statusId) {
+    return <div className="mx-auto max-w-4xl space-y-6 px-4 py-6">{children}</div>
+  }
 
   const { data, query, normalizedAccount } = useProfileViewData({
     server,

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useParams, useRouter } from "next/navigation"
 import { MessageCircle, Repeat2, Heart, Bookmark } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/components/auth/auth-provider"
@@ -26,6 +27,10 @@ export function StatusActions({
 }: StatusActionsProps) {
   const { isAuthenticated } = useAuth()
   const [isLoginOpen, setIsLoginOpen] = useState(false)
+  const router = useRouter()
+  const params = useParams()
+  const serverParam = params?.server
+  const server = Array.isArray(serverParam) ? serverParam[0] : serverParam
 
   const requireAuth = (action: () => void) => {
     if (!isAuthenticated) {
@@ -42,7 +47,11 @@ export function StatusActions({
         <div className="flex w-full justify-between gap-4">
           <button
             type="button"
-            onClick={() => requireAuth(() => {})}
+            onClick={() => {
+              if (server) {
+                router.push(`/${server}/@${renderedStatus.account.username}/${renderedStatus.id}`)
+              }
+            }}
             className={cn(
               "inline-flex items-center gap-1.5 transition-colors cursor-pointer",
               "hover:text-primary",
