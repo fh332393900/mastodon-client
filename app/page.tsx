@@ -52,13 +52,13 @@ export default function HomePage() {
 
       <main>
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden px-6 pt-16 pb-6 md:pt-24">
+        <section className="relative overflow-hidden px-6 pt-4 lg:pt-6 xl:pt-10 2xl:pt-24">
           {/* background orbs */}
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute left-1/4 top-0 h-[500px] w-[700px] rounded-full bg-gradient-to-b from-violet-400/15 via-indigo-400/8 to-transparent blur-3xl dark:from-violet-600/12 dark:via-indigo-600/6" />
           </div>
 
-          <div className="mx-auto max-w-6xl grid md:grid-cols-2 gap-12 items-center">
+          <div className="mx-auto max-w-6xl pb-16 grid md:grid-cols-2 gap-12 items-center">
             {/* ── Left: text ── */}
             <div className="space-y-7">
               <div className="inline-flex items-center gap-2 rounded-full border border-violet-200 dark:border-violet-800/60 bg-violet-50 dark:bg-violet-950/40 px-4 py-1.5 text-xs font-medium text-violet-600 dark:text-violet-400">
@@ -120,19 +120,19 @@ export default function HomePage() {
               <div
                 className="relative rounded-2xl overflow-hidden border border-black/8 dark:border-white/8 bg-white dark:bg-[#111116]"
                 style={{
-                  transform: "rotateY(-22deg) rotateX(6deg)",
+                  transform: "rotateY(-22deg) rotateX(6deg) scale(1.1)",
                   transformOrigin: "right center",
                   boxShadow: "8px 16px 48px -8px rgba(109,40,217,0.22), 24px 32px 80px -16px rgba(0,0,0,0.18)",
                   transition: "transform 0.4s ease, box-shadow 0.4s ease",
                 }}
                 onMouseEnter={e => {
                   const el = e.currentTarget
-                  el.style.transform = "rotateY(-8deg) rotateX(1deg)"
+                  el.style.transform = "rotateY(-8deg) rotateX(1deg) scale(1.1)"
                   el.style.boxShadow = "4px 8px 32px -4px rgba(109,40,217,0.18), 12px 20px 48px -8px rgba(0,0,0,0.12)"
                 }}
                 onMouseLeave={e => {
                   const el = e.currentTarget
-                  el.style.transform = "rotateY(-22deg) rotateX(3deg)"
+                  el.style.transform = "rotateY(-22deg) rotateX(3deg) scale(1.1)"
                   el.style.boxShadow = "8px 16px 48px -8px rgba(109,40,217,0.22), 24px 32px 80px -16px rgba(0,0,0,0.18)"
                 }}
               >
@@ -285,7 +285,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Bento feature grid ── */}
-        <section className="mx-auto max-w-5xl px-6 pt-32 pb-8">
+        <section className="mx-auto max-w-5xl px-6 pt-18 pb-8">
           <div className="text-center space-y-3 mb-14">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Everything You Need,<span className="text-muted-foreground font-normal"> All in One Place</span></h2>
             <p className="text-muted-foreground text-[15px]">Every detail crafted for a better social experience.</p>
