@@ -14,8 +14,8 @@ import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToR
 
 const navigationItems = [
   { icon: Home, label: "Home", route: "timeline", color: "text-blue-300" },
-  { icon: Heart, label: "Favorites", route: "favorites", color: "text-red-300" },
-  { icon: PenSquare, label: "Compose", route: "compose", color: "text-purple-300" },
+  { icon: Heart, label: "Favorites", route: "favorites", color: "text-red-500" },
+  { icon: PenSquare, label: "Compose", route: "compose", color: "text-purple-200" },
   { icon: Search, label: "Explore", route: "explore", color: "text-green-300" },
   { icon: Settings, label: "Settings", route: "settings", color: "text-orange-300" },
 ]
@@ -68,7 +68,7 @@ export function Sidebar() {
           <div className="flex items-center justify-between p-4">
             {!isCollapsed ? (
               <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/60 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-indigo-600  rounded-lg flex items-center justify-center">
                   <MessageCircle className="w-5 h-5 text-primary-foreground" />
                 </div>
                 <span className="text-lg font-bold">MastoClient</span>

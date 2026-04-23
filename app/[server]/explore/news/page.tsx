@@ -11,17 +11,17 @@ import type { ExploreTrendingLink } from "@/hooks/mastodon/useExploreNewsCache"
 
 function NewsCardSkeleton() {
   return (
-    <div className="flex gap-4 rounded-3xl border border-border/70 bg-card/90 px-4 py-3">
+    <div className="flex gap-4 rounded-3xl border border-border/70 bg-card/90 px-4 py-3 animate-pulse">
       {/* 左侧方形封面 */}
-      <div className="shrink-0 w-20 h-20 rounded-xl skeleton-loading-bg" />
+      <div className="shrink-0 w-20 h-20 rounded-xl bg-muted/60 dark:bg-muted-foreground/40" />
       {/* 右侧文字区 */}
       <div className="flex flex-1 flex-col gap-2 pb-2 min-w-0">
         {/* 标题 */}
-        <div className="h-5 w-2/5 rounded skeleton-loading-bg" />
+        <div className="h-5 w-2/5 rounded bg-muted/60 dark:bg-muted-foreground/40" />
         {/* 正文三行 */}
-        <div className="h-4 w-full rounded skeleton-loading-bg" />
-        <div className="h-4 w-4/5 rounded skeleton-loading-bg" />
-        <div className="h-4 w-2/5 rounded skeleton-loading-bg" />
+        <div className="h-4 w-full rounded bg-muted/60 dark:bg-muted-foreground/40" />
+        <div className="h-4 w-4/5 rounded bg-muted/60 dark:bg-muted-foreground/40" />
+        <div className="h-4 w-2/5 rounded bg-muted/60 dark:bg-muted-foreground/40" />
       </div>
     </div>
   )

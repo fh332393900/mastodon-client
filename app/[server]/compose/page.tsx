@@ -423,7 +423,7 @@ function ThreadPostItem({
             {isLast && <div className="h-4 w-px bg-border/60" />}
             {/* Index */}
             <span className={cn("px-2 py-1 text-xs tabular-nums text-muted-foreground", !isLast && "rounded-l-lg", total === 1 && "rounded-r-lg")}>
-              {index + 1}/{total}
+              <span className="text-foreground/70">{index + 1}</span>/{total}
             </span>
             {/* Delete button — only when thread has > 1 post */}
             {total > 1 && (

@@ -18,8 +18,8 @@ export function StatusRepostHeader({ account, server }: StatusRepostHeaderProps)
   })
 
   return (
-    <div className="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
-      <Repeat2 className="h-5 w-5 shrink-0 text-accent" />
+    <div className="mb-1 flex items-center gap-2 text-sm text-muted-foreground">
+      <Repeat2 className="h-5 w-5 shrink-0 text-green-500" />
       <Link
         href={`/${server}/${account.acct}`}
         className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary"
