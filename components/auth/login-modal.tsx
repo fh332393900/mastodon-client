@@ -29,36 +29,6 @@ const POPULAR_SERVERS = [
     users: "12M+",
   },
   {
-    name: "Mastodon Online",
-    host: "mastodon.online",
-    desc: "面向大众的通用实例",
-    icon: Users,
-    color: "text-indigo-500",
-    bg: "bg-indigo-500/10",
-    dot: "bg-indigo-400",
-    users: "800K+",
-  },
-  {
-    name: "Fosstodon",
-    host: "fosstodon.org",
-    desc: "开源与技术爱好者",
-    icon: Code2,
-    color: "text-emerald-500",
-    bg: "bg-emerald-500/10",
-    dot: "bg-emerald-400",
-    users: "50K+",
-  },
-  {
-    name: "Infosec Exchange",
-    host: "infosec.exchange",
-    desc: "信息安全从业者聚集地",
-    icon: Shield,
-    color: "text-rose-500",
-    bg: "bg-rose-500/10",
-    dot: "bg-rose-400",
-    users: "30K+",
-  },
-  {
     name: "Webtoo.ls",
     host: "m.webtoo.ls",
     desc: "技术与极客爱好者",
@@ -69,14 +39,14 @@ const POPULAR_SERVERS = [
     users: "10K+",
   },
   {
-    name: "Hachyderm",
-    host: "hachyderm.io",
-    desc: "科技工作者与创作者",
-    icon: Zap,
-    color: "text-amber-500",
-    bg: "bg-amber-500/10",
-    dot: "bg-amber-400",
-    users: "40K+",
+    name: "Fosstodon",
+    host: "fosstodon.org",
+    desc: "开源与技术爱好者",
+    icon: Code2,
+    color: "text-emerald-500",
+    bg: "bg-emerald-500/10",
+    dot: "bg-emerald-400",
+    users: "50K+",
   },
 ]
 
@@ -117,7 +87,7 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
       {children ? <DialogTrigger asChild>{children}</DialogTrigger> : null}
       <DialogContent className="sm:max-w-[520px] p-0 overflow-hidden border-border/60 bg-card shadow-2xl shadow-black/20">
         {/* Header gradient strip */}
-        <div className="relative px-7 pt-7 pb-2 bg-gradient-to-b from-primary/6 to-transparent border-b border-border/50">
+        <div className="relative px-3 sm:px-7 pt-7 pb-2 bg-gradient-to-b from-primary/6 to-transparent border-b border-border/50">
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-violet-500 via-indigo-500 to-blue-500" />
           <DialogHeader className="space-y-1.5">
             <div className="flex items-center justify-center gap-2.5 mb-1">
@@ -136,7 +106,7 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.22 }}
-          className="px-7 pb-4 space-y-3"
+          className="px-3 sm:px-7 pb-4 space-y-3"
         >
           {/* 热门服务器卡片 */}
           <div>
@@ -152,7 +122,7 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
                     disabled={isLoading}
                     onClick={() => { setServer(s.host); setError("") }}
                     className={cn(
-                      "group cursor-pointer relative flex flex-col items-start gap-1 rounded-lg border px-3 py-2.5 text-left transition-all duration-200",
+                      "group cursor-pointer relative flex flex-col items-start gap-1 rounded-sm border px-3 py-2.5 text-left transition-all duration-200",
                       "hover:border-primary/50 hover:bg-primary/4 hover:shadow-sm",
                       isSelected
                         ? "border-primary/60 bg-primary/6 shadow-sm ring-1 ring-primary/20"
@@ -166,10 +136,10 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
                     )}
                     {/* icon */}
                     <div className="flex items-center gap-2">
-                      <div className={cn("w-6 h-6 rounded-md flex items-center justify-center mb-0.5", s.bg)}>
+                      <div className={cn("w-6 h-6 hidden md:flex rounded-md items-center justify-center mb-0.5", s.bg)}>
                         <Icon className={cn("w-3.5 h-3.5", s.color)} />
                       </div>
-                      <span className="text-[11px] font-semibold text-foreground leading-tight">{s.name}</span>
+                      <span className="text-[11px] line-clamp-1 font-semibold text-foreground leading-tight">{s.name}</span>
                     </div>
                     <span className={cn("text-[10px] font-medium leading-tight", s.color)}>{s.host}</span>
                     <div className="flex items-center justify-between w-full mt-0.5">
@@ -208,7 +178,7 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
                 value={server}
                 onChange={(e) => { setServer(e.target.value); setError("") }}
                 onKeyDown={handleKeyDown}
-                className="pl-[4.2rem] h-10 text-sm rounded-lg bg-background/80 border-border/70 transition-all duration-200 focus-visible:ring-primary/30"
+                className="pl-[4.2rem] h-10 text-sm rounded-sm bg-background/80 border-border/70 transition-all duration-200 focus-visible:ring-primary/30"
                 disabled={isLoading}
               />
               {server && !isLoading && (
@@ -240,7 +210,7 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
           <Button
             onClick={handleLogin}
             disabled={!server || isLoading}
-            className="w-full h-10 rounded-lg font-medium text-sm bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-md shadow-violet-500/20 hover:shadow-violet-500/30 transition-all duration-200 disabled:opacity-50"
+            className="w-full h-10 rounded-sm font-medium text-sm bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-md shadow-violet-500/20 hover:shadow-violet-500/30 transition-all duration-200 disabled:opacity-50"
           >
             {isLoading ? (
               <>
