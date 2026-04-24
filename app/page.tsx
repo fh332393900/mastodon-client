@@ -174,10 +174,12 @@ export default function HomePage() {
                     {/* logo */}
                     <div>
                       <div className="flex items-center gap-1.5 mb-5 px-1">
-                        <div className="w-5 h-5 rounded-md bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
-                          <MessageCircle className="w-3 h-3 text-white" />
-                        </div>
-                        <span className="text-[11px] font-semibold">MastoClient</span>
+                        <img
+                          src="/icon.svg"
+                          alt="MastoClient"
+                          className="h-6 w-6 rounded-lg"
+                        />
+                        <span className="text-[11px] font-['Quicksand']">MastoClient</span>
                       </div>
                       <div className="space-y-0.5">
                         {[
@@ -334,7 +336,7 @@ export default function HomePage() {
                 <Rss className="w-5 h-5 text-green-600 dark:text-green-400" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg leading-snug mb-1.5">Your Timeline,<br />Your Rules</h3>
+                <h3 className="font-semibold text-lg leading-snug mb-1.5 font-['Quicksand']">Your Timeline,<br />Your Rules</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">No algorithm, pure chronology. See exactly what you want to see.</p>
               </div>
               <div className="space-y-1.5 pt-1">
@@ -353,7 +355,7 @@ export default function HomePage() {
                 <Lock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-1.5">Privacy First</h3>
+                <h3 className="font-semibold text-lg mb-1.5 font-['Quicksand']">Privacy First</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">Your data belongs to you. We protect your privacy, not sell it.</p>
               </div>
             </div>
@@ -364,7 +366,7 @@ export default function HomePage() {
                 <Github className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-1.5 text-white">Open Source,<br />Community Driven</h3>
+                <h3 className="font-semibold text-lg mb-1.5 text-white font-['Quicksand']">Open Source,<br />Community Driven</h3>
                 <p className="text-sm text-white/50 leading-relaxed">Built by developers worldwide. Transparent, auditable, and trustworthy.</p>
               </div>
             </div>
@@ -375,7 +377,7 @@ export default function HomePage() {
                 <Globe className="w-5 h-5 text-orange-500" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-1.5">Works Everywhere</h3>
+                <h3 className="font-semibold text-lg mb-1.5 font-['Quicksand']">Works Everywhere</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">Seamlessly use it on web, desktop, or mobile. Consistent experience across all platforms.</p>
               </div>
             </div>
