@@ -88,7 +88,7 @@ export default function HomePage() {
               </p>
 
               <div className="flex flex-wrap gap-3">
-                {isAuthenticated ? (
+                {accessToken ? (
                   <Button
                     size="lg"
                     onClick={handleEnter}
@@ -108,7 +108,7 @@ export default function HomePage() {
                     </Button>
                   </LoginModal>
                 )}
-                {!isAuthenticated && (
+                {!accessToken && (
                 <Button
                   size="lg"
                   variant="outline"
@@ -416,7 +416,7 @@ export default function HomePage() {
                 Sign up for any Mastodon instance to connect to the entire decentralized social network.
               </p>
               <div className="flex flex-wrap gap-3 justify-center pt-2">
-                {isAuthenticated ? (
+                {accessToken ? (
                   <Button
                     size="lg"
                     onClick={handleEnter}
@@ -433,7 +433,7 @@ export default function HomePage() {
                     </Button>
                   </LoginModal>
                 )}
-                {!isAuthenticated && (
+                {!accessToken && (
                 <Button
                   size="lg"
                   variant="outline"
