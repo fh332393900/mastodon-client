@@ -113,7 +113,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
                     })}
                   </h1>
                   {account.bot ? <Badge variant="outline">Bot</Badge> : null}
-                  {account.locked ? <Badge variant="outline">{"\u53d7\u4fdd\u62a4"}</Badge> : null}
+                  {account.locked ? <Badge variant="outline">非公开</Badge> : null}
                 </div>
                 <p className="mt-1 text-base text-muted-foreground">@{account.acct}</p>
               </div>
@@ -142,8 +142,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
                 {featuredTags.map((tag: MastodonFeaturedTag) => (
                   <Link
                     key={tag.id}
-                    href={`https://${server}/tags/${tag.name}`}
-                    target="_blank"
+                    href={`/${server}/tags/${tag.name}`}
                     rel="noreferrer"
                     className="rounded-full bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
                   >

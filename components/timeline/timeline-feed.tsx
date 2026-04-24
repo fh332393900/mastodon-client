@@ -65,7 +65,7 @@ export function TimelineFeed() {
               </Button>
             ))}
           </div>
-          <Badge variant="outline" className="text-accent border-accent/50">
+          <Badge variant="outline" className="hidden md:inline-flex text-accent border-accent/50">
             {posts.length} posts
           </Badge>
         </div>

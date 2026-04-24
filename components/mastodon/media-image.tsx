@@ -51,7 +51,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
         <img
           src={ media.url || media.previewUrl || undefined}
           alt={media.description || "media"}
-          className="h-full object-cover"
+          className="w-full h-auto object-cover"
         />
       </button>
 
