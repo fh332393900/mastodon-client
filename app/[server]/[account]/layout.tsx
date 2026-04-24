@@ -58,12 +58,12 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
     return (
       <div className="mx-auto max-w-4xl space-y-6 px-4 py-6">
         <section className="overflow-hidden rounded-[2rem] border border-border/70 bg-card/90 p-8">
-          <div className="h-40 w-full animate-pulse rounded-2xl bg-muted/60" />
+          <div className="h-40 w-full animate-pulse rounded-2xl bg-border/60 dark:bg-muted-foreground/40" />
           {
             Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="mt-6 space-y-4">
-                <div className="h-6 w-40 animate-pulse rounded bg-muted/60" />
-                <div className="h-4 w-64 animate-pulse rounded bg-muted/60" />
+                <div className="h-6 w-40 animate-pulse rounded bg-border/60 dark:bg-muted-foreground/40" />
+                <div className="h-4 w-3/4 animate-pulse rounded bg-border/60 dark:bg-muted-foreground/40" />
               </div>
             ))
           }
