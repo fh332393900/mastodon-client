@@ -49,7 +49,7 @@ export function ComposePage() {
   const userDisplayName = ((user as any)?.displayName ?? (user as any)?.username ?? "M") as string
 
   return (
-    <div className="space-y-6 px-4 py-6 overflow-x-hidden">
+    <div className="space-y-6 px-4 py-6">
       <div className="space-y-6">
         <div className="border-b border-border pb-4">
           <h1 className="text-2xl font-bold">撰写嘟文</h1>

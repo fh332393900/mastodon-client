@@ -94,7 +94,6 @@ export default function StatusDetailPage() {
       </div>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold">回复</h2>
         <ReplyComposer
           user={user}
           fallbackAuthor={author}

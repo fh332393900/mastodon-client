@@ -3,10 +3,10 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Home, Heart, Search, Settings, Menu, X, LogOut, PenSquare, MessageCircle } from "lucide-react"
+import { Home, Heart, Search, Settings, Menu, X, LogOut, PenSquare, MessageCircle, ArrowLeft } from "lucide-react"
 import { LoginModal } from "@/components/auth/login-modal"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/components/auth/auth-provider"
 import { useMasto } from "../auth/masto-provider"
@@ -24,11 +24,14 @@ export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(true)
   const pathname = usePathname()
+  const router = useRouter()
   const { user, logout, isInitialized } = useAuth()
   const { server } = useMasto()
   const userNameText = user
     ? getDisplayNameText({ displayName: user.displayName, username: user.username })
     : ""
+
+  const isMenuPage = navigationItems.some((item) => pathname === `/${server}/${item.route}`)
 
   const handleLogout = async () => {
     await logout()
@@ -81,6 +84,18 @@ export function Sidebar() {
                   </div>
                 </Link>
               </div>
+            )}
+
+            {!isCollapsed && !isMenuPage && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => router.back()}
+                aria-label="返回上一级"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
             )}
           </div>
 

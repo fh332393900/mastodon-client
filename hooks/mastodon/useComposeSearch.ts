@@ -33,23 +33,32 @@ export function useComposeSearch(query: string, type: SearchType | null) {
 
     const timer = setTimeout(async () => {
       try {
-        const url = new URL("/api/compose/search", window.location.origin)
-        url.searchParams.set("q", normalizedQuery)
-        url.searchParams.set("type", type)
-        url.searchParams.set("resolve", "true")
-        url.searchParams.set("limit", "5")
+        if (!client) throw new Error("Mastodon client not ready")
 
-        const response = await fetch(url.toString())
-        if (!response.ok) {
-          throw new Error("Search request failed")
+        if (type === "accounts") {
+          const result = await client.v2.search.list({
+            q: normalizedQuery,
+            type: "accounts",
+            resolve: true,
+            limit: 5,
+          })
+
+          if (!cancelled) {
+            setData({ accounts: result.accounts ?? [], hashtags: [] })
+          }
+
+          return
         }
-        const result = await response.json()
+
+        const result = await client.v2.search.list({
+          q: normalizedQuery,
+          type: "hashtags",
+          resolve: true,
+          limit: 5,
+        })
 
         if (!cancelled) {
-          setData({
-            accounts: result.accounts ?? [],
-            hashtags: result.hashtags ?? [],
-          })
+          setData({ accounts: [], hashtags: result.hashtags ?? [] })
         }
       } catch {
         if (!cancelled) {

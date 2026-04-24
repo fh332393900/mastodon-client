@@ -144,7 +144,7 @@ export default function TagHoverPopover({
 
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-foreground truncate">#{tagName}</span>
+              <span className="text-sm font-semibold text-foreground truncate">#{decodeURIComponent(tagName)}</span>
             </div>
             <div className="mt-1 text-xs text-muted-foreground line-clamp-2">
               {isFetching
