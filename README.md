@@ -1,5 +1,8 @@
 <p align="center">
   <img src="./public/icon.svg" alt="MastoClient" width="72" height="72" />
+  <br />
+  <a href="README.md">English</a>
+  <a href="README.zh.md">简体中文</a>
 </p>
 
 <h1 align="center">Mastodon Client (Next.js)</h1>
@@ -8,52 +11,49 @@
 
 ![Mastodon Client cover](./public/ScreenShotHome.png)
 
-一个基于 **Next.js App Router** 构建的 Mastodon Web Client，支持时间线浏览、收藏、发帖、探索与基础设置等功能。项目使用 **React Query** 做数据请求与缓存，并针对无限滚动与滚动位置恢复做了体验优化。
+This is a Mastodon web client built with **Next.js App Router**. It supports timeline browsing, favorites, posting, exploration, and basic settings. The project uses **React Query** for data fetching and caching, with optimizations for infinite scrolling and scroll position restoration.
 
 ---
 
 ## Features
 
-- **Home / Local / Public 时间线**
-  - 时间线切换
-  - 无限滚动加载
-  - 滚动位置缓存与恢复（返回列表不“跳顶”）
-- **Favorites（收藏）**
-  - 收藏列表缓存（Infinite Query）
-  - 支持分页加载
-- **Compose（发帖）**
-  - 基础发帖流程（依赖登录态）
-- **Explore（探索）**
-  - 探索内容聚合入口（可扩展为贴文、标签、最新、推荐关注等）
-- **基础 UI 与体验优化**
-  - Skeleton Loading
-  - 组件化 StatusCard
-  - 响应式布局
+- **Home / Local / Public timelines**
+  - Timeline switching
+  - Infinite scroll loading
+  - Scroll position caching and restoration (no sudden jump when returning to a list)
+- **Favorites**
+  - Cached favorites list (Infinite Query)
+  - Paginated loading support
+- **Compose**
+  - Basic posting workflow (requires login)
+- **Explore**
+  - Content discovery entry point (can be extended to posts, tags, latest, suggested follows, etc.)
+- **UI and experience improvements**
+  - Skeleton loading
+  - Component-based `StatusCard`
+  - Responsive layout
 
----
 
 ## Tech Stack
 
 - **Framework:** Next.js (App Router) + React + TypeScript
-- **Data Fetching / Cache:** `@tanstack/react-query`（支持 `useInfiniteQuery`）
+- **Data Fetching / Cache:** `@tanstack/react-query` (supports `useInfiniteQuery`)
 - **Mastodon API:** `masto`
-- **UI:** Tailwind CSS + shadcn/ui（Button/Badge/Card 等）
-- **Deployment:** Vercel（与 v0.app 同步）
+- **UI:** Tailwind CSS + shadcn/ui (Button/Badge/Card, etc.)
+- **Deployment:** Vercel
 
----
 
 ## Architecture Overview
 
-> 以“页面 -> hooks -> API client -> React Query cache”为主链路组织。
+> Organized around page -> hooks -> API client -> React Query cache.
 
-- `app/**`：路由页面（Favorites / Explore / Timeline 等）
-- `components/**`：UI 组件（`StatusCard`、`InfiniteScroller` 等）
-- `hooks/mastodon/**`：业务数据 hooks（如 `useFavoritesCache`、`useTimelineCache`）
+- `app/**`: route pages (Favorites / Explore / Timeline, etc.)
+- `components/**`: UI components (`StatusCard`, `InfiniteScroller`, etc.)
+- `hooks/mastodon/**`: Mastodon data hooks (such as `useFavoritesCache`, `useTimelineCache`)
 - `components/mastodon/infinite-scroller.tsx`
-  - IntersectionObserver 触底加载
-  - 可选 `scrollCacheKey` 用于滚动位置持久化/恢复
+  - IntersectionObserver-based infinite load
+  - Optional `scrollCacheKey` for scroll position persistence/restoration
 
----
 
 ## Getting Started
 
@@ -67,10 +67,9 @@ pnpm install
 pnpm run dev
 ```
 
-打开：`http://localhost:3000`
+Open: `http://localhost:3000`
 
----
 
 ## Deployment
 
-项目可部署到 Vercel。
+This project can be deployed to Vercel.
