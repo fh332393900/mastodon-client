@@ -73,9 +73,9 @@ export function UserHoverCard({
   const stats = useMemo(() => {
     const base = server ? getAccountProfileHref(account, server) : profileHref ?? ""
     return [
-      { label: "贴文", value: account.statusesCount, href: base || undefined },
-      { label: "关注", value: account.followingCount, href: base ? `${base}/following` : undefined },
-      { label: "粉丝", value: account.followersCount, href: base ? `${base}/followers` : undefined },
+      { label: "Posts", value: account.statusesCount, href: base || undefined },
+      { label: "Following", value: account.followingCount, href: base ? `${base}/following` : undefined },
+      { label: "Followers", value: account.followersCount, href: base ? `${base}/followers` : undefined },
     ]
   }, [account, server, profileHref])
 

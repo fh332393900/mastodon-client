@@ -21,7 +21,10 @@ function toValidDate(value: unknown): Date | null {
   return null
 }
 
-export function formatRelativeTime(value: string | Date | null | undefined): string {
+export function formatRelativeTime(
+  value: string | Date | null | undefined,
+  locale: string = "en",
+): string {
   const date = toValidDate(value)
   if (!date) return ""
 
@@ -34,12 +37,16 @@ export function formatRelativeTime(value: string | Date | null | undefined): str
   const diffMonth = Math.floor(diffDay / 30)
   const diffYear = Math.floor(diffDay / 365)
 
-  if (diffSec < 60) return "刚刚"
-  if (diffMin < 60) return `${diffMin}分钟前`
-  if (diffHour < 24) return `${diffHour}小时前`
-  if (diffDay < 30) return `${diffDay}天前`
-  if (diffMonth < 12) return `${diffMonth}个月前`
-  return `${diffYear}年前`
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" })
+
+  if (diffSec < 60) {
+    return locale.startsWith("zh") ? "刚刚" : "just now"
+  }
+  if (diffMin < 60) return rtf.format(-diffMin, "minute")
+  if (diffHour < 24) return rtf.format(-diffHour, "hour")
+  if (diffDay < 30) return rtf.format(-diffDay, "day")
+  if (diffMonth < 12) return rtf.format(-diffMonth, "month")
+  return rtf.format(-diffYear, "year")
 }
 
 /**
@@ -48,7 +55,7 @@ export function formatRelativeTime(value: string | Date | null | undefined): str
 export function formatFullDate(value: string | Date): string {
   const date = toValidDate(value)
   if (!date) return ""
-  return new Intl.DateTimeFormat("zh-CN", {
+  return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",

@@ -38,8 +38,8 @@ export function ComposePage() {
     return (
       <div className="space-y-6 px-4 py-6">
         <div className="rounded-2xl border border-border bg-card p-6 text-center">
-          <h1 className="text-xl font-semibold">请先登录</h1>
-          <p className="mt-2 text-sm text-muted-foreground">登录后即可在 {server} 发布嘟文。</p>
+          <h1 className="text-xl font-semibold">Please log in</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Log in to post on {server}.</p>
         </div>
       </div>
     )
@@ -52,8 +52,8 @@ export function ComposePage() {
     <div className="space-y-6 px-4 py-6">
       <div className="space-y-6">
         <div className="border-b border-border pb-4">
-          <h1 className="text-2xl font-bold">撰写嘟文</h1>
-          <p className="text-muted-foreground">在 {server} 发布新动态、媒体或投票。</p>
+          <h1 className="text-2xl font-bold">Compose Post</h1>
+          <p className="text-muted-foreground">Post new updates, media, or polls on {server}.</p>
         </div>
 
         <div className="rounded-2xl border border-border bg-card px-5 pt-5 pb-3 shadow-sm">

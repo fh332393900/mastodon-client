@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
 const tabs = [
-  { href: "", label: "贴文" },
-  { href: "tag", label: "标签" },
-  { href: "news", label: "最新" },
-  { href: "suggested", label: "推荐关注" },
+  { href: "", label: "Posts" },
+  { href: "tag", label: "Tags" },
+  { href: "news", label: "News" },
+  { href: "suggested", label: "Suggested" },
 ] as const
 
 export default function ExploreLayout({ children }: { children: ReactNode }) {

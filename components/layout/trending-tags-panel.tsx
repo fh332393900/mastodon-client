@@ -17,7 +17,7 @@ export function TrendingTagsPanel() {
       <CardHeader className="pb-2 px-4">
         <CardTitle className="text-sm font-medium flex items-center gap-1.5">
           <Hash className="h-3.5 w-3.5 text-primary" />
-          热门话题
+          Trending Topics
         </CardTitle>
       </CardHeader>
       <CardContent className="pt-0 px-0 pb-0 flex flex-col min-h-0">
@@ -32,7 +32,7 @@ export function TrendingTagsPanel() {
             ))}
           </div>
         ) : tags.length === 0 ? (
-          <p className="px-4 pb-3 text-xs text-muted-foreground">暂无热门话题</p>
+          <p className="px-4 pb-3 text-xs text-muted-foreground">No trending topics</p>
         ) : (
           <div className="divide-y divide-border/40">
             {tags.map((tag) => {
@@ -49,7 +49,7 @@ export function TrendingTagsPanel() {
                       #{tag.name}
                     </div>
                     <div className="text-xs text-muted-foreground mt-0.5">
-                      最近 {accounts} 人 · {todayUses} 次使用
+                      Recently {accounts} People · {todayUses} Uses
                     </div>
                   </div>
                   <TagTrend tag={tag} />
@@ -67,7 +67,7 @@ export function TrendingTagsPanel() {
             className="group/more w-full text-xs text-muted-foreground hover:text-primary justify-center"
           >
             <Link href={server ? `/${server}/explore/tag` : "/explore/tag"}>
-              查看更多热门标签
+              View More Trending Tags
               <ArrowRight className="ml-1 transition-transform duration-300 ease-out group-hover/more:translate-x-1.5" />
             </Link>
           </Button>

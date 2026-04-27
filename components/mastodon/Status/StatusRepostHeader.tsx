@@ -29,12 +29,14 @@ export function StatusRepostHeader({ account, server }: StatusRepostHeaderProps)
           <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
         </Avatar>
         <span className="inline-flex flex-wrap items-center gap-1">
-          {renderDisplayName({
-            displayName: account.displayName,
-            username: account.username,
-            emojis: account.emojis,
-          })}
-          <span>转发了这条贴文</span>
+          <span className="font-bold">
+            {renderDisplayName({
+              displayName: account.displayName,
+              username: account.username,
+              emojis: account.emojis,
+            })}
+          </span>
+          <span>Reposted this status</span>
         </span>
       </Link>
     </div>

@@ -16,11 +16,11 @@ import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToR
 import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
 
 function formatCount(value: number) {
-  return new Intl.NumberFormat("zh-CN").format(value)
+  return new Intl.NumberFormat("en-US").format(value)
 }
 
 function formatJoinedDate(value: string) {
-  return new Intl.DateTimeFormat("zh-CN", {
+  return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -113,7 +113,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
                     })}
                   </h1>
                   {account.bot ? <Badge variant="outline">Bot</Badge> : null}
-                  {account.locked ? <Badge variant="outline">非公开</Badge> : null}
+                  {account.locked ? <Badge variant="outline">Private</Badge> : null}
                 </div>
                 <p className="mt-1 text-base text-muted-foreground">@{account.acct}</p>
               </div>
@@ -170,12 +170,12 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
             <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted-foreground">
               <span className="inline-flex items-center gap-2">
                 <CalendarDays className="h-4 w-4" />
-                {"\u52a0\u5165\u4e8e"} {formatJoinedDate(account.createdAt)}
+                Join in {formatJoinedDate(account.createdAt)}
               </span>
               {account.lastStatusAt ? (
                 <span className="inline-flex items-center gap-2">
                   <Sparkles className="h-4 w-4" />
-                  {"\u6700\u8fd1\u6d3b\u8dc3"} {account.lastStatusAt}
+                  {"Recently active"} {account.lastStatusAt}
                 </span>
               ) : null}
               {account.moved?.acct ? (
@@ -189,24 +189,24 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
             <div className="flex flex-wrap gap-5 text-sm">
               <span className="text-muted-foreground">
                 <strong className="mr-1 text-lg font-semibold text-foreground">{formatCount(account.statusesCount)}</strong>
-                {"\u8d34\u6587"}
+                  Posts
               </span>
               <span className="text-muted-foreground">
                 <strong className="mr-1 text-lg font-semibold text-foreground">{formatCount(account.followingCount)}</strong>
-                {"\u6b63\u5728\u5173\u6ce8"}
+                {"Following"}
               </span>
               <span className="text-muted-foreground">
                 <strong className="mr-1 text-lg font-semibold text-foreground">{formatCount(account.followersCount)}</strong>
-                {"\u5173\u6ce8\u8005"}
+                {"Followers"}
               </span>
             </div>
           </div>
 
           <ProfileTabs
             tabs={[
-              { href: baseHref, label: "\u8d34\u6587", count: account.statusesCount, exact: true },
-              { href: `${baseHref}/following`, label: "\u6b63\u5728\u5173\u6ce8", count: account.followingCount },
-              { href: `${baseHref}/followers`, label: "\u5173\u6ce8\u8005", count: account.followersCount },
+              { href: baseHref, label: "Posts", count: account.statusesCount, exact: true },
+              { href: `${baseHref}/following`, label: "Following", count: account.followingCount },
+              { href: `${baseHref}/followers`, label: "Followers", count: account.followersCount },
             ]}
           />
         </div>

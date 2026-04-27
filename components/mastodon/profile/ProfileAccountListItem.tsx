@@ -43,7 +43,7 @@ export function ProfileAccountListItem({
               })}
             </p>
             {account.bot ? <Badge variant="outline">Bot</Badge> : null}
-            {account.locked ? <Badge variant="outline">{"\u5df2\u9501\u5b9a"}</Badge> : null}
+            {account.locked ? <Badge variant="outline">Private</Badge> : null}
           </div>
 
           <p className="text-sm text-muted-foreground">@{account.acct}</p>
@@ -55,9 +55,9 @@ export function ProfileAccountListItem({
           ) : null}
 
           <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
-            <span><span className="text-foreground font-bold">{account.statusesCount}</span> 贴文</span>
-            <span><span className="text-foreground font-bold">{account.followingCount}</span> 正在关注</span>
-            <span><span className="text-foreground font-bold">{account.followersCount}</span> 关注者</span>
+            <span><span className="text-foreground font-bold">{account.statusesCount}</span> Posts</span>
+            <span><span className="text-foreground font-bold">{account.followingCount}</span> Following</span>
+            <span><span className="text-foreground font-bold">{account.followersCount}</span> Followers</span>
           </div>
         </div>
       </div>

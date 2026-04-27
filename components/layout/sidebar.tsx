@@ -153,13 +153,13 @@ export function Sidebar() {
             <div className="border-t border-border/60 py-4 mx-4">
               <div className="space-y-3">
                 <p className="text-sm text-muted-foreground">
-                  正在查看 <span className="font-semibold text-foreground">{server}</span> 的公共数据
+                  Viewing <span className="font-semibold text-foreground">{server}</span> public data
                 </p>
                 <p className="text-xs text-muted-foreground/80">
-                  登录后可关注其他人或标签、点赞、分享和回复帖文，或与不同服务器上的账号交互。
+                  After logging in, you can follow other users or hashtags, like, share, and reply to posts, or interact with accounts on different servers.
                 </p>
                 <LoginModal>
-                  <Button className="w-full">登录</Button>
+                  <Button className="w-full">Log In</Button>
                 </LoginModal>
               </div>
             </div>

@@ -24,10 +24,10 @@ import { useComposePostActions } from "@/components/mastodon/compose/useComposeP
 import type { ThreadItem } from "@/hooks/mastodon/useComposeThread"
 
 const VISIBILITY_OPTIONS: Array<{ value: mastodon.v1.StatusVisibility; label: string }> = [
-  { value: "public", label: "公开" },
-  { value: "unlisted", label: "不公开列出" },
-  { value: "private", label: "仅关注者" },
-  { value: "direct", label: "私信" },
+  { value: "public", label: "Public" },
+  { value: "unlisted", label: "Unlisted" },
+  { value: "private", label: "Followers only" },
+  { value: "direct", label: "Direct" },
 ]
 
 const EMOJI_LIST = [
@@ -37,11 +37,11 @@ const EMOJI_LIST = [
 ]
 
 const POLL_EXPIRES = [
-  { label: "1小时", value: 60 * 60 },
-  { label: "6小时", value: 6 * 60 * 60 },
-  { label: "1天", value: 24 * 60 * 60 },
-  { label: "3天", value: 3 * 24 * 60 * 60 },
-  { label: "7天", value: 7 * 24 * 60 * 60 },
+  { label: "1 hour", value: 60 * 60 },
+  { label: "6 hours", value: 6 * 60 * 60 },
+  { label: "1 day", value: 24 * 60 * 60 },
+  { label: "3 days", value: 3 * 24 * 60 * 60 },
+  { label: "7 days", value: 7 * 24 * 60 * 60 },
 ]
 
 type ThreadPostItemProps = {
@@ -120,7 +120,7 @@ export function ThreadPostItem({
             <Input
               value={post.spoilerText}
               onChange={(e) => onChange({ spoilerText: e.target.value })}
-              placeholder="输入警示提示（可选）"
+              placeholder="Enter a content warning (optional)"
               className="h-8 text-sm"
             />
           </div>
@@ -130,7 +130,7 @@ export function ThreadPostItem({
           value={post.content}
           onChange={(value) => onChange({ content: value })}
           editorRef={editorRef}
-          placeholder="在想些什么？"
+          placeholder="What's on your mind?"
         />
 
         {post.mediaList.length > 0 && (
@@ -138,7 +138,7 @@ export function ThreadPostItem({
             {post.mediaList.map((media) => (
               <div key={media.id} className="group relative overflow-hidden rounded-xl border border-border/60 bg-muted/40">
                 {media.type === "image" ? (
-                  <img src={media.previewUrl} alt="预览" className="h-36 w-full object-cover" />
+                  <img src={media.previewUrl} alt="Preview" className="h-36 w-full object-cover" />
                 ) : (
                   <video src={media.previewUrl} className="h-36 w-full object-cover" controls />
                 )}
@@ -146,7 +146,7 @@ export function ThreadPostItem({
                   type="button"
                   onClick={() => removeMedia(media.id, post, onChange)}
                   className="absolute right-2 top-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-black/50 text-white opacity-0 transition group-hover:opacity-100"
-                  aria-label="移除媒体"
+                  aria-label="Remove media"
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -158,9 +158,9 @@ export function ThreadPostItem({
         {post.pollEnabled && (
           <div className="mt-2 space-y-2 rounded-xl border border-border/70 bg-muted/30 p-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold">投票设置</h3>
+              <h3 className="text-sm font-semibold">Poll Settings</h3>
               <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => onChange({ pollEnabled: false })}>
-                关闭
+                Close
               </Button>
             </div>
             <div className="space-y-1.5">
@@ -169,7 +169,7 @@ export function ThreadPostItem({
                   <Input
                     value={option}
                     onChange={(e) => updatePollOption(e.target.value, idx, post, onChange)}
-                    placeholder={`选项 ${idx + 1}`}
+                    placeholder={`Option ${idx + 1}`}
                     className="h-8 text-sm"
                   />
                   {post.pollOptions.length > 2 && (
@@ -180,13 +180,13 @@ export function ThreadPostItem({
                 </div>
               ))}
               <Button size="sm" variant="secondary" className="h-7 text-xs" onClick={() => addPollOption(post, maxPollOptions, onChange)} disabled={post.pollOptions.length >= pollLimit}>
-                添加选项
+                Add Option
               </Button>
             </div>
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <div className="flex items-center gap-2">
                 <Switch checked={post.pollMultiple} onCheckedChange={(v) => onChange({ pollMultiple: v })} />
-                <span className="text-xs">多选</span>
+                <span className="text-xs">Multiple</span>
               </div>
               <Select value={String(post.pollExpiresIn)} onValueChange={(v) => onChange({ pollExpiresIn: Number(v) })}>
                 <SelectTrigger className="h-7 w-24 text-xs">
@@ -228,21 +228,21 @@ export function ThreadPostItem({
 
           <ToolbarButton
             icon={<ImageIcon className="h-4 w-4" />}
-            label="图片"
+            label="Image"
             onClick={() => imageInputRef.current?.click()}
             disabled={post.pollEnabled}
           />
 
           <ToolbarButton
             icon={<Video className="h-4 w-4" />}
-            label="视频"
+            label="Video"
             onClick={() => videoInputRef.current?.click()}
             disabled={post.pollEnabled}
           />
 
           <ToolbarButton
             icon={<BarChart3 className="h-4 w-4" />}
-            label="投票"
+            label="Poll"
             onClick={() => togglePoll(post, onChange)}
             disabled={post.mediaList.length > 0}
             active={post.pollEnabled}
@@ -250,7 +250,7 @@ export function ThreadPostItem({
 
           <ToolbarButton
             icon={<AlertTriangle className="h-4 w-4 text-destructive" />}
-            label="警示"
+            label="Content Warning"
             onClick={() => onChange({ showSpoiler: !post.showSpoiler })}
             active={post.showSpoiler}
           />
@@ -299,7 +299,7 @@ export function ThreadPostItem({
                   type="button"
                   onClick={onRemove}
                   disabled={isSubmitting}
-                  aria-label="删除此条"
+                  aria-label="Delete this post"
                   className="group cursor-pointer flex items-center rounded-r-lg px-2 py-1 transition hover:bg-destructive/15 disabled:opacity-40"
                 >
                   <X className="h-3 w-3 text-muted-foreground group-hover:text-destructive transition" />
@@ -318,9 +318,9 @@ export function ThreadPostItem({
               {isSubmittingThis ? (
                 <>
                   <Loader2 className="mr-1 h-3 w-3 animate-spin" />
-                  发布中…
+                  Posting…
                 </>
-              ) : total > 1 ? "发布串" : "发布"}
+              ) : total > 1 ? "Post Thread" : "Post"}
             </Button>
           )}
         </div>

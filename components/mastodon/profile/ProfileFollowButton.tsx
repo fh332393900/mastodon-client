@@ -32,7 +32,7 @@ export function ProfileFollowButton({
     return (
       <Button asChild size="lg" className="rounded-full px-6">
         <a href={accountUrl} target="_blank" rel="noreferrer">
-          {"\u67e5\u770b\u4e3b\u9875"}
+          {"View Profile"}
         </a>
       </Button>
     )
@@ -66,12 +66,12 @@ export function ProfileFollowButton({
     >
       {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : isFollowing ? <UserCheck className="h-4 w-4" /> : <UserPlus className="h-4 w-4" />}
       {isFollowing
-        ? "\u5df2\u5173\u6ce8"
+        ? "Following"
         : isRequested
           ? locked
-            ? "\u8bf7\u6c42\u5df2\u53d1\u9001"
-            : "\u5904\u7406\u4e2d"
-          : "\u5173\u6ce8"}
+            ? "Request Sent"
+            : "Processing"
+          : "Follow"}
     </Button>
   )
 }

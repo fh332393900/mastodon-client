@@ -31,7 +31,7 @@ export default function ProfileFollowersPage() {
     return (
       <div className="rounded-3xl border border-dashed border-border/70 bg-card/70 p-10 text-center">
         <UsersRound className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
-        <p className="text-lg font-semibold">{"\u52a0\u8f7d\u4e2d..."}</p>
+        <p className="text-lg font-semibold">{"Loading..."}</p>
       </div>
     )
   }
@@ -44,8 +44,8 @@ export default function ProfileFollowersPage() {
     return (
       <div className="rounded-3xl border border-dashed border-border/70 bg-card/70 p-10 text-center">
         <UsersRound className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
-        <p className="text-lg font-semibold">{"\u8fd8\u6ca1\u6709\u5173\u6ce8\u8005\u5217\u8868\u53ef\u5c55\u793a"}</p>
-        <p className="mt-2 text-sm text-muted-foreground">{"\u5982\u679c\u8fd9\u4e2a\u7528\u6237\u9690\u85cf\u4e86\u5173\u6ce8\u8005\u5217\u8868\uff0c\u8fd9\u91cc\u4e5f\u53ef\u80fd\u4e3a\u7a7a\u3002"}</p>
+        <p className="text-lg font-semibold">No followers to display yet</p>
+        <p className="mt-2 text-sm text-muted-foreground">If this user has hidden their follower list, this section may be empty.</p>
       </div>
     )
   }

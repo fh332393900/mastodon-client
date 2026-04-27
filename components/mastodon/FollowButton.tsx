@@ -65,16 +65,16 @@ export function FollowButton({
 
   const content = () => {
     if (isPending || loadingRel)
-      return <><Loader2 className="h-4 w-4 animate-spin" /><span className="inline-block w-12">请求中</span></>
+      return <><Loader2 className="h-4 w-4 animate-spin" /><span className="inline-block w-12">Requesting</span></>
     if (isFollowing) {
       return isHovering ? (
-        <><UserX className="h-4 w-4" /><span className="inline-block w-12">取消关注</span></>
+        <><UserX className="h-4 w-4" /><span className="inline-block w-12">Unfollow</span></>
       ) : (
-        <><UserCheck className="h-4 w-4" /><span className="inline-block w-12">已关注</span></>
+        <><UserCheck className="h-4 w-4" /><span className="inline-block w-12">Following</span></>
       )
     }
-    if (isRequested) return <><Loader2 className="h-4 w-4" /><span className="inline-block w-12">待审核</span></>
-    return <><UserPlus className="h-4 w-4" /><span className="inline-block w-12">关注</span></>
+    if (isRequested) return <><Loader2 className="h-4 w-4" /><span className="inline-block w-12">Pending</span></>
+    return <><UserPlus className="h-4 w-4" /><span className="inline-block w-12">Follow</span></>
   }
 
   return (

@@ -190,7 +190,7 @@ function handleMention(node: any, currentServer?: string): React.ReactNode | nul
 
     return (
       <TagHoverWrapper tagName={tag}>
-        <Link href={`${currentServer}/tags/${tag}`} className="text-primary">
+        <Link href={`/${currentServer}/tags/${tag}`} className="text-primary">
           {renderChildrenWithKeys(node.children, undefined, currentServer)}
         </Link>
       </TagHoverWrapper>

@@ -198,7 +198,7 @@ export default function HomePage() {
                     </div>
                     {/* footer hint */}
                     <div className="px-1 space-y-2">
-                      <div className="text-[9px] text-muted-foreground/40 leading-relaxed">正在查看 m.webtoo.ls 的公共数据</div>
+                      <div className="text-[9px] text-muted-foreground/40 leading-relaxed">Viewing <span className="font-bold">m.webtoo.ls</span> public data</div>
                       <div className="w-full rounded-lg bg-violet-600 text-white text-center py-1 text-[10px] font-medium cursor-pointer">Sign In</div>
                     </div>
                   </div>
@@ -283,9 +283,9 @@ export default function HomePage() {
                         <span className="text-orange-400">#</span> Trending
                       </div>
                       {[
-                        { tag: "#introduction", sub: "10人·10 帖文" },
-                        { tag: "#cats", sub: "13人·18 帖文" },
-                        { tag: "#rustlang", sub: "2人·2 帖文" },
+                        { tag: "#introduction", sub: "10 People · 10 Posts" },
+                        { tag: "#cats", sub: "13 People · 18 Posts" },
+                        { tag: "#rustlang", sub: "2 People · 2 Posts" },
                       ].map((t) => (
                         <div key={t.tag} className="flex items-center justify-between mb-2">
                           <div>

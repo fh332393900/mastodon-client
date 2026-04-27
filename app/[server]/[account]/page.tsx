@@ -34,7 +34,7 @@ export default function ProfilePostsPage() {
     return (
       <div className="rounded-3xl border border-dashed border-border/70 bg-card/70 p-10 text-center">
         <MessageCircleMore className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
-        <p className="text-lg font-semibold">加载中...</p>
+        <p className="text-lg font-semibold">Loading...</p>
       </div>
     )
   }
@@ -47,8 +47,8 @@ export default function ProfilePostsPage() {
     return (
       <div className="rounded-3xl border border-dashed border-border/70 bg-card/70 p-10 text-center">
         <MessageCircleMore className="mx-auto mb-3 h-10 w-10 text-muted-foreground" />
-        <p className="text-lg font-semibold">还没有公开贴文</p>
-        <p className="mt-2 text-sm text-muted-foreground">这个账号目前没有可展示的公开内容。</p>
+        <p className="text-lg font-semibold">No public posts yet</p>
+        <p className="mt-2 text-sm text-muted-foreground">This account currently has no public posts to display.</p>
       </div>
     )
   }

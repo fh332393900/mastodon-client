@@ -9,7 +9,7 @@
  *   formatCompactNumber(1500000, "en-US") → "1.5M"
  */
 export function formatCompactNumber(value: number, locale?: string): string {
-  const resolvedLocale = locale ?? (typeof navigator !== "undefined" ? navigator.language : "en-US")
+  const resolvedLocale = locale ?? "en-US"
 
   try {
     return new Intl.NumberFormat(resolvedLocale, {
