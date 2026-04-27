@@ -6,11 +6,11 @@ export const localeCookieName = "NEXT_LOCALE"
 
 export const localeLabels: Record<Locale, string> = {
   en: "English",
-  fr: "Français",
-  ja: "日本語",
-  ko: "한국어",
   "zh-CN": "简体中文",
   "zh-TW": "繁體中文",
+  ja: "日本語",
+  ko: "한국어",
+  fr: "Français",
 }
 
 export function isLocale(value: unknown): value is Locale {

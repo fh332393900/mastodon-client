@@ -37,7 +37,7 @@ export default async function RootLayout({
   const messages = await getMessages()
 
   return (
-  <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

@@ -19,6 +19,7 @@ import {
 } from "lucide-react"
 import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
+import { LocaleSwitcher } from "@/components/i18n/locale-switcher"
 
 export default function HomePage() {
   const router = useRouter()
@@ -56,6 +57,7 @@ export default function HomePage() {
           <span className="text-2xl font-bold text-foreground font-['Quicksand']">MastoClient</span>
         </div>
         <div className="flex items-center gap-3">
+          <LocaleSwitcher />
           <ThemeToggle />
         </div>
       </header>
