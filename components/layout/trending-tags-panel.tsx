@@ -20,7 +20,7 @@ export function TrendingTagsPanel() {
           热门话题
         </CardTitle>
       </CardHeader>
-      <CardContent className="pt-0 px-0 pb-0 flex-1 flex flex-col min-h-0 overflow-hidden">
+      <CardContent className="pt-0 px-0 pb-0 flex flex-col min-h-0">
         <div className="min-h-0 flex-1 overflow-y-auto">
         {query.isLoading ? (
           <div className="space-y-3 px-4 pb-3">
