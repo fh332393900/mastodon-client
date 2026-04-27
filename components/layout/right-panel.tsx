@@ -3,11 +3,15 @@
 import { Github, Shield, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { LocaleSwitcher } from "@/components/i18n/locale-switcher"
 import { Card, CardContent } from "@/components/ui/card"
 import { TrendingTagsPanel } from "@/components/layout/trending-tags-panel"
 import { SearchPopover } from "@/components/search/search-popover"
+import { useTranslations } from "next-intl"
 
 export function RightPanel() {
+  const t = useTranslations("common")
+
   return (
     <aside className="hidden lg:flex lg:w-[18rem] lg:flex-col lg:sticky lg:top-0 lg:self-start h-screen bg-card/50 border-l border-border overflow-hidden">
       <div className="flex h-full flex-col p-4 space-y-4 overflow-hidden">
@@ -27,9 +31,12 @@ export function RightPanel() {
         <div className="space-y-4 mt-auto">
           {/* Theme Toggle */}
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Theme</span>
+            <span className="text-sm text-muted-foreground">{t("Theme")}</span>
             <ThemeToggle />
           </div>
+
+          {/* Language Switcher */}
+          <LocaleSwitcher />
 
           {/* Links */}
           <div className="space-y-2">
