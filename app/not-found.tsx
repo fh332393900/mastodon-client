@@ -11,17 +11,17 @@ export default function NotFoundPage() {
   const params = useSearchParams()
   const type = params?.get("type")
 
-  let title = "页面未找到"
-  let desc = "抱歉，我们无法找到你要访问的页面。"
+  let title = "Not Found"
+  let desc = "Sorry, we couldn't find the page you're looking for."
   let Icon = AlertCircle
 
   if (type === "user") {
-    title = "用户不存在"
-    desc = "找不到该用户，可能已被删除或用户名输入有误。"
+    title = "User Not Found"
+    desc = "The user could not be found. They may have been deleted or the username is incorrect."
     Icon = User
   } else if (type === "status" || type === "post") {
-    title = "贴文不存在"
-    desc = "该贴文可能已被删除或你没有权限查看。"
+    title = "Post Not Found"
+    desc = "The post may have been deleted or you do not have permission to view it."
     Icon = FileText
   }
 
@@ -41,7 +41,7 @@ export default function NotFoundPage() {
 
             <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
               <Button variant="ghost" onClick={() => router.back()}>
-                <ArrowLeft className="mr-2 h-4 w-4" /> 返回
+                <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
               </Button>
             </div>
           </div>
