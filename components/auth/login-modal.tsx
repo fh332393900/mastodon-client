@@ -21,7 +21,7 @@ const POPULAR_SERVERS = [
   {
     name: "Mastodon Social",
     host: "mastodon.social",
-    desc: "官方旗舰站，最大实例",
+    desc: "Official flagship instance, largest instance",
     icon: Globe,
     color: "text-violet-500",
     bg: "bg-violet-500/10",
@@ -31,7 +31,7 @@ const POPULAR_SERVERS = [
   {
     name: "Webtoo.ls",
     host: "m.webtoo.ls",
-    desc: "技术与极客爱好者",
+    desc: "For tech and geek enthusiasts",
     icon: Cpu,
     color: "text-sky-500",
     bg: "bg-sky-500/10",
@@ -41,7 +41,7 @@ const POPULAR_SERVERS = [
   {
     name: "Fosstodon",
     host: "fosstodon.org",
-    desc: "开源与技术爱好者",
+    desc: "For open source and tech enthusiasts",
     icon: Code2,
     color: "text-emerald-500",
     bg: "bg-emerald-500/10",
@@ -71,7 +71,7 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
 
   const handleLogin = async () => {
     if (!server) {
-      setError("请输入服务器地址")
+      setError("Please enter a server address")
       return
     }
     setError("")
@@ -94,10 +94,10 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
               <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/30">
                 <MessageCircle className="w-4 h-4 text-white" />
               </div>
-              <DialogTitle className="text-xl font-bold tracking-tight">登录 Mastodon</DialogTitle>
+              <DialogTitle className="text-xl font-bold tracking-tight">Login Mastodon</DialogTitle>
             </div>
             <p className="text-center text-[13px] text-foreground">
-              选择下方热门服务器，或手动输入你的实例地址
+              Select a popular server below, or manually enter your instance address
             </p>
           </DialogHeader>
         </div>
@@ -108,9 +108,9 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
           transition={{ duration: 0.22 }}
           className="px-3 sm:px-7 pb-4 space-y-3"
         >
-          {/* 热门服务器卡片 */}
+          {/* Popular Instances */}
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-foreground/60 mb-3">热门实例</p>
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-foreground/60 mb-3">Popular Instances</p>
             <div className="grid grid-cols-3 gap-2">
               {POPULAR_SERVERS.map((s) => {
                 const Icon = s.icon
@@ -159,14 +159,14 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
             </div>
             <div className="relative flex justify-center">
               <span className="bg-card px-3 text-[11px] text-foreground/60 font-medium tracking-wide uppercase">
-                或手动输入
+                Or manually enter
               </span>
             </div>
           </div>
 
-          {/* 手动输入 */}
+          {/* Manual input */}
           <div className="space-y-2">
-            <Label htmlFor="server" className="text-[12px] font-medium text-foreground/60">服务器地址</Label>
+            <Label htmlFor="server" className="text-[12px] font-medium text-foreground/60">Server Address</Label>
             <div className="relative">
               <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[11px] text-foreground/90 select-none font-mono">
                 https://
@@ -215,23 +215,23 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                正在跳转...
+                Redirecting...
               </>
             ) : (
               <>
                 <MessageCircle className="w-4 h-4 mr-2" />
-                登录
+                Login
                 <ArrowRight className="w-3.5 h-3.5 ml-2" />
               </>
             )}
           </Button>
 
           <p className="text-center text-[11px] text-muted-foreground/50">
-            还没有账号？前往{" "}
+            Don't have an account? Go to{" "}
             <a href="https://joinmastodon.org" target="_blank" rel="noreferrer" className="text-primary/70 hover:text-primary underline-offset-2 hover:underline transition-colors">
               joinmastodon.org
             </a>{" "}
-            注册
+            to sign up
           </p>
         </motion.div>
       </DialogContent>
