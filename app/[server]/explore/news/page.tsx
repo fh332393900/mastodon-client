@@ -3,7 +3,7 @@
 import { useMemo } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ExternalLink } from "lucide-react"
+import { ExternalLink, Newspaper } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { useExploreNewsCache } from "@/hooks/mastodon/useExploreNewsCache"
@@ -37,7 +37,10 @@ export default function ExploreNewsPage() {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold">{title}</h2>
+            <h2 className="text-xl font-semibold flex items-center gap-2">
+              <Newspaper className="h-5 w-5 text-primary" />
+              {title}
+            </h2>
         </div>
         <div className="space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -51,7 +54,10 @@ export default function ExploreNewsPage() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">{title}</h2>
+        <h2 className="text-xl font-semibold flex items-center gap-2">
+          <Newspaper className="h-5 w-5 text-primary" />
+          {title}
+        </h2>
         <Badge variant="outline" className="text-accent border-accent/50">
           {links.length} links
         </Badge>

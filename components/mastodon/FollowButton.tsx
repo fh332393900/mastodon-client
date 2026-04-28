@@ -65,7 +65,7 @@ export function FollowButton({
 
   const content = () => {
     if (isPending || loadingRel)
-      return <><Loader2 className="h-4 w-4 animate-spin" /><span className="inline-block w-12">Requesting</span></>
+      return <><Loader2 className="h-4 w-4 animate-spin" /><span className="inline-block w-16">Requesting</span></>
     if (isFollowing) {
       return isHovering ? (
         <><UserX className="h-4 w-4" /><span className="inline-block w-12">Unfollow</span></>

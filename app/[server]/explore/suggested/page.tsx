@@ -83,7 +83,7 @@ function SuggestionCard({
           </UserHoverCard>
           {a.note && (
             <p
-              className="mt-1 text-xs text-muted-foreground line-clamp-1"
+              className="mt-1 text-xs font-bold text-muted-foreground line-clamp-1"
               dangerouslySetInnerHTML={{ __html: a.note }}
             />
           )}

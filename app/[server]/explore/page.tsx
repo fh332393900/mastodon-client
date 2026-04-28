@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo } from "react"
+import { TrendingUp } from "lucide-react"
 import { InfiniteScroller, LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
 import { StatusCard, StatusThread } from "@/components/mastodon/Status"
 import { Badge } from "@/components/ui/badge"
@@ -23,7 +24,10 @@ export default function ExplorePostsPage() {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold">{title}</h2>
+            <h2 className="text-xl font-semibold flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-primary" />
+              {title}
+            </h2>
         </div>
         <LoadingSkeleton />
       </div>
@@ -33,7 +37,10 @@ export default function ExplorePostsPage() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">{title}</h2>
+        <h2 className="text-xl font-semibold flex items-center gap-2">
+          <TrendingUp className="h-5 w-5 text-primary" />
+          {title}
+        </h2>
         <Badge variant="outline" className="text-accent border-accent/50">
           {posts.length} posts
         </Badge>

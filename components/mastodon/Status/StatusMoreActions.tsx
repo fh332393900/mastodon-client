@@ -76,7 +76,11 @@ export function StatusMoreActions({ status }: StatusMoreActionsProps) {
             <MoreHorizontal className="h-4 w-4" />
           </button>
         </PopoverTrigger>
-        <PopoverContent side="bottom" align="end" className="w-56 p-1 text-sm">
+        <PopoverContent
+          side="bottom"
+          align="end"
+          className="w-56 p-1 text-sm bg-card status-more-actions-popover"
+        >
           <div className="space-y-1">
             <button
               type="button"
