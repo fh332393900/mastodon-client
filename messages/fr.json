@@ -10,6 +10,20 @@
       "explore": "Explorer",
       "settings": "Paramètres"
     },
+    "statusActions": {
+      "moreActions": "Plus d’actions",
+      "copyLink": "Copier le lien du post",
+      "copySourceLink": "Copier le lien original",
+      "openSource": "Ouvrir sur la source",
+      "muteUser": "Muet l’utilisateur",
+      "blockUser": "Bloquer l’utilisateur",
+      "blockDomain": "Bloquer le domaine",
+      "delete": "Supprimer le post",
+      "deleteConfirmTitle": "Supprimer ce post ?",
+      "deleteConfirmDescription": "Cette action est irréversible.",
+      "cancel": "Annuler",
+      "confirmDelete": "Supprimer"
+    },
     "loginPrompt": "Après vous être connecté, vous pourrez suivre d'autres utilisateurs ou hashtags, aimer, partager et répondre aux publications, ou interagir avec des comptes sur différents serveurs.",
     "loginButton": "Se connecter",
     "posts": "Publications",

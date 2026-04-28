@@ -10,6 +10,20 @@
       "explore": "Explore",
       "settings": "Settings"
     },
+    "statusActions": {
+      "moreActions": "More actions",
+      "copyLink": "Copy post link",
+      "copySourceLink": "Copy original link",
+      "openSource": "Open on source",
+      "muteUser": "Mute user",
+      "blockUser": "Block user",
+      "blockDomain": "Block domain",
+      "delete": "Delete post",
+      "deleteConfirmTitle": "Delete this post?",
+      "deleteConfirmDescription": "This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirmDelete": "Delete"
+    },
     "loginPrompt": "After logging in, you can follow other users or hashtags, like, share, and reply to posts, or interact with accounts on different servers.",
     "loginButton": "Log In",
     "posts": "Posts",

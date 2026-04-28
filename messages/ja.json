@@ -10,6 +10,20 @@
       "explore": "探索",
       "settings": "設定"
     },
+    "statusActions": {
+      "moreActions": "その他の操作",
+      "copyLink": "投稿リンクをコピー",
+      "copySourceLink": "元リンクをコピー",
+      "openSource": "ソースで開く",
+      "muteUser": "ユーザーをミュート",
+      "blockUser": "ユーザーをブロック",
+      "blockDomain": "ドメインをブロック",
+      "delete": "投稿を削除",
+      "deleteConfirmTitle": "この投稿を削除しますか？",
+      "deleteConfirmDescription": "この操作は元に戻せません。",
+      "cancel": "キャンセル",
+      "confirmDelete": "削除"
+    },
     "loginPrompt": "ログイン後、他のユーザーやハッシュタグをフォローしたり、投稿にいいね、シェア、返信したり、異なるサーバーのアカウントと交流できます。",
     "loginButton": "ログイン",
     "posts": "投稿",

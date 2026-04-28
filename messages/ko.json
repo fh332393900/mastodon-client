@@ -10,6 +10,20 @@
       "explore": "탐색",
       "settings": "설정"
     },
+    "statusActions": {
+      "moreActions": "더보기",
+      "copyLink": "게시물 링크 복사",
+      "copySourceLink": "원본 링크 복사",
+      "openSource": "원본에서 열기",
+      "muteUser": "사용자 음소거",
+      "blockUser": "사용자 차단",
+      "blockDomain": "도메인 차단",
+      "delete": "게시물 삭제",
+      "deleteConfirmTitle": "이 게시물을 삭제하시겠습니까?",
+      "deleteConfirmDescription": "이 작업은 되돌릴 수 없습니다.",
+      "cancel": "취소",
+      "confirmDelete": "삭제"
+    },
     "loginPrompt": "로그인 후 다른 사용자나 해시태그를 팔로우하거나, 게시물에 좋아요, 공유, 답글을 달거나, 다른 서버의 계정과 상호작용할 수 있습니다.",
     "loginButton": "로그인",
     "posts": "게시물",

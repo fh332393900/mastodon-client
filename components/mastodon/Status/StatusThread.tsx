@@ -16,6 +16,7 @@ import { useStatusActions } from "@/hooks/mastodon/useStatusActions"
 import { StatusPoll } from "./StatusPoll"
 import { StatusMedia } from "./StatusMedia"
 import { StatusActions } from "./StatusActions"
+import { StatusMoreActions } from "./StatusMoreActions"
 import { StatusPreviewCard } from "./StatusPreviewCard"
 
 type Status = mastodon.v1.Status
@@ -73,12 +74,15 @@ function ThreadItem({
       <div className={cn("min-w-0 flex-1 space-y-3", !isLast && "pb-4")}>
         <div className="flex gap-2 md:gap-4 justify-between items-center">
           <UserHoverCard account={author} profileHref={profileHref} className="" />
-          <span
+                <div className="flex items-center gap-2">
+                  <span
             className="text-sm text-muted-foreground shrink-0 whitespace-nowrap"
             title={formatFullDate(renderedStatus.createdAt)}
           >
             {formatRelativeTime(renderedStatus.createdAt)}
           </span>
+                  <StatusMoreActions status={status} />
+                </div>
         </div>
 
         {renderedStatus.spoilerText ? (

@@ -10,6 +10,20 @@
       "explore": "探索",
       "settings": "设置"
     },
+    "statusActions": {
+      "moreActions": "更多操作",
+      "copyLink": "复制贴文链接",
+      "copySourceLink": "复制原始链接",
+      "openSource": "在源站打开",
+      "muteUser": "屏蔽用户",
+      "blockUser": "拉黑用户",
+      "blockDomain": "拉黑域名",
+      "delete": "删除贴文",
+      "deleteConfirmTitle": "确定要删除此贴文吗？",
+      "deleteConfirmDescription": "此操作无法撤销。",
+      "cancel": "取消",
+      "confirmDelete": "删除"
+    },
     "loginPrompt": "登录后，您可以关注其他用户或话题，点赞、分享和回复帖子，或与不同服务器上的账户互动。",
     "loginButton": "登录",
     "posts": "帖文",

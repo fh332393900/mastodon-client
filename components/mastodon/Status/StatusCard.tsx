@@ -17,6 +17,7 @@ import type { mastodon } from "masto"
 import { useMasto } from "@/components/auth/masto-provider"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
 import { useStatusActions } from "@/hooks/mastodon/useStatusActions"
+import { StatusMoreActions } from "./StatusMoreActions"
 
 import { StatusPoll } from "./StatusPoll"
 import { StatusMedia } from "./StatusMedia"
@@ -90,12 +91,15 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
         <div className="min-w-0 flex-1 space-y-3">
           <div className="flex gap-2 md:gap-4 justify-between items-center">
             <UserHoverCard account={author} profileHref={profileHref} className="" />
-            <span
-              className="text-sm text-muted-foreground shrink-0 whitespace-nowrap"
-              title={formatFullDate(renderedStatus.createdAt)}
-            >
-              {formatRelativeTime(renderedStatus.createdAt)}
-            </span>
+            <div className="flex items-center gap-2">
+              <span
+                className="text-sm text-muted-foreground shrink-0 whitespace-nowrap"
+                title={formatFullDate(renderedStatus.createdAt)}
+              >
+                {formatRelativeTime(renderedStatus.createdAt)}
+              </span>
+              <StatusMoreActions status={status} />
+            </div>
             {renderedStatus.pinned ? (
               <Badge variant="outline">
                 <Pin className="mr-1 h-3 w-3" />置顶

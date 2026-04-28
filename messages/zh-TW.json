@@ -10,6 +10,20 @@
       "explore": "探索",
       "settings": "設定"
     },
+    "statusActions": {
+      "moreActions": "更多操作",
+      "copyLink": "複製貼文連結",
+      "copySourceLink": "複製原始連結",
+      "openSource": "在源站打開",
+      "muteUser": "靜音用戶",
+      "blockUser": "封鎖用戶",
+      "blockDomain": "封鎖域名",
+      "delete": "刪除貼文",
+      "deleteConfirmTitle": "確定要刪除此貼文嗎？",
+      "deleteConfirmDescription": "此操作無法撤銷。",
+      "cancel": "取消",
+      "confirmDelete": "刪除"
+    },
     "loginPrompt": "登入後，您可以追蹤其他用戶或話題，對貼文按讚、分享和回覆，或與不同伺服器上的帳號互動。",
     "loginButton": "登入",
     "posts": "貼文",
