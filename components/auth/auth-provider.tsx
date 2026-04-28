@@ -27,6 +27,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const { client, isReady, accessToken } = useMasto()
 
+  // 用户通过浏览器返回键回来时，重置 loading 状态
+  useEffect(() => {
+    const handlePageShow = (e: PageTransitionEvent) => {
+      // persisted 为 true 表示页面从 bfcache 恢复（即浏览器后退）
+      if (e.persisted || document.visibilityState === "visible") {
+        setIsLoading(false)
+      }
+    }
+    window.addEventListener("pageshow", handlePageShow)
+    return () => window.removeEventListener("pageshow", handlePageShow)
+  }, [])
+
   useEffect(() => {
     if (!isReady) return
 
