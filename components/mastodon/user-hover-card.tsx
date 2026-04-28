@@ -41,6 +41,9 @@ export function UserHoverCard({
     username: account.username,
   })
 
+  const defaultHeaderImage = "https://mastodon.social/headers/original/missing.png"
+  const hasCustomHeader = account.header && account.header !== defaultHeaderImage
+
   useEffect(() => {
     if (!open || !canInteract || !client || isLoaded) return
 
@@ -167,82 +170,154 @@ export function UserHoverCard({
         side="bottom"
         align="start"
         sideOffset={6}
-        className="w-92 rounded-xl border border-border bg-card p-4 shadow-lg data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
+        className="w-92 rounded-xl px-0 pt-0 border border-border bg-card shadow-lg overflow-hidden data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
         onMouseEnter={clearTimers}
         onMouseLeave={scheduleClose}
       >
-        {/* 触发区与卡片之间的缓冲区，防止鼠标经过间隙时卡片关闭 */}
         <div className="absolute -top-2 left-0 h-2 w-full" />
-        <div className="flex items-center gap-3">
-          {profileHref ? (
-            <Link href={profileHref} className="font-semibold text-foreground flex gap-2 flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 py-1 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={account.avatar} alt={nameText} />
-                <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <div className="min-w-0 flex-1">
-                <div className="text-sm truncate font-semibold text-foreground">
-                  {renderDisplayName({
-                    displayName: account.displayName,
-                    username: account.username,
-                    emojis: account.emojis,
-                  })}
-                </div>
-                <div className="text-xs truncate text-muted-foreground/70">@{account.acct}</div>
-              </div>
-            </Link>
-          ) : (
-            <>
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={account.avatar} alt={nameText} />
-                <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
-              </Avatar><div className="min-w-0 flex-1">
-                <div className="text-sm truncate font-semibold text-foreground">
-                  {renderDisplayName({
-                    displayName: account.displayName,
-                    username: account.username,
-                    emojis: account.emojis,
-                  })}
-                </div>
-                <div className="text-xs truncate text-muted-foreground">@{account.acct}</div>
-              </div>
-            </>
-          )}
-          
-          {canInteract ? (
-            <FollowButton
-              account={account}
-              initialRelationship={relationship}
-              className="h-8 text-xs"
+        {hasCustomHeader ? (
+          <div className="relative h-28 w-full overflow-hidden">
+            <img
+              src={account.header}
+              alt={`${account.username} header`}
+              className="absolute inset-0 h-full w-full object-cover"
             />
-          ) : null}
-        </div>
-
-        {account.note ? (
-          <div className="mt-3 max-h-56 overflow-y-auto text-xs text-muted-foreground">
-            <MastodonContent content={account.note} emojis={account.emojis} />
+            <div
+              className="absolute inset-x-0 bottom-0 h-36"
+              style={{
+                backgroundImage:
+                  "linear-gradient(to bottom, transparent 0%, transparent 40%, var(--card) 75%)",
+              }}
+            />
+            <div className="absolute inset-x-0 bottom-0 px-4 pb-4">
+              <div className="flex items-center justify-between gap-3">
+                {profileHref ? (
+                  <Link
+                    href={profileHref}
+                    className="font-semibold text-foreground flex gap-2 flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 py-1 rounded-full hover:bg-muted-foreground/10 dark:hover:bg-muted/50 overflow-hidden"
+                  >
+                    <Avatar className="h-12 w-12 ring-2 ring-border/70">
+                      <AvatarImage src={account.avatar} alt={nameText} />
+                      <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="min-w-0">
+                      <div className="text-sm font-semibold truncate">
+                        {renderDisplayName({
+                          displayName: account.displayName,
+                          username: account.username,
+                          emojis: account.emojis,
+                        })}
+                      </div>
+                      <div className="text-xs text-muted-foreground/70 truncate">@{account.acct}</div>
+                    </div>
+                  </Link>
+                ) : (
+                  <div className="flex min-w-0 items-center gap-3">
+                    <Avatar className="h-12 w-12 ring-2 ring-border/70">
+                      <AvatarImage src={account.avatar} alt={nameText} />
+                      <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="min-w-0">
+                      <div className="text-sm font-semibold text-foreground truncate">
+                        {renderDisplayName({
+                          displayName: account.displayName,
+                          username: account.username,
+                          emojis: account.emojis,
+                        })}
+                      </div>
+                      <div className="text-xs text-muted-foreground/70 truncate">@{account.acct}</div>
+                    </div>
+                  </div>
+                )}
+                {canInteract ? (
+                  <FollowButton
+                    account={account}
+                    initialRelationship={relationship}
+                    className="h-8 text-xs"
+                  />
+                ) : null}
+              </div>
+            </div>
           </div>
         ) : null}
 
-        <div className="mt-4 flex items-center justify-between rounded-lg bg-muted/40 px-3 py-2">
-          {stats.map((item) => {
-            const inner = (
-              <div key={item.label} className="text-center">
-                <div className="text-base font-semibold text-foreground">{formatCompactNumber(item.value)}</div>
-                <div className="text-xs text-muted-foreground">{item.label}</div>
-              </div>
-            )
-            return item.href ? (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="text-center rounded-md px-4 py-1 hover:bg-muted dark:hover:bg-foreground/20 transition-colors"
-              >
-                <div className="text-base font-semibold text-foreground">{formatCompactNumber(item.value)}</div>
-                <div className="text-xs text-muted-foreground">{item.label}</div>
-              </Link>
-            ) : inner
-          })}
+        <div className={hasCustomHeader ? "space-y-4 px-4" : "space-y-4 p-4"}>
+          {!hasCustomHeader ? (
+            <div className="flex items-center gap-3">
+              {profileHref ? (
+                <Link
+                  href={profileHref}
+                  className="font-semibold text-foreground flex gap-2 flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 py-1 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden"
+                >
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage src={account.avatar} alt={nameText} />
+                    <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div className="min-w-0">
+                    <div className="text-sm truncate font-semibold text-foreground">
+                      {renderDisplayName({
+                        displayName: account.displayName,
+                        username: account.username,
+                        emojis: account.emojis,
+                      })}
+                    </div>
+                    <div className="text-xs truncate text-muted-foreground/70">@{account.acct}</div>
+                  </div>
+                </Link>
+              ) : (
+                <>
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage src={account.avatar} alt={nameText} />
+                    <AvatarFallback>{nameText.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div className="min-w-0">
+                    <div className="text-sm truncate font-semibold text-foreground">
+                      {renderDisplayName({
+                        displayName: account.displayName,
+                        username: account.username,
+                        emojis: account.emojis,
+                      })}
+                    </div>
+                    <div className="text-xs truncate text-muted-foreground">@{account.acct}</div>
+                  </div>
+                </>
+              )}
+              {canInteract ? (
+                <FollowButton
+                  account={account}
+                  initialRelationship={relationship}
+                  className="h-8 text-xs"
+                />
+               ) : null}
+            </div>
+          ) : null}
+
+          {account.note ? (
+            <div className="mt-3 max-h-56 overflow-y-auto text-xs text-muted-foreground">
+              <MastodonContent content={account.note} emojis={account.emojis} />
+            </div>
+          ) : null}
+
+          <div className="mt-4 flex items-center justify-between rounded-lg bg-muted/50 px-3 py-2">
+            {stats.map((item) => {
+              const inner = (
+                <div key={item.label} className="text-center">
+                  <div className="text-base font-semibold text-foreground">{formatCompactNumber(item.value)}</div>
+                  <div className="text-xs text-muted-foreground">{item.label}</div>
+                </div>
+              )
+              return item.href ? (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="text-center rounded-md px-4 py-1 hover:bg-muted-foreground/10 dark:hover:bg-foreground/10 transition-colors"
+                >
+                  <div className="text-base font-semibold text-foreground">{formatCompactNumber(item.value)}</div>
+                  <div className="text-xs text-muted-foreground">{item.label}</div>
+                </Link>
+              ) : inner
+            })}
+          </div>
         </div>
       </PopoverContent>
     </Popover>
