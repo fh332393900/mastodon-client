@@ -2,7 +2,23 @@
   "common": {
     "language": "言語",
     "switchLanguage": "言語を切り替え",
-    "Theme": "テーマ"
+    "Theme": "テーマ",
+    "menu": {
+      "home": "ホーム",
+      "favorites": "お気に入り",
+      "compose": "作成",
+      "explore": "探索",
+      "settings": "設定"
+    },
+    "loginPrompt": "ログイン後、他のユーザーやハッシュタグをフォローしたり、投稿にいいね、シェア、返信したり、異なるサーバーのアカウントと交流できます。",
+    "loginButton": "ログイン",
+    "posts": "投稿",
+    "following": "フォロー中",
+    "followers": "フォロワー",
+    "unfollow": "フォロー解除",
+    "trendingTopics": "トレンド",
+    "search": "検索",
+    "viewMoreTrendingTags": "さらにトレンドタグを見る"
   },
   "home": {
     "hero": {
@@ -29,7 +45,7 @@
         "compose": "投稿",
         "explore": "探索",
         "settings": "設定",
-        "viewing": "{server} の公開データを表示中",
+        "viewing": "<server></server> の公開データを表示中",
         "signIn": "サインイン"
       },
       "profile": {
@@ -127,5 +143,17 @@
       "taglineHighlight": "今日から fediverse に参加しよう。",
       "builtWith": "オープンなウェブのために <heart></heart> を込めて"
     }
+  },
+  "timeline": {
+    "empty": "あなたのタイムラインは空です。ユーザーやハッシュタグをフォローして、ここに投稿を表示しましょう。",
+    "publicTimeline": "公開タイムライン",
+    "discover": "fediverse で何が起こっているかを発見",
+    "public": "公開",
+    "local": "ローカル",
+    "home": "ホーム",
+    "homeTimeline": "ホームタイムライン",
+    "localCommunity": "ローカルコミュニティ",
+    "publicFediverse": "公開Fediverse",
+    "loadingTimeline": "タイムラインを読み込み中..."
   }
 }

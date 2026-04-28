@@ -203,7 +203,9 @@ export default function HomePage() {
                     {/* footer hint */}
                     <div className="px-1 space-y-2">
                       <div className="text-[9px] text-muted-foreground/40 leading-relaxed">
-                        {t("preview.sidebar.viewing", { server: "m.webtoo.ls" })}
+                        {t.rich("preview.sidebar.viewing", {
+                          server: () => <span className="font-semibold">{'m.webtoo.ls'}</span>,
+                        })}
                       </div>
                       <div className="w-full rounded-lg bg-violet-600 text-white text-center py-1 text-[10px] font-medium cursor-pointer">{t("preview.sidebar.signIn")}</div>
                     </div>

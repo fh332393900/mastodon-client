@@ -2,7 +2,23 @@
   "common": {
     "language": "Langue",
     "switchLanguage": "Changer de langue",
-    "Theme": "Thème"
+    "Theme": "Thème",
+    "menu": {
+      "home": "Accueil",
+      "favorites": "Favoris",
+      "compose": "Composer",
+      "explore": "Explorer",
+      "settings": "Paramètres"
+    },
+    "loginPrompt": "Après vous être connecté, vous pourrez suivre d'autres utilisateurs ou hashtags, aimer, partager et répondre aux publications, ou interagir avec des comptes sur différents serveurs.",
+    "loginButton": "Se connecter",
+    "posts": "Publications",
+    "following": "Abonnements",
+    "followers": "Abonnés",
+    "unfollow": "Se désabonner",
+    "trendingTopics": "Tendances",
+    "search": "Rechercher",
+    "viewMoreTrendingTags": "Voir plus de tags tendance"
   },
   "home": {
     "hero": {
@@ -29,7 +45,7 @@
         "compose": "Composer",
         "explore": "Explorer",
         "settings": "Paramètres",
-        "viewing": "Données publiques · {server}",
+        "viewing": "Données publiques · <server></server>",
         "signIn": "Se connecter"
       },
       "profile": {
@@ -127,5 +143,17 @@
       "taglineHighlight": "Rejoignez le fediverse dès aujourd'hui.",
       "builtWith": "Conçu avec <heart></heart> pour le web ouvert"
     }
+  },
+  "timeline": {
+    "empty": "Votre fil est vide. Suivez des utilisateurs ou des hashtags pour voir des publications ici.",
+    "publicTimeline": "Fil public",
+    "discover": "Découvrez ce qui se passe dans le fediverse",
+    "public": "public",
+    "local": "local",
+    "home": "accueil",
+    "homeTimeline": "Fil d'accueil",
+    "localCommunity": "Communauté locale",
+    "publicFediverse": "Fediverse public",
+    "loadingTimeline": "Chargement du fil..."
   }
 }

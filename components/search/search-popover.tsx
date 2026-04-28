@@ -13,6 +13,7 @@ import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToR
 import { getAccountProfileHref } from "@/lib/mastodon/account"
 import { useMasto } from "@/components/auth/masto-provider"
 import { StatusCard } from "@/components/mastodon/Status/StatusCard"
+import { useTranslations } from "next-intl"
 
 type Props = {
   className?: string
@@ -22,6 +23,7 @@ type Props = {
 export function SearchPopover({ className, placeholder = "Search…" }: Props) {
   const router = useRouter()
   const { server, client, isReady } = useMasto()
+  const t = useTranslations()
 
   const [query, setQuery] = useState("")
   const normalizedQuery = useMemo(() => query.trim(), [query])
@@ -121,7 +123,7 @@ export function SearchPopover({ className, placeholder = "Search…" }: Props) {
         <div className="max-h-[70vh] overflow-y-auto">
           <div className="p-3 border-b border-border/60 bg-background/70 backdrop-blur">
             <div className="flex items-center justify-between">
-              <div className="text-xs font-medium text-foreground">Search</div>
+              <div className="text-xs font-medium text-foreground">{t("common.search")}</div>
               {isLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" /> : null}
             </div>
             <div className="mt-1 text-[11px] text-muted-foreground">

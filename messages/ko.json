@@ -2,7 +2,23 @@
   "common": {
     "language": "언어",
     "switchLanguage": "언어 전환",
-    "Theme": "테마"
+    "Theme": "테마",
+    "menu": {
+      "home": "홈",
+      "favorites": "즐겨찾기",
+      "compose": "작성",
+      "explore": "탐색",
+      "settings": "설정"
+    },
+    "loginPrompt": "로그인 후 다른 사용자나 해시태그를 팔로우하거나, 게시물에 좋아요, 공유, 답글을 달거나, 다른 서버의 계정과 상호작용할 수 있습니다.",
+    "loginButton": "로그인",
+    "posts": "게시물",
+    "following": "팔로잉",
+    "followers": "팔로워",
+    "unfollow": "팔로우 취소",
+    "trendingTopics": "트렌드",
+    "search": "검색",
+    "viewMoreTrendingTags": "더 많은 트렌딩 태그 보기"
   },
   "home": {
     "hero": {
@@ -29,7 +45,7 @@
         "compose": "작성",
         "explore": "탐색",
         "settings": "설정",
-        "viewing": "{server} 공개 데이터를 보는 중",
+        "viewing": "<server></server> 공개 데이터를 보는 중",
         "signIn": "로그인"
       },
       "profile": {
@@ -127,5 +143,17 @@
       "taglineHighlight": "오늘 바로 페디버스에 참여하세요.",
       "builtWith": "오픈 웹을 위해 <heart></heart> 를 담아 만들었습니다"
     }
+  },
+  "timeline": {
+    "empty": "타임라인이 비어 있습니다. 사용자나 해시태그를 팔로우하여 게시물을 여기에 표시하세요.",
+    "publicTimeline": "공개 타임라인",
+    "discover": "페디버스에서 무슨 일이 일어나고 있는지 알아보세요",
+    "public": "공개",
+    "local": "로컬",
+    "home": "홈",
+    "homeTimeline": "홈 타임라인",
+    "localCommunity": "로컬 커뮤니티",
+    "publicFediverse": "공개 페디버스",
+    "loadingTimeline": "타임라인을 불러오는 중..."
   }
 }

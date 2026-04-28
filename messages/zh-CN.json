@@ -2,7 +2,23 @@
   "common": {
     "language": "语言",
     "switchLanguage": "切换语言",
-    "Theme": "主题"
+    "Theme": "主题",
+    "menu": {
+      "home": "首页",
+      "favorites": "收藏",
+      "compose": "发布",
+      "explore": "探索",
+      "settings": "设置"
+    },
+    "loginPrompt": "登录后，您可以关注其他用户或话题，点赞、分享和回复帖子，或与不同服务器上的账户互动。",
+    "loginButton": "登录",
+    "posts": "帖文",
+    "following": "关注",
+    "followers": "粉丝",
+    "unfollow": "取消关注",
+    "trendingTopics": "热门话题",
+    "search": "搜索",
+    "viewMoreTrendingTags": "查看更多热门话题"
   },
   "home": {
     "hero": {
@@ -29,7 +45,7 @@
         "compose": "发布",
         "explore": "探索",
         "settings": "设置",
-        "viewing": "正在查看 {server} 的公共数据",
+        "viewing": "正在查看 <server></server> 的公共数据",
         "signIn": "登录"
       },
       "profile": {
@@ -127,5 +143,17 @@
       "taglineHighlight": "今天就加入联邦宇宙。",
       "builtWith": "为开放网络倾注 <heart></heart>"
     }
+  },
+  "timeline": {
+    "empty": "你的时间线是空的。关注一些用户或话题，看看这里的帖子。",
+    "publicTimeline": "公共时间线",
+    "discover": "发现联邦宇宙正在发生什么",
+    "public": "公共",
+    "local": "本地",
+    "home": "首页",
+    "homeTimeline": "首页时间线",
+    "localCommunity": "本地社区",
+    "publicFediverse": "公开联邦宇宙",
+    "loadingTimeline": "正在加载时间线..."
   }
 }

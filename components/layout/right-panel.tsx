@@ -18,7 +18,7 @@ export function RightPanel() {
         {/* Search Section */}
         <Card className="bg-card/50 backdrop-blur-sm border-border/50 shadow-lg shadow-primary/5 px-0">
           <CardContent className="pt-0 px-4">
-            <SearchPopover placeholder="Search" />
+            <SearchPopover placeholder={t("search")} />
           </CardContent>
         </Card>
 

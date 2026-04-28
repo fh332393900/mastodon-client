@@ -7,9 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { TagTrend } from "@/components/mastodon/TagCard"
 import { useExploreTagsCache } from "@/hooks/mastodon/useExploreTagsCache"
 import { useMasto } from "@/components/auth/masto-provider"
+import { useTranslations } from "next-intl"
 
 export function TrendingTagsPanel() {
   const { server } = useMasto()
+  const t = useTranslations()
   const { tags, query } = useExploreTagsCache({ limit: 5 })
 
   return (
@@ -17,7 +19,7 @@ export function TrendingTagsPanel() {
       <CardHeader className="pb-2 px-4">
         <CardTitle className="text-sm font-medium flex items-center gap-1.5">
           <Hash className="h-3.5 w-3.5 text-primary" />
-          Trending Topics
+          {t("common.trendingTopics")}
         </CardTitle>
       </CardHeader>
       <CardContent className="pt-0 px-0 pb-0 flex flex-col min-h-0">
@@ -67,7 +69,7 @@ export function TrendingTagsPanel() {
             className="group/more w-full text-xs text-muted-foreground hover:text-primary justify-center"
           >
             <Link href={server ? `/${server}/explore/tag` : "/explore/tag"}>
-              View More Trending Tags
+              {t("common.viewMoreTrendingTags")}
               <ArrowRight className="ml-1 transition-transform duration-300 ease-out group-hover/more:translate-x-1.5" />
             </Link>
           </Button>

@@ -12,7 +12,6 @@ export async function GET(
   server = server.toLocaleLowerCase().trim()
   origin = decodeURIComponent(origin)
   const app = await getApp(origin, server)
-
   if (!app) {
     return new Response(`App not registered for server: ${server}`, {
       status: 400,
@@ -55,7 +54,7 @@ export async function GET(
     })
     return response
   } catch (error) {
-    console.error("OAuth callback error:", error)
-    return NextResponse.redirect("/?error=oauth_failed") 
+    console.error("****OAuth callback error:", error, request.url)
+    return NextResponse.redirect(new URL(`/?error=oauth_failed`, request.url))
   }
 }

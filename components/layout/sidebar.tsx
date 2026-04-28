@@ -11,14 +11,7 @@ import { cn } from "@/lib/utils"
 import { useAuth } from "@/components/auth/auth-provider"
 import { useMasto } from "../auth/masto-provider"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
-
-const navigationItems = [
-  { icon: Home, label: "Home", route: "timeline", color: "text-blue-300" },
-  { icon: Heart, label: "Favorites", route: "favorites", color: "text-red-500" },
-  { icon: PenSquare, label: "Compose", route: "compose", color: "text-purple-200" },
-  { icon: Search, label: "Explore", route: "explore", color: "text-green-300" },
-  { icon: Settings, label: "Settings", route: "settings", color: "text-orange-300" },
-]
+import { useTranslations } from "next-intl"
 
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -27,6 +20,16 @@ export function Sidebar() {
   const router = useRouter()
   const { user, logout, isInitialized } = useAuth()
   const { server } = useMasto()
+  const t = useTranslations()
+
+  const navigationItems = [
+    { icon: Home, label: t("common.menu.home"), route: "timeline", color: "text-blue-300" },
+    { icon: Heart, label: t("common.menu.favorites"), route: "favorites", color: "text-red-500" },
+    { icon: PenSquare, label: t("common.menu.compose"), route: "compose", color: "text-purple-200" },
+    { icon: Search, label: t("common.menu.explore"), route: "explore", color: "text-green-300" },
+    { icon: Settings, label: t("common.menu.settings"), route: "settings", color: "text-orange-300" },
+  ]
+
   const userNameText = user
     ? getDisplayNameText({ displayName: user.displayName, username: user.username })
     : ""
@@ -152,14 +155,16 @@ export function Sidebar() {
           ) : !user ? (
             <div className="border-t border-border/60 py-4 mx-4">
               <div className="space-y-3">
-                <p className="text-sm text-muted-foreground">
-                  Viewing <span className="font-semibold text-foreground">{server}</span> public data
-                </p>
+                    <p className="text-sm text-muted-foreground">
+                      {t.rich("home.preview.sidebar.viewing", {
+                        server: () => <span className="font-semibold text-foreground">{server}</span>,
+                      })}
+                    </p>
                 <p className="text-xs text-muted-foreground/80">
-                  After logging in, you can follow other users or hashtags, like, share, and reply to posts, or interact with accounts on different servers.
+                  {t("common.loginPrompt")}
                 </p>
                 <LoginModal>
-                  <Button className="w-full">Log In</Button>
+                  <Button className="w-full">{t("common.loginButton")}</Button>
                 </LoginModal>
               </div>
             </div>

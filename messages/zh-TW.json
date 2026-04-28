@@ -2,7 +2,23 @@
   "common": {
     "language": "語言",
     "switchLanguage": "切換語言",
-    "Theme": "主題"
+    "Theme": "主題",
+    "menu": {
+      "home": "首頁",
+      "favorites": "收藏",
+      "compose": "發文",
+      "explore": "探索",
+      "settings": "設定"
+    },
+    "loginPrompt": "登入後，您可以追蹤其他用戶或話題，對貼文按讚、分享和回覆，或與不同伺服器上的帳號互動。",
+    "loginButton": "登入",
+    "posts": "貼文",
+    "following": "追蹤中",  
+    "followers": "追蹤者",
+    "unfollow": "取消追蹤",
+    "trendingTopics": "熱門話題",
+    "search": "搜尋",
+    "viewMoreTrendingTags": "查看更多熱門話題"
   },
   "home": {
     "hero": {
@@ -29,7 +45,7 @@
         "compose": "發布",
         "explore": "探索",
         "settings": "設定",
-        "viewing": "正在查看 {server} 的公開資料",
+        "viewing": "正在查看 <server></server> 的公開資料",
         "signIn": "登入"
       },
       "profile": {
@@ -127,5 +143,17 @@
       "taglineHighlight": "今天就加入聯邦宇宙。",
       "builtWith": "為開放網路傾注 <heart></heart>"
     }
+  },
+  "timeline": {
+    "empty": "你的時間軸是空的。追蹤一些用戶或話題，看看這裡的貼文。",
+    "publicTimeline": "公共時間軸",
+    "discover": "發現聯邦宇宙正在發生什麼",
+    "public": "公共",
+    "local": "本地",
+    "home": "首頁",
+    "homeTimeline": "首頁時間軸",
+    "localCommunity": "本地社群",
+    "publicFediverse": "公共聯邦宇宙",
+    "loadingTimeline": "正在加載時間軸..."
   }
 }

@@ -9,8 +9,10 @@ import { useTimelineCache, type TimelineType } from "@/hooks/mastodon/useTimelin
 import { useAuth } from "@/components/auth/auth-provider"
 import { useMasto } from "@/components/auth/masto-provider"
 import { groupThreadPosts } from "@/lib/mastodon/groupThreads"
+import { useTranslations } from "next-intl"
 
 export function TimelineFeed() {
+  const t = useTranslations()
   const { accessToken } = useMasto()
   const [timelineType, setTimelineType] = useState<TimelineType>(() => accessToken ? "home" : "local")
 
@@ -30,16 +32,15 @@ export function TimelineFeed() {
 
   const timelineTitle = useMemo(() => {
     switch (timelineType) {
-      case "home": return "Home Timeline"
-      case "local": return "Local Community"
-      case "public": return "Public Fediverse"
+      case "home": return t("timeline.homeTimeline")
+      case "local": return t("timeline.localCommunity")
+      case "public": return t("timeline.publicFediverse")
     }
-  }, [timelineType])
-
+  }, [timelineType, t])
   if (!isReady || isLoading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Loading Timeline...</h1>
+        <h1 className="text-3xl font-bold">{t("timeline.loadingTimeline")}</h1>
         {/* Initial loading skeleton */}
         <LoadingSkeleton />
       </div>
@@ -61,12 +62,12 @@ export function TimelineFeed() {
                 className="capitalize text-xs"
                 disabled={type === 'home' && !user}
               >
-                {type}
+                {t(`timeline.${type}`)}
               </Button>
             ))}
           </div>
           <Badge variant="outline" className="hidden md:inline-flex text-accent border-accent/50">
-            {posts.length} posts
+            {posts.length} {t("common.posts")}
           </Badge>
         </div>
       </div>

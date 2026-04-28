@@ -2,7 +2,23 @@
   "common": {
     "language": "Language",
     "switchLanguage": "Switch language",
-    "Theme": "Theme"
+    "Theme": "Theme",
+    "menu": {
+      "home": "Home",
+      "favorites": "Favorites",
+      "compose": "Compose",
+      "explore": "Explore",
+      "settings": "Settings"
+    },
+    "loginPrompt": "After logging in, you can follow other users or hashtags, like, share, and reply to posts, or interact with accounts on different servers.",
+    "loginButton": "Log In",
+    "posts": "Posts",
+    "following": "Following",
+    "followers": "Followers",
+    "unfollow": "Unfollow",
+    "trendingTopics": "Trending Topics",
+    "search": "Search",
+    "viewMoreTrendingTags": "View More Trending Tags"
   },
   "home": {
     "hero": {
@@ -29,7 +45,7 @@
         "compose": "Compose",
         "explore": "Explore",
         "settings": "Settings",
-        "viewing": "Viewing {server} public data",
+        "viewing": "Viewing <server></server> public data",
         "signIn": "Sign In"
       },
       "profile": {
@@ -127,5 +143,17 @@
       "taglineHighlight": "Join the fediverse today.",
       "builtWith": "Built with <heart></heart> for the open web"
     }
+  },
+  "timeline": {
+    "empty": "Your timeline is empty. Follow some users or hashtags to see posts here.",
+    "publicTimeline": "Public Timeline",
+    "discover": "Discover what's happening across the fediverse",
+    "public": "public",
+    "local": "local",
+    "home": "home",
+    "homeTimeline": "Home Timeline",
+    "localCommunity": "Local Community",
+    "publicFediverse": "Public Fediverse",
+    "loadingTimeline": "Loading Timeline..."
   }
 }
