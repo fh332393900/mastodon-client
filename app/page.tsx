@@ -2,6 +2,7 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
+import Script from "next/script"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LoginModal } from "@/components/auth/login-modal"
@@ -477,9 +478,16 @@ export default function HomePage() {
             {t("footer.tagline")}{" "}
             <span className="text-primary">{t("footer.taglineHighlight")}</span>
           </p>
+          
           <p className="text-xs text-muted-foreground">{t.rich("footer.builtWith", { heart: () => <Heart className="inline w-3 h-3 text-red-400" /> })}</p>
         </div>
+        <div id="wcb" className="carbonbadge" />
       </footer>
+      <Script
+        src="https://unpkg.com/website-carbon-badges@1.1.3/b.min.js"
+        strategy="lazyOnload"
+        defer
+      />
     </div>
   )
 }
