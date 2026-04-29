@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
 import type { mastodon } from "masto"
+import { useTranslations } from "next-intl"
 
 interface FollowButtonProps {
   account: mastodon.v1.Account
@@ -29,6 +30,7 @@ export function FollowButton({
 }: FollowButtonProps) {
   const { client } = useMasto()
   const { user } = useAuth()
+  const t = useTranslations()
   const canInteract = !!client && !!user && user.id !== account.id
 
   const [relationship, setRelationship] = useState<mastodon.v1.Relationship | null>(
@@ -65,16 +67,16 @@ export function FollowButton({
 
   const content = () => {
     if (isPending || loadingRel)
-      return <><Loader2 className="h-4 w-4 animate-spin" /><span className="inline-block w-16">Requesting</span></>
+      return <><Loader2 className="h-4 w-4 animate-spin" /><span className="inline-block">{t("common.requesting")}</span></>
     if (isFollowing) {
       return isHovering ? (
-        <><UserX className="h-4 w-4" /><span className="inline-block w-12">Unfollow</span></>
+        <><UserX className="h-4 w-4" /><span className="inline-block">{t("common.unfollow")}</span></>
       ) : (
-        <><UserCheck className="h-4 w-4" /><span className="inline-block w-12">Following</span></>
+        <><UserCheck className="h-4 w-4" /><span className="inline-block">{t("common.following")}</span></>
       )
     }
-    if (isRequested) return <><Loader2 className="h-4 w-4" /><span className="inline-block w-12">Pending</span></>
-    return <><UserPlus className="h-4 w-4" /><span className="inline-block w-12">Follow</span></>
+    if (isRequested) return <><Loader2 className="h-4 w-4" /><span className="inline-block">{t("common.pending")}</span></>
+    return <><UserPlus className="h-4 w-4" /><span className="inline-block">{t("common.follow")}</span></>
   }
 
   return (
@@ -82,7 +84,7 @@ export function FollowButton({
       size={size}
       variant={isFollowing || isRequested ? "outline" : "default"}
       className={cn(
-        "shrink-0 w-28 gap-1.5 rounded-full transition-all",
+        "shrink-0 gap-1.5 !px-6 rounded-full transition-all flex justify-center items-center",
         isFollowing && isHovering && "hover:text-destructive",
         !canInteract && "opacity-50 cursor-not-allowed",
         className,

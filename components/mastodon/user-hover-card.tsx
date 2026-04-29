@@ -172,7 +172,7 @@ export function UserHoverCard({
         side="bottom"
         align="start"
         sideOffset={6}
-        className="w-92 rounded-xl px-0 pt-0 border border-border bg-card shadow-lg overflow-hidden data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
+        className="w-102 rounded-xl px-0 pt-0 border border-border bg-card shadow-lg overflow-hidden data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
         onMouseEnter={clearTimers}
         onMouseLeave={scheduleClose}
       >
