@@ -30,6 +30,8 @@
     "https-proxy-agent": "^9.0.0",
     "immer": "latest",
     "lucide-react": "^0.454.0",
+    "@emoji-mart/data": "latest",
+    "@emoji-mart/react": "latest",
     "masto": "latest",
     "next": "16.2.4",
     "next-intl": "^4.9.1",

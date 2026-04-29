@@ -7,6 +7,7 @@ import { useComposeSearch } from "@/hooks/mastodon/useComposeSearch"
 import type { mastodon } from "masto"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
+import { useMasto } from "@/components/auth/masto-provider"
 
 type TriggerType = "hashtags" | "accounts"
 
@@ -24,6 +25,7 @@ type CaretPosition = {
 
 export type ComposeEditorHandle = {
   insertText: (text: string) => void
+  insertCustomEmoji: (shortcode: string, url: string) => void
   focus: () => void
 }
 
@@ -84,6 +86,53 @@ function getRangeForTextIndices(root: HTMLElement, start: number, end: number) {
   return range
 }
 
+/**
+ * Extract text content from the editor, converting custom emoji <img data-shortcode>
+ * elements back to their :shortcode: text representation for submission.
+ */
+function getEditorText(root: Node): string {
+  let text = ""
+  for (const node of Array.from(root.childNodes)) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      text += (node as Text).data
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      const el = node as HTMLElement
+      const shortcode = el.getAttribute("data-shortcode")
+      if (shortcode) {
+        text += shortcode
+      } else {
+        text += getEditorText(el)
+      }
+    }
+  }
+  return text
+}
+
+/** Insert a custom emoji <img> at the given range and move cursor after it */
+function insertCustomEmojiAtRange(
+  range: Range,
+  shortcode: string,
+  url: string,
+): void {
+  range.deleteContents()
+  const img = document.createElement("img")
+  img.src = url
+  img.alt = `:${shortcode}:`
+  img.title = shortcode
+  img.setAttribute("data-shortcode", `:${shortcode}:`)
+  img.contentEditable = "false"
+  img.className = "inline h-5 w-5 align-text-bottom"
+  range.insertNode(img)
+  const space = document.createTextNode(" ")
+  range.setStartAfter(img)
+  range.insertNode(space)
+  range.setStartAfter(space)
+  range.setEndAfter(space)
+  const selection = window.getSelection()
+  selection?.removeAllRanges()
+  selection?.addRange(range)
+}
+
 export function ComposeEditor({
   value,
   onChange,
@@ -96,6 +145,26 @@ export function ComposeEditor({
   const [trigger, setTrigger] = useState<TriggerState | null>(null)
   const [caretPosition, setCaretPosition] = useState<CaretPosition | null>(null)
   const searchTimer = useRef<number | null>(null)
+  const [customEmojiMap, setCustomEmojiMap] = useState<Record<string, string>>({})
+
+  // Fetch server custom emojis once on mount
+  const { client, isReady } = useMasto()
+  useEffect(() => {
+    if (!isReady || !client) return
+    const load = async () => {
+      try {
+        const emojis = await client.v1.customEmojis.list()
+        const map: Record<string, string> = {}
+        for (const e of emojis) {
+          if (e.shortcode) map[e.shortcode] = e.url
+        }
+        setCustomEmojiMap(map)
+      } catch {
+        // server may not support custom emojis
+      }
+    }
+    load()
+  }, [isReady, client])
 
   const { isLoading, accounts, hashtags } = useComposeSearch(
     trigger?.query ?? "",
@@ -130,19 +199,52 @@ export function ComposeEditor({
         selection.addRange(range)
         handleInput()
       },
+      insertCustomEmoji: (shortcode: string, url: string) => {
+        const root = rootRef.current
+        if (!root) return
+        root.focus()
+        const selection = window.getSelection()
+        if (!selection || selection.rangeCount === 0) return
+        const range = selection.getRangeAt(0)
+        insertCustomEmojiAtRange(range, shortcode, url)
+        const newText = getEditorText(root)
+        onChange(newText)
+        onLengthChange?.(newText.length)
+      },
       focus: () => rootRef.current?.focus(),
     }
-  }, [editorRef])
+  }, [editorRef, onChange, onLengthChange])
 
   const handleInput = () => {
     const root = rootRef.current
     if (!root) return
-    const text = root.textContent ?? ""
+
+    const caretIndex = getCaretIndex(root)
+    const rawText = root.textContent ?? ""
+    const textBefore = rawText.slice(0, caretIndex)
+
+    // Auto-replace completed :shortcode: with custom emoji image
+    const shortcodeMatch = textBefore.match(/:([a-zA-Z0-9_+-]+):$/)
+    if (shortcodeMatch) {
+      const code = shortcodeMatch[1]
+      const url = customEmojiMap[code]
+      if (url) {
+        const fullLen = code.length + 2 // `:code:`
+        const range = getRangeForTextIndices(root, caretIndex - fullLen, caretIndex)
+        insertCustomEmojiAtRange(range, code, url)
+        const newText = getEditorText(root)
+        onChange(newText)
+        onLengthChange?.(newText.length)
+        setTrigger(null)
+        setCaretPosition(null)
+        return
+      }
+    }
+
+    const text = getEditorText(root)
     onChange(text)
     onLengthChange?.(text.length)
 
-    const caretIndex = getCaretIndex(root)
-    const textBefore = text.slice(0, caretIndex)
     const match = textBefore.match(/(^|\s)([#@])([\p{L}\p{N}_-]{1,30})$/u)
 
     if (!match) {

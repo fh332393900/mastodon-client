@@ -199,7 +199,7 @@
     "postThread": "스레드 게시",
     "visibility": {
       "public": "공개",
-      "unlisted": "숨김",
+      "unlisted": "미등재",
       "followersOnly": "팔로워 전용",
       "direct": "다이렉트"
     },

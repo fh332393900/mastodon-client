@@ -199,7 +199,7 @@
     "postThread": "スレッドを投稿",
     "visibility": {
       "public": "公開",
-      "unlisted": "非公開",
+      "unlisted": "非掲載",
       "followersOnly": "フォロワーのみ",
       "direct": "ダイレクト"
     },

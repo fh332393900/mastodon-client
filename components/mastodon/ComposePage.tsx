@@ -85,12 +85,6 @@ export function ComposePage() {
               />
             ))}
           </div>
-
-          <div className="flex items-center gap-3 pb-1 pt-0.5">
-            <div className="flex w-10 shrink-0 justify-center">
-              <div className="h-5 w-0.5 rounded-full bg-border/40" />
-            </div>
-          </div>
         </div>
       </div>
     </div>

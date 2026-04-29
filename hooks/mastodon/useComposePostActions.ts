@@ -17,6 +17,19 @@ export function useComposePostActions() {
     }
   }
 
+  const handleInsertCustomEmoji = (
+    shortcode: string,
+    url: string,
+    post: ThreadItem,
+    onChange: (update: Partial<ThreadItem>) => void,
+  ) => {
+    if (editorRef.current) {
+      editorRef.current.insertCustomEmoji(shortcode, url)
+    } else {
+      onChange({ content: `${post.content}:${shortcode}:` })
+    }
+  }
+
   const handleMediaSelect = (
     files: FileList | null,
     type: "image" | "video",
@@ -71,6 +84,7 @@ export function useComposePostActions() {
     imageInputRef,
     videoInputRef,
     handleInsertEmoji,
+    handleInsertCustomEmoji,
     handleMediaSelect,
     removeMedia,
     addPollOption,

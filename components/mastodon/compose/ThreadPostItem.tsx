@@ -21,6 +21,7 @@ import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
 import { ToolbarButton } from "@/components/mastodon/compose/ComposeToolbar"
 import { useComposePostActions } from "@/components/mastodon/compose/useComposePostActions"
+import { EmojiPicker } from "@/components/mastodon/emoji-picker"
 import type { ThreadItem } from "@/hooks/mastodon/useComposeThread"
 import { useTranslations } from "next-intl"
 
@@ -29,12 +30,6 @@ const VISIBILITY_OPTIONS: Array<{ value: mastodon.v1.StatusVisibility; labelKey:
   { value: "unlisted", labelKey: "compose.visibility.unlisted" },
   { value: "private", labelKey: "compose.visibility.followersOnly" },
   { value: "direct", labelKey: "compose.visibility.direct" },
-]
-
-const EMOJI_LIST = [
-  "😀", "😂", "😍", "🥳", "🤔", "😎",
-  "😭", "🔥", "✨", "👍", "🙏", "🎉",
-  "🍀", "💡", "📌", "❤️",
 ]
 
 const POLL_EXPIRES = [
@@ -93,6 +88,7 @@ export function ThreadPostItem({
     imageInputRef,
     videoInputRef,
     handleInsertEmoji,
+    handleInsertCustomEmoji,
     handleMediaSelect,
     removeMedia,
     addPollOption,
@@ -219,23 +215,14 @@ export function ThreadPostItem({
         {!error && notice && <p className="mt-1.5 text-xs text-muted-foreground">{notice}</p>}
 
         <div className="mt-2 flex flex-wrap items-center gap-1 border-t border-border/40 pt-2">
-          <ToolbarButton icon={<Smile className="h-4 w-4" />} label="Emoji">
-            <div className="space-y-2">
-              <div className="text-xs font-semibold text-muted-foreground">{t("compose.emoji")}</div>
-              <div className="grid grid-cols-8 gap-1.5 text-base">
-                {EMOJI_LIST.map((emoji) => (
-                  <button
-                    key={emoji}
-                    type="button"
-                    className="rounded p-0.5 hover:bg-muted"
-                    onClick={() => handleInsertEmoji(emoji, post, onChange)}
-                  >
-                    {emoji}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </ToolbarButton>
+          <EmojiPicker
+            onSelect={(emoji) => handleInsertEmoji(emoji, post, onChange)}
+            onSelectCustom={(shortcode, url) => handleInsertCustomEmoji(shortcode, url, post, onChange)}
+          >
+            <span>
+              <ToolbarButton icon={<Smile className="h-4 w-4" />} label={t("compose.emoji")} />
+            </span>
+          </EmojiPicker>
 
           <ToolbarButton
             icon={<ImageIcon className="h-4 w-4" />}
