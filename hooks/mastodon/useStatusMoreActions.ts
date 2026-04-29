@@ -57,7 +57,8 @@ export function useStatusMoreActions({ status }: Props) {
 
   const removeStatusFromCache = useCallback(
     (predicate: (item: any) => boolean) => {
-      const prefixes = ["timeline", "tag-timeline", "favorites"] as const
+      // Invalidate all queries that might contain this status
+      const prefixes = ["timeline", "tag-timeline", "favorites", "profile"] as const
       for (const prefix of prefixes) {
         const queries = getQueriesByPrefix(prefix)
         for (const query of queries) {
@@ -117,7 +118,7 @@ export function useStatusMoreActions({ status }: Props) {
     setIsActionLoading(true)
     setLoadingAction("delete")
     try {
-      await (client.v1.statuses.$select(status.id) as any).delete()
+      await (client.v1.statuses.$select(status.id) as any).remove()
       setDeleteConfirmOpen(false)
       setMenuOpen(false)
       removeStatusFromCache((item) => item.id === status.id || item.reblog?.id === status.id)
