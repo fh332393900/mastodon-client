@@ -7,7 +7,7 @@ import { useTheme } from "next-themes"
 import { useLocale } from "next-intl"
 import type { mastodon } from "masto"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { useMasto } from "@/components/auth/masto-provider"
+import { useCustomEmojis } from "@/hooks/mastodon/useCustomEmojis"
 
 // Map app locales to emoji-mart i18n locale keys
 const LOCALE_MAP: Record<string, string> = {
@@ -47,10 +47,11 @@ type EmojiPickerProps = {
 export function EmojiPicker({ onSelect, onSelectCustom, children, disabled }: EmojiPickerProps) {
   const { resolvedTheme } = useTheme()
   const locale = useLocale()
-  const { client, isReady } = useMasto()
   const [open, setOpen] = useState(false)
   const [i18n, setI18n] = useState<object | null>(null)
-  const [customEmojis, setCustomEmojis] = useState<mastodon.v1.CustomEmoji[]>([])
+
+  // Use shared React Query cache — no separate fetch needed
+  const customEmojis = useCustomEmojis()
 
   const emojiMartLocale = LOCALE_MAP[locale] ?? "en"
 
@@ -63,21 +64,6 @@ export function EmojiPicker({ onSelect, onSelectCustom, children, disabled }: Em
         import("@emoji-mart/data/i18n/en.json").then((mod) => setI18n(mod.default ?? mod))
       })
   }, [open, emojiMartLocale])
-
-  // Fetch server custom emojis when picker opens (lazy, one-time per mount)
-  useEffect(() => {
-    if (!open || !isReady || !client || customEmojis.length > 0) return
-
-    const load = async () => {
-      try {
-        const emojis = await client.v1.customEmojis.list()
-        setCustomEmojis(emojis)
-      } catch {
-        // Not logged in or server doesn't support custom emojis
-      }
-    }
-    load()
-  }, [open, isReady, client, customEmojis.length])
 
   function handleEmojiSelect(emoji: {
     native?: string

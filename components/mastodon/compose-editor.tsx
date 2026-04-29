@@ -8,6 +8,7 @@ import type { mastodon } from "masto"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import { useMasto } from "@/components/auth/masto-provider"
+import { useCustomEmojis } from "@/hooks/mastodon/useCustomEmojis"
 
 type TriggerType = "hashtags" | "accounts"
 
@@ -145,26 +146,13 @@ export function ComposeEditor({
   const [trigger, setTrigger] = useState<TriggerState | null>(null)
   const [caretPosition, setCaretPosition] = useState<CaretPosition | null>(null)
   const searchTimer = useRef<number | null>(null)
-  const [customEmojiMap, setCustomEmojiMap] = useState<Record<string, string>>({})
 
-  // Fetch server custom emojis once on mount
-  const { client, isReady } = useMasto()
-  useEffect(() => {
-    if (!isReady || !client) return
-    const load = async () => {
-      try {
-        const emojis = await client.v1.customEmojis.list()
-        const map: Record<string, string> = {}
-        for (const e of emojis) {
-          if (e.shortcode) map[e.shortcode] = e.url
-        }
-        setCustomEmojiMap(map)
-      } catch {
-        // server may not support custom emojis
-      }
-    }
-    load()
-  }, [isReady, client])
+  // Use shared React Query cache for custom emojis
+  const serverEmojis = useCustomEmojis()
+  const customEmojiMap = useMemo(
+    () => Object.fromEntries(serverEmojis.map((e) => [e.shortcode, e.url])),
+    [serverEmojis],
+  )
 
   const { isLoading, accounts, hashtags } = useComposeSearch(
     trigger?.query ?? "",
