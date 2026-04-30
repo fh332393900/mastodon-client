@@ -75,7 +75,10 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
       return
     }
     setError("")
-    await login(server)
+    const result = await login(server)
+    if (!result.success) {
+      setError(result.error ?? "Unable to connect to the server")
+    }
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -178,7 +181,10 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
                 value={server}
                 onChange={(e) => { setServer(e.target.value); setError("") }}
                 onKeyDown={handleKeyDown}
-                className="pl-[4.2rem] h-10 text-sm rounded-sm bg-background/80 border-border/70 transition-all duration-200 focus-visible:ring-primary/30"
+                className={cn(
+                  "pl-[4.2rem] h-10 text-sm rounded-sm bg-background/80 transition-all duration-200",
+                  error ? "border-destructive/80 focus-visible:ring-destructive/30" : "border-border/70 focus-visible:ring-primary/30",
+                )}
                 disabled={isLoading}
               />
               {server && !isLoading && (

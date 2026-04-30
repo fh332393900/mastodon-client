@@ -30,6 +30,7 @@ async function fetchAppInfo(origin: string, server: string) {
   } catch (error: any) {
     console.log(error.stack || error
       , '****fetchAppInfo error****')
+    return null
   }
   
 }

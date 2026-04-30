@@ -13,7 +13,7 @@ interface AuthContextType {
   isLoading: boolean
   /** Has attempted to resolve auth at least once (success or failure). */
   isInitialized: boolean
-  login: (server: string) => Promise<void>
+  login: (server: string) => Promise<{ success: boolean; error?: string }>
   logout: () => Promise<void>
   refreshUser: () => Promise<void>
 }
@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [client, isReady])
 
-  const login = async (server: string) => {
+  const login = async (server: string): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true)
     try {
       const res = await fetch(`/api/${server}/login`, {
@@ -74,10 +74,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           origin: location.origin,
         })
       })
-      const { authUrl } = await res.json()
-      location.href = authUrl
+      const payload = await res.json().catch(() => ({}))
+      if (res.ok && payload?.authUrl) {
+        location.href = payload.authUrl
+        return { success: true }
+      }
+
+      const errorMessage =
+        payload?.error ||
+        (res.status === 400 ? "Unable to connect to the server" : "Unable to connect to the server")
+      setIsLoading(false)
+      return { success: false, error: errorMessage }
     } catch (error) {
       setIsLoading(false)
+      return { success: false, error: "Unable to connect to the server" }
     }
   }
 
