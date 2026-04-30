@@ -3,14 +3,11 @@ import type { Metadata } from "next"
 import 'tailwindcss/index.css'
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
-import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
 import "./globals.css"
-import { cookies } from "next/headers";
-import { MastoProvider } from "@/components/auth/masto-provider";
-import { AuthProvider } from "@/components/auth/auth-provider"
-import { ReactQueryProvider } from "@/components/providers/react-query-provider"
+import { cookies } from "next/headers"
+import { ClientProviders } from "@/components/providers/client-providers"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages, getLocale } from "next-intl/server"
 
@@ -28,10 +25,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const cookieStore = cookies()
-
-  const accessToken = (await cookieStore).get("mastodon_token")?.value ?? ""
-  const server = (await cookieStore).get("mastodon_server")?.value ?? process.env.DEFAULT_MASTODON_SERVER ?? "m.webtoo.ls"
+  const cookieStore = await cookies()
+  const accessToken = cookieStore.get("mastodon_token")?.value ?? ""
+  const server = cookieStore.get("mastodon_server")?.value ?? process.env.NEXT_PUBLIC_DEFAULT_MASTODON_SERVER ?? "m.webtoo.ls"
   const locale = await getLocale()
   const messages = await getMessages()
 
@@ -49,17 +45,12 @@ export default async function RootLayout({
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
             <NextIntlClientProvider locale={locale} messages={messages}>
-              <ReactQueryProvider>
-                <MastoProvider accessToken={accessToken} server={server}>
-                  <AuthProvider>
-                    {children}
-                  </AuthProvider>
-                </MastoProvider>
-              </ReactQueryProvider>
+              <ClientProviders accessToken={accessToken} server={server}>
+                {children}
+              </ClientProviders>
             </NextIntlClientProvider>
           </ThemeProvider>
         </Suspense>
-        {/* <Analytics /> */}
       </body>
     </html>
   )

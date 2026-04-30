@@ -431,7 +431,7 @@ export default function HomePage() {
                 {t("cta.subtitle")}
               </p>
               <div className="flex flex-wrap gap-3 justify-center pt-2">
-                {accessToken ? (
+                {isAuthenticated ? (
                   <Button
                     size="lg"
                     onClick={handleEnter}
@@ -448,7 +448,7 @@ export default function HomePage() {
                     </Button>
                   </LoginModal>
                 )}
-                {!accessToken && (
+                {!isAuthenticated && (
                 <Button
                   size="lg"
                   variant="outline"
