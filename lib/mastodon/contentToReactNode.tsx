@@ -59,7 +59,7 @@ export function contentToReactNode(
           j += 1
         }
 
-        const codeBlock = parseMarkdownCodeBlockFromText(combined)
+  const codeBlock = parseMarkdownCodeBlockFromText(combined, emojiMap)
         if (codeBlock) {
           nodes.push(<Fragment key={`md-code-${i}`}>{codeBlock}</Fragment>)
           i = j
@@ -126,7 +126,7 @@ function elementToReactNode(
   const { name, attributes = {}, children = [] } = node
 
   if (name === 'p') {
-    const codeBlock = parseMarkdownCodeBlock(node)
+    const codeBlock = parseMarkdownCodeBlock(node, emojiMap)
     if (codeBlock) return codeBlock
   }
 
@@ -328,20 +328,40 @@ function renderTextWithMarkdownAndEmojis(text: string, emojiMap: EmojiMap): Reac
   return nodes.length === 1 ? nodes[0] : nodes
 }
 
-function parseMarkdownCodeBlock(node: any): React.ReactNode | null {
+function parseMarkdownCodeBlock(node: any, emojiMap: EmojiMap): React.ReactNode | null {
   const raw = getTextWithBreaks(node.children)
-  return parseMarkdownCodeBlockFromText(raw)
+  return parseMarkdownCodeBlockFromText(raw, emojiMap)
 }
 
-function parseMarkdownCodeBlockFromText(raw: string): React.ReactNode | null {
+function parseMarkdownCodeBlockFromText(raw: string, emojiMap: EmojiMap): React.ReactNode | null {
   if (!raw?.trim().startsWith('```')) return null
 
   const normalized = raw.replace(/\r\n/g, '\n').trim()
-  const match = normalized.match(/^```(\w+)?\n([\s\S]*?)\n```$/)
+  const match = normalized.match(/^```(\w+)?\n([\s\S]*?)\n```[ \t]*\n?([\s\S]*)$/)
   if (!match) return null
 
-  const [, lang, code] = match
-  return <ContentCode code={encodeURIComponent(code)} lang={lang} />
+  const [, lang, code, restRaw] = match
+  const rest = (restRaw ?? '').trim()
+  const codeBlock = <ContentCode code={encodeURIComponent(code)} lang={lang} />
+
+  if (!rest) return codeBlock
+
+  return (
+    <>
+      {codeBlock}
+      <p>{renderTextWithMarkdownAndEmojisWithBreaks(rest, emojiMap)}</p>
+    </>
+  )
+}
+
+function renderTextWithMarkdownAndEmojisWithBreaks(text: string, emojiMap: EmojiMap): React.ReactNode {
+  const lines = text.split('\n')
+  return lines.map((line, index) => (
+    <Fragment key={`md-line-${index}`}>
+      {renderTextWithMarkdownAndEmojis(line, emojiMap)}
+      {index < lines.length - 1 ? <br /> : null}
+    </Fragment>
+  ))
 }
 
 function getTextWithBreaks(children: any[] = []): string {
