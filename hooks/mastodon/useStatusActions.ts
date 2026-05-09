@@ -14,7 +14,7 @@ interface StatusActionsProps {
 export function useStatusActions({ status }: StatusActionsProps) {
   const { client, isReady } = useMasto()
   const { user } = useAuth()
-  const { updateInfiniteQueryPages } = useQueryCacheTools()
+  const { updateInfiniteQueryPages, removeFromInfiniteQueryPages, prependToInfiniteQueryFirstPage } = useQueryCacheTools()
 
   const [currentStatus, setCurrentStatus] = useState<mastodon.v1.Status>({ ...status })
   const [isLoading, setIsLoading] = useState<Record<Action, boolean>>({
@@ -71,15 +71,36 @@ export function useStatusActions({ status }: StatusActionsProps) {
       }
 
       updateRenderedStatus(next)
-      // Update any cached timeline queries containing this status so UI remains consistent.
-      updateInfiniteQueryPages(["timeline"], (item: any) => {
+
+      const matchesStatus = (item: any) => {
         const sid = item.reblog ? item.reblog.id : item.id
         const renderedId = next.reblog ? next.reblog.id : next.id
-        if (sid === renderedId || item.id === next.id) {
-          return { ...item, ...(next.reblog ? { reblog: next.reblog } : next) }
+        return sid === renderedId || item.id === next.id
+      }
+
+      const applyUpdate = (item: any) => {
+        if (!matchesStatus(item)) return item
+        return { ...item, ...(next.reblog ? { reblog: next.reblog } : next) }
+      }
+
+      // Always sync timeline cache
+      updateInfiniteQueryPages(["timeline"], applyUpdate)
+
+      // Sync favorites cache
+      if (action === "favourited") {
+        if (isCancel) {
+          // Unfavorited: remove the post from the favorites list
+          removeFromInfiniteQueryPages(["favorites"], matchesStatus)
+        } else {
+          // Favorited: remove any stale copy first, then prepend at the top
+          // (favorites are ordered newest-first; only affects cached queries)
+          removeFromInfiniteQueryPages(["favorites"], matchesStatus)
+          prependToInfiniteQueryFirstPage(["favorites"], next)
         }
-        return item
-      })
+      } else {
+        // For other actions (reblog, bookmark, etc.) keep favorites cache in sync too
+        updateInfiniteQueryPages(["favorites"], applyUpdate)
+      }
     } finally {
       setIsLoading((prev) => ({ ...prev, [action]: false }))
     }
