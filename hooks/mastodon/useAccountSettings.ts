@@ -243,6 +243,7 @@ export function useAccountSettings() {
     resetForm,
     setAvatar,
     setHeader,
+    save,
     isReady,
     isLoading: credentialsQuery.isLoading,
     isSaving: mutation.isPending,
