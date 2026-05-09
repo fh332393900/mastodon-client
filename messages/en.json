@@ -239,5 +239,83 @@
     "cleanerSuffix": "of all web pages globally.",
     "learnMore": "websitecarbon.com →",
     "ariaLabel": "Website Carbon Badge"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your profile and preferences.",
+    "sections": {
+      "profile": {
+        "label": "Profile",
+        "description": "Avatar, bio, and fields"
+      },
+      "preferences": {
+        "label": "Preferences",
+        "description": "Timeline, media, and UI"
+      },
+      "about": {
+        "label": "About",
+        "description": "Client details and credits"
+      }
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Update how people see you across the server.",
+      "loadingTitle": "Profile",
+      "loadingDescription": "Loading your profile...",
+      "avatarLabel": "Avatar",
+      "avatarDescription": "Square image. Recommended 512x512.",
+      "headerLabel": "Header",
+      "headerDescription": "Wide banner. Recommended 1500x500.",
+      "displayNameLabel": "Display name",
+      "usernameLabel": "Username",
+      "bioLabel": "Bio",
+      "fieldsTitle": "Profile fields",
+      "fieldsDescription": "Add links or tags to highlight on your profile.",
+      "fieldLabel": "Label {index}",
+      "fieldValue": "Value",
+      "addField": "Add field",
+      "saveTitle": "Save changes",
+      "saveDescription": "Review and apply updates to your profile.",
+      "reset": "Reset",
+      "save": "Save profile",
+      "saving": "Saving..."
+    },
+    "preferences": {
+      "title": "Preferences",
+      "description": "Customize how the client behaves for you.",
+      "placeholder": "Preference settings are coming next. This section will cover timeline behavior, language, and media options."
+    },
+    "about": {
+      "title": "About",
+      "description": "Client information, version, and helpful links.",
+      "placeholder": "About details will include app version, build info, and open-source credits."
+    },
+    "media": {
+      "upload": "Upload",
+      "remove": "Remove",
+      "noImage": "No image",
+      "cropTitle": "Crop {label}",
+      "cropDescription": "Drag to reposition and zoom to fit.",
+      "cropPreviewAlt": "Crop preview",
+      "zoom": "Zoom",
+      "dragHint": "Drag the image to reposition",
+      "useImage": "Use image",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "previewAlt": "{label} preview"
+    },
+    "validation": {
+      "displayNameTooLong": "Display name is too long",
+      "usernameRequired": "Username is required",
+      "usernameTooLong": "Username is too long",
+      "bioTooLong": "Bio is too long",
+      "fieldsTooMany": "Only 4 fields are allowed",
+      "fieldPairRequired": "Both label and value are required",
+      "labelTooLong": "Label is too long",
+      "valueTooLong": "Value is too long",
+      "fixErrors": "Please fix validation errors",
+      "updateFailed": "Unable to update profile. Please try again.",
+      "updated": "Profile updated"
+    }
   }
 }

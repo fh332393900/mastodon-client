@@ -239,5 +239,83 @@
     "cleanerSuffix": "的網頁更環保。",
     "learnMore": "websitecarbon.com →",
     "ariaLabel": "網站碳排放徽章"
+  },
+  "settings": {
+    "title": "設定",
+    "subtitle": "管理你的個人資料與偏好設定。",
+    "sections": {
+      "profile": {
+        "label": "個人資料",
+        "description": "頭像、簡介與欄位"
+      },
+      "preferences": {
+        "label": "偏好設定",
+        "description": "時間軸、媒體與介面"
+      },
+      "about": {
+        "label": "關於",
+        "description": "用戶端資訊與致謝"
+      }
+    },
+    "profile": {
+      "title": "個人資料",
+      "description": "更新他人看到你的方式。",
+      "loadingTitle": "個人資料",
+      "loadingDescription": "正在載入你的個人資料...",
+      "avatarLabel": "頭像",
+      "avatarDescription": "方形圖片。建議 512x512。",
+      "headerLabel": "背景圖",
+      "headerDescription": "橫幅圖片。建議 1500x500。",
+      "displayNameLabel": "顯示名稱",
+      "usernameLabel": "使用者名稱",
+      "bioLabel": "簡介",
+      "fieldsTitle": "個人欄位",
+      "fieldsDescription": "新增連結或標籤來展示在個人資料中。",
+      "fieldLabel": "標籤 {index}",
+      "fieldValue": "內容",
+      "addField": "新增欄位",
+      "saveTitle": "儲存變更",
+      "saveDescription": "檢視並套用你的資料更新。",
+      "reset": "重設",
+      "save": "儲存個人資料",
+      "saving": "儲存中..."
+    },
+    "preferences": {
+      "title": "偏好設定",
+      "description": "自訂用戶端行為。",
+      "placeholder": "偏好設定即將推出，本區將涵蓋時間軸、語言與媒體選項。"
+    },
+    "about": {
+      "title": "關於",
+      "description": "用戶端資訊、版本與有用連結。",
+      "placeholder": "此處將顯示版本、建置資訊與開源致謝。"
+    },
+    "media": {
+      "upload": "上傳",
+      "remove": "移除",
+      "noImage": "沒有圖片",
+      "cropTitle": "裁切 {label}",
+      "cropDescription": "拖曳調整位置並縮放以適配。",
+      "cropPreviewAlt": "裁切預覽",
+      "zoom": "縮放",
+      "dragHint": "拖曳圖片以調整位置",
+      "useImage": "使用圖片",
+      "cancel": "取消",
+      "saving": "儲存中...",
+      "previewAlt": "{label} 預覽"
+    },
+    "validation": {
+      "displayNameTooLong": "顯示名稱過長",
+      "usernameRequired": "使用者名稱為必填",
+      "usernameTooLong": "使用者名稱過長",
+      "bioTooLong": "簡介過長",
+      "fieldsTooMany": "最多只能新增 4 個欄位",
+      "fieldPairRequired": "標籤名稱與內容需同時填寫",
+      "labelTooLong": "標籤名稱過長",
+      "valueTooLong": "標籤內容過長",
+      "fixErrors": "請修正表單錯誤",
+      "updateFailed": "更新個人資料失敗，請再試一次。",
+      "updated": "個人資料已更新"
+    }
   }
 }

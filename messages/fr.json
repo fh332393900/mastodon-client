@@ -239,5 +239,83 @@
     "cleanerSuffix": "de toutes les pages web dans le monde.",
     "learnMore": "websitecarbon.com →",
     "ariaLabel": "Badge carbone du site web"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Gérez votre profil et vos préférences.",
+    "sections": {
+      "profile": {
+        "label": "Profil",
+        "description": "Avatar, bio et champs"
+      },
+      "preferences": {
+        "label": "Préférences",
+        "description": "Fil, médias et interface"
+      },
+      "about": {
+        "label": "À propos",
+        "description": "Détails du client et crédits"
+      }
+    },
+    "profile": {
+      "title": "Profil",
+      "description": "Mettez à jour la façon dont les autres vous voient sur le serveur.",
+      "loadingTitle": "Profil",
+      "loadingDescription": "Chargement de votre profil...",
+      "avatarLabel": "Avatar",
+      "avatarDescription": "Image carrée. Recommandé 512x512.",
+      "headerLabel": "Bannière",
+      "headerDescription": "Bannière large. Recommandé 1500x500.",
+      "displayNameLabel": "Nom d'affichage",
+      "usernameLabel": "Nom d'utilisateur",
+      "bioLabel": "Bio",
+      "fieldsTitle": "Champs de profil",
+      "fieldsDescription": "Ajoutez des liens ou tags à mettre en avant sur votre profil.",
+      "fieldLabel": "Libellé {index}",
+      "fieldValue": "Valeur",
+      "addField": "Ajouter un champ",
+      "saveTitle": "Enregistrer les modifications",
+      "saveDescription": "Vérifiez et appliquez les mises à jour de votre profil.",
+      "reset": "Réinitialiser",
+      "save": "Enregistrer le profil",
+      "saving": "Enregistrement..."
+    },
+    "preferences": {
+      "title": "Préférences",
+      "description": "Personnalisez le comportement du client pour vous.",
+      "placeholder": "Les préférences arrivent bientôt. Cette section couvrira le fil, la langue et les options média."
+    },
+    "about": {
+      "title": "À propos",
+      "description": "Informations sur le client, version et liens utiles.",
+      "placeholder": "Cette section inclura la version, les infos de build et les crédits open source."
+    },
+    "media": {
+      "upload": "Téléverser",
+      "remove": "Supprimer",
+      "noImage": "Aucune image",
+      "cropTitle": "Rogner {label}",
+      "cropDescription": "Faites glisser pour repositionner et zoomer.",
+      "cropPreviewAlt": "Aperçu du recadrage",
+      "zoom": "Zoom",
+      "dragHint": "Faites glisser l'image pour repositionner",
+      "useImage": "Utiliser l'image",
+      "cancel": "Annuler",
+      "saving": "Enregistrement...",
+      "previewAlt": "Aperçu {label}"
+    },
+    "validation": {
+      "displayNameTooLong": "Le nom d'affichage est trop long",
+      "usernameRequired": "Le nom d'utilisateur est requis",
+      "usernameTooLong": "Le nom d'utilisateur est trop long",
+      "bioTooLong": "La bio est trop longue",
+      "fieldsTooMany": "Seulement 4 champs sont autorisés",
+      "fieldPairRequired": "Le libellé et la valeur sont requis",
+      "labelTooLong": "Le libellé est trop long",
+      "valueTooLong": "La valeur est trop longue",
+      "fixErrors": "Veuillez corriger les erreurs",
+      "updateFailed": "Impossible de mettre à jour le profil. Veuillez réessayer.",
+      "updated": "Profil mis à jour"
+    }
   }
 }

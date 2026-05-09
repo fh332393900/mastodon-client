@@ -239,5 +239,83 @@
     "cleanerSuffix": "よりクリーンです。",
     "learnMore": "websitecarbon.com →",
     "ariaLabel": "ウェブサイトカーボンバッジ"
+  },
+  "settings": {
+    "title": "設定",
+    "subtitle": "プロフィールと設定を管理します。",
+    "sections": {
+      "profile": {
+        "label": "プロフィール",
+        "description": "アバター、自己紹介、フィールド"
+      },
+      "preferences": {
+        "label": "環境設定",
+        "description": "タイムライン、メディア、UI"
+      },
+      "about": {
+        "label": "概要",
+        "description": "クライアント情報とクレジット"
+      }
+    },
+    "profile": {
+      "title": "プロフィール",
+      "description": "サーバー上での表示を更新します。",
+      "loadingTitle": "プロフィール",
+      "loadingDescription": "プロフィールを読み込み中...",
+      "avatarLabel": "アバター",
+      "avatarDescription": "正方形画像。推奨 512x512。",
+      "headerLabel": "ヘッダー",
+      "headerDescription": "横長バナー。推奨 1500x500。",
+      "displayNameLabel": "表示名",
+      "usernameLabel": "ユーザー名",
+      "bioLabel": "自己紹介",
+      "fieldsTitle": "プロフィール項目",
+      "fieldsDescription": "プロフィールに表示するリンクやタグを追加します。",
+      "fieldLabel": "ラベル {index}",
+      "fieldValue": "値",
+      "addField": "項目を追加",
+      "saveTitle": "変更を保存",
+      "saveDescription": "プロフィール更新を確認して適用します。",
+      "reset": "リセット",
+      "save": "プロフィールを保存",
+      "saving": "保存中..."
+    },
+    "preferences": {
+      "title": "環境設定",
+      "description": "クライアントの動作をカスタマイズします。",
+      "placeholder": "環境設定は近日追加予定です。タイムライン、言語、メディアの設定を含みます。"
+    },
+    "about": {
+      "title": "概要",
+      "description": "クライアント情報、バージョン、関連リンク。",
+      "placeholder": "バージョン、ビルド情報、オープンソースのクレジットを表示します。"
+    },
+    "media": {
+      "upload": "アップロード",
+      "remove": "削除",
+      "noImage": "画像なし",
+      "cropTitle": "{label}をトリミング",
+      "cropDescription": "ドラッグして位置を調整し、ズームしてください。",
+      "cropPreviewAlt": "トリミングプレビュー",
+      "zoom": "ズーム",
+      "dragHint": "画像をドラッグして位置を調整",
+      "useImage": "画像を使用",
+      "cancel": "キャンセル",
+      "saving": "保存中...",
+      "previewAlt": "{label} プレビュー"
+    },
+    "validation": {
+      "displayNameTooLong": "表示名が長すぎます",
+      "usernameRequired": "ユーザー名は必須です",
+      "usernameTooLong": "ユーザー名が長すぎます",
+      "bioTooLong": "自己紹介が長すぎます",
+      "fieldsTooMany": "項目は4つまでです",
+      "fieldPairRequired": "ラベルと値の両方が必要です",
+      "labelTooLong": "ラベルが長すぎます",
+      "valueTooLong": "値が長すぎます",
+      "fixErrors": "入力エラーを修正してください",
+      "updateFailed": "プロフィールを更新できませんでした。再試行してください。",
+      "updated": "プロフィールを更新しました"
+    }
   }
 }

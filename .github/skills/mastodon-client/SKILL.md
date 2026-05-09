@@ -14,6 +14,7 @@ Use this skill when creating or updating Mastodon-related pages, components, or 
 - **React Query cache:** Use React Query (`useQuery`/`useInfiniteQuery`) and update cache instead of refetch where possible.
 - **Scroll cache:** Always provide a stable `scrollCacheKey` to `InfiniteScroller` for list pages.
 - **Examples:** Add or update examples showing `client.v1.xxx` calls.
+- **i18n:** All user-facing text must use `next-intl` and have keys added to every locale in `messages/*.json`.
 
 ## Patterns
 
