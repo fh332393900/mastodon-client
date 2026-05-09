@@ -62,7 +62,7 @@ const buildProfileSchema = (t: TranslateFn) =>
           ctx.addIssue({
             code: z.ZodIssueCode.too_big,
             maximum: 30,
-            type: "string",
+            origin: "string",
             inclusive: true,
             message: t("validation.labelTooLong"),
             path: ["fields", index, "label"],
@@ -72,7 +72,7 @@ const buildProfileSchema = (t: TranslateFn) =>
           ctx.addIssue({
             code: z.ZodIssueCode.too_big,
             maximum: 255,
-            type: "string",
+            origin: "string",
             inclusive: true,
             message: t("validation.valueTooLong"),
             path: ["fields", index, "value"],
@@ -225,13 +225,13 @@ export function useAccountSettings() {
       displayName: parsed.data.displayName.trim() || undefined,
       note: parsed.data.bio.trim() || undefined,
       fieldsAttributes: fieldsAttributes.length > 0 ? fieldsAttributes : undefined,
-      avatar: avatar?.file,
-      header: header?.file,
+      ...(avatar?.file ? { avatar: avatar.file } : {}),
+      ...(header?.file ? { header: header.file } : {}),
     }
 
     await mutation.mutateAsync(payloadBase)
     return true
-  }, [avatar?.file, header?.file, form, mutation, credentialsQuery.data?.username])
+  }, [avatar, header, form, mutation])
 
   return {
     account: credentialsQuery.data ?? null,

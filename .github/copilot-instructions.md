@@ -40,4 +40,3 @@
 - Use TypeScript only
 - Use React hooks
 - Avoid any
-- Use zod validation
