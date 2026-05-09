@@ -14,6 +14,7 @@ import type { MastodonFeaturedTag } from "@/lib/mastodon/account"
 import { normalizeAccountParam } from "@/lib/mastodon/account"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
+import { useAuth } from "@/components/auth/auth-provider"
 import { useFormat } from "@/hooks/format"
 
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {
@@ -26,6 +27,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   const rawAccount = Array.isArray(accountParam) ? accountParam[0] : accountParam
   const statusId = Array.isArray(statusIdParam) ? statusIdParam[0] : statusIdParam
   const { formatCompactNumber, formatRelativeTime } = useFormat()
+  const { user } = useAuth()
 
   if (statusId) {
     return <div className="mx-auto max-w-4xl space-y-6 px-4 py-6">{children}</div>
@@ -63,6 +65,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   }
 
   const { account, relationship, featuredTags } = data
+  const isSelfProfile = user?.id === account.id
   const baseHref = `/${server}/@${normalizedAccount}`
   const accountNameText = getDisplayNameText({
     displayName: account.displayName,
@@ -110,13 +113,15 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
             </div>
 
             <div className="flex flex-wrap gap-3">
-              <ProfileFollowButton
-                accountId={account.id}
-                accountUrl={account.url}
-                canInteract={relationship !== null}
-                initialRelationship={relationship}
-                locked={account.locked}
-              />
+              {!isSelfProfile ? (
+                <ProfileFollowButton
+                  accountId={account.id}
+                  accountUrl={account.url}
+                  canInteract={relationship !== null}
+                  initialRelationship={relationship}
+                  locked={account.locked}
+                />
+              ) : null}
             </div>
           </div>
 

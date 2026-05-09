@@ -34,3 +34,10 @@
 - Prefer adding hooks in `hooks/mastodon/**` over embedding fetch logic in components.
 - Keep compose editor changes compatible with `getEditorText` serialization.
 - Use `ContentCode`/`contentToReactNode.tsx` patterns for code rendering in read views.
+
+# Project Rules
+
+- Use TypeScript only
+- Use React hooks
+- Avoid any
+- Use zod validation
