@@ -10,5 +10,6 @@ export default defineConfig({
     include: ["tests/**/*.test.{ts,tsx}"],
     css: true,
     globals: true,
+    reporters: ["verbose"],
   },
 })

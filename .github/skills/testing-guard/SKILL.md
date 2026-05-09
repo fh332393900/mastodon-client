@@ -66,3 +66,56 @@ Run:
 ```bash
 pnpm test
 ```
+
+---
+
+## Step 4 — Analyze Results
+
+After running tests, always analyze the output:
+
+- count total tests, passed, failed, skipped
+- identify which test files failed
+- for each failure: extract the test name, error message, and relevant line
+- identify whether the failure is due to the code change or a pre-existing issue
+
+---
+
+## Step 5 — Generate Structured Report
+
+After every test run, output a report using **exactly** this template:
+
+---
+
+## Test Report
+
+| | |
+|---|---|
+| **Status** | ✅ All passed / ❌ Failures found |
+| **Test Files** | X passed, Y failed (Z total) |
+| **Tests** | X passed, Y failed (Z total) |
+| **Duration** | Xs |
+
+### Failed Tests
+
+> Only include this section if there are failures.
+
+| Test File | Test Name | Error |
+|---|---|---|
+| `path/to/file.test.tsx` | `describe > test name` | Brief error message |
+
+### Root Cause
+
+> Describe why each failure occurred (wrong assertion, broken code, missing mock, etc.)
+
+### Fix Applied
+
+> Describe what was changed to fix the failures, or state "No fix needed — pre-existing failure unrelated to this change."
+
+---
+
+## Reporting Rules
+
+- Always output the report, even when all tests pass.
+- Never skip the report silently.
+- If tests could not run (e.g., compile error), report that clearly under **Status**.
+- Use ✅ when all tests pass, ❌ when any test fails.
