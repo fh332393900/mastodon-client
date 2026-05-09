@@ -47,7 +47,9 @@ export function useProfileStatuses({
     refetchOnWindowFocus: false,
   })
 
-  const data = query.data?.pages?.flat() ?? []
+  const data = query.data?.pages?.flat().filter(
+    (status, index, arr) => arr.findIndex((s) => s.id === status.id) === index,
+  ) ?? []
 
   return {
     query,

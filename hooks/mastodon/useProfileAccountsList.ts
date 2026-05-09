@@ -45,7 +45,9 @@ export function useProfileAccountsList({
     refetchOnWindowFocus: false,
   })
 
-  const data = query.data?.pages?.flat() ?? []
+  const data = query.data?.pages?.flat().filter(
+    (account, index, arr) => arr.findIndex((a) => a.id === account.id) === index,
+  ) ?? []
 
   return {
     query,
