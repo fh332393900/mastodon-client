@@ -268,6 +268,7 @@
       "headerDescription": "横幅图片。推荐 1500x500。",
       "displayNameLabel": "显示名称",
       "usernameLabel": "用户名",
+      "usernameHint": "用户名无法修改。",
       "bioLabel": "简介",
       "fieldsTitle": "资料标签",
       "fieldsDescription": "添加链接或标签以展示在个人资料中。",

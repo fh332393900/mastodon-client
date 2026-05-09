@@ -268,6 +268,7 @@
       "headerDescription": "가로 배너 이미지. 권장 1500x500.",
       "displayNameLabel": "표시 이름",
       "usernameLabel": "사용자 이름",
+      "usernameHint": "사용자 이름은 변경할 수 없습니다.",
       "bioLabel": "소개",
       "fieldsTitle": "프로필 필드",
       "fieldsDescription": "프로필에 표시할 링크나 태그를 추가하세요.",

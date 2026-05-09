@@ -64,26 +64,16 @@ export function ProfileSettingsForm() {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
+      <Card className="overflow-hidden">
+        <CardHeader className="pb-0">
           <CardTitle className="flex items-center gap-2">
             <User className="h-5 w-5 text-primary" />
             {t("profile.title")}
           </CardTitle>
           <CardDescription>{t("profile.description")}</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid gap-6 lg:grid-cols-2">
-            <MediaUploadField
-              label={t("profile.avatarLabel")}
-              description={t("profile.avatarDescription")}
-              valueUrl={avatarUrl}
-              resetKey={resetCounter}
-              aspect={1}
-              outputSize={{ width: 512, height: 512 }}
-              onChange={(value) => setAvatar(value)}
-              disabled={isSaving}
-            />
+        <CardContent className="space-y-6 px-0">
+          <div className="relative px-6">
             <MediaUploadField
               label={t("profile.headerLabel")}
               description={t("profile.headerDescription")}
@@ -91,13 +81,34 @@ export function ProfileSettingsForm() {
               resetKey={resetCounter}
               aspect={3}
               outputSize={{ width: 1500, height: 500 }}
-              previewWidth={360}
               onChange={(value) => setHeader(value)}
               disabled={isSaving}
+              variant="overlay"
+              showMeta={false}
+              frameClassName="rounded-2xl border-border/60"
             />
+            <div className="pointer-events-none absolute inset-x-6 bottom-0 h-24 rounded-b-2xl bg-gradient-to-t from-background via-background/40 to-transparent" />
+            <div className="absolute -bottom-12 left-10">
+              <MediaUploadField
+                label={t("profile.avatarLabel")}
+                description={t("profile.avatarDescription")}
+                valueUrl={avatarUrl}
+                resetKey={resetCounter}
+                aspect={1}
+                outputSize={{ width: 512, height: 512 }}
+                onChange={(value) => setAvatar(value)}
+                disabled={isSaving}
+                variant="overlay"
+                showMeta={false}
+                overlayPosition="bottom-right"
+                previewWidth={120}
+                frameClassName="rounded-full border-4 border-background shadow-lg"
+                className="w-[120px]"
+              />
+            </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 mt-12 px-6 md:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="display-name">{t("profile.displayNameLabel")}</Label>
               <Input
@@ -110,21 +121,9 @@ export function ProfileSettingsForm() {
                 <p className="text-xs text-destructive">{fieldErrors.displayName.join(" ")}</p>
               )}
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="username">{t("profile.usernameLabel")}</Label>
-              <Input
-                id="username"
-                value={form.username}
-                onChange={(event) => setFieldValue("username", event.target.value)}
-                disabled={isSaving}
-              />
-              {fieldErrors.username && (
-                <p className="text-xs text-destructive">{fieldErrors.username.join(" ")}</p>
-              )}
-            </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 px-6 pb-2">
             <Label htmlFor="bio">{t("profile.bioLabel")}</Label>
             <textarea
               id="bio"

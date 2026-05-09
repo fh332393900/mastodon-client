@@ -54,13 +54,22 @@ export function SettingsShell({ section, onSectionChange, children }: SettingsSh
                   key={item.id}
                   type="button"
                   variant={isActive ? "default" : "ghost"}
-                  className={cn("w-full items-start justify-start gap-3 text-left", !isActive && "text-muted-foreground")}
+                  className={cn(
+                    "h-auto w-full items-start justify-start gap-3 rounded-xl px-3 py-3 text-left",
+                    "whitespace-normal leading-snug",
+                    !isActive && "text-muted-foreground",
+                  )}
                   onClick={() => onSectionChange(item.id)}
                 >
                   <Icon className="h-4 w-4" />
                   <span className="flex flex-col">
                     <span className="text-sm font-medium">{item.label}</span>
-                    <span className={cn("text-xs", isActive ? "text-primary-foreground/80" : "text-muted-foreground")}>
+                    <span
+                      className={cn(
+                        "text-xs",
+                        isActive ? "text-primary-foreground/80" : "text-muted-foreground",
+                      )}
+                    >
                       {item.description}
                     </span>
                   </span>

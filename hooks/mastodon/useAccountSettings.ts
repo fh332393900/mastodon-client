@@ -33,11 +33,7 @@ const buildProfileSchema = (t: TranslateFn) =>
   z
     .object({
       displayName: z.string().trim().max(30, t("validation.displayNameTooLong")),
-      username: z
-        .string()
-        .trim()
-        .min(1, t("validation.usernameRequired"))
-        .max(30, t("validation.usernameTooLong")),
+      username: z.string().trim().optional(),
       bio: z.string().trim().max(500, t("validation.bioTooLong")),
       fields: z
         .array(
@@ -233,13 +229,7 @@ export function useAccountSettings() {
       header: header?.file,
     }
 
-    const usernameValue = parsed.data.username.trim()
-    const payload =
-      usernameValue && usernameValue !== (credentialsQuery.data?.username ?? "")
-        ? ({ ...payloadBase, username: usernameValue } as UpdateCredentialsParams)
-        : payloadBase
-
-    await mutation.mutateAsync(payload)
+    await mutation.mutateAsync(payloadBase)
     return true
   }, [avatar?.file, header?.file, form, mutation, credentialsQuery.data?.username])
 

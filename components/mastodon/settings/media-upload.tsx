@@ -1,11 +1,13 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import type { CSSProperties } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { ImageCropperDialog } from "@/components/mastodon/settings/image-cropper"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
+import { Trash2, UploadCloud } from "lucide-react"
 
 export type CroppedImageValue = {
   file: File
@@ -24,8 +26,14 @@ type MediaUploadFieldProps = {
   aspect: number
   outputSize: OutputSize
   previewWidth?: number
+  previewHeight?: number
   disabled?: boolean
   resetKey?: number
+  variant?: "stacked" | "overlay"
+  showMeta?: boolean
+  overlayPosition?: "top-right" | "bottom-right"
+  className?: string
+  frameClassName?: string
   onChange: (value: CroppedImageValue | null) => void
 }
 
@@ -38,9 +46,15 @@ export function MediaUploadField({
   valueUrl,
   aspect,
   outputSize,
-  previewWidth = 220,
+  previewWidth,
+  previewHeight,
   disabled,
   resetKey,
+  variant = "stacked",
+  showMeta,
+  overlayPosition = "top-right",
+  className,
+  frameClassName,
   onChange,
 }: MediaUploadFieldProps) {
   const t = useTranslations("settings")
@@ -95,43 +109,59 @@ export function MediaUploadField({
   }
 
   const currentPreview = previewUrl || valueUrl || null
-  const previewHeight = Math.round(previewWidth / aspect)
+  const previewBoxHeight = previewWidth ? Math.round(previewWidth / aspect) : undefined
+  const shouldShowMeta = showMeta ?? variant === "stacked"
+  const previewStyle = useMemo<CSSProperties>(() => {
+    if (previewWidth && previewHeight) {
+      return { width: previewWidth, height: previewHeight }
+    }
+    if (previewWidth && !previewHeight && previewBoxHeight) {
+      return { width: previewWidth, height: previewBoxHeight }
+    }
+    return { width: "100%", aspectRatio: `${aspect}` }
+  }, [aspect, previewBoxHeight, previewHeight, previewWidth])
+  const overlayPositionClass =
+    overlayPosition === "bottom-right" ? "bottom-3 right-3" : "top-3 right-3"
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <Label>{label}</Label>
-          {description && <p className="text-xs text-muted-foreground">{description}</p>}
-        </div>
-        <div className="flex items-center gap-2">
-          <input
-            ref={inputRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            disabled={disabled}
-            onChange={(event) => handleFileChange(event.target.files?.[0] ?? null)}
-          />
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            disabled={disabled}
-            onClick={() => inputRef.current?.click()}
-          >
-            {t("media.upload")}
-          </Button>
-          {currentPreview && (
-            <Button type="button" variant="ghost" size="sm" onClick={handleRemove} disabled={disabled}>
-              {t("media.remove")}
-            </Button>
+    <div className={cn("space-y-2", className)}>
+      {shouldShowMeta && (
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <Label>{label}</Label>
+            {description && <p className="text-xs text-muted-foreground">{description}</p>}
+          </div>
+          {variant === "stacked" && (
+            <div className="flex items-center gap-2">
+              <input
+                ref={inputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                disabled={disabled}
+                onChange={(event) => handleFileChange(event.target.files?.[0] ?? null)}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={disabled}
+                onClick={() => inputRef.current?.click()}
+              >
+                {t("media.upload")}
+              </Button>
+            </div>
           )}
         </div>
-      </div>
+      )}
+
       <div
-        className={cn("overflow-hidden rounded-xl border border-border bg-muted", disabled && "opacity-60")}
-        style={{ width: previewWidth, height: previewHeight }}
+        className={cn(
+          "relative overflow-hidden rounded-xl border border-border bg-muted",
+          disabled && "opacity-60",
+          frameClassName,
+        )}
+        style={previewStyle}
       >
         {currentPreview ? (
           <img
@@ -142,6 +172,43 @@ export function MediaUploadField({
         ) : (
           <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
             {t("media.noImage")}
+          </div>
+        )}
+
+        {variant === "overlay" && (
+          <div className={cn("absolute flex flex-col gap-2", overlayPositionClass)}>
+            <input
+              ref={inputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              disabled={disabled}
+              onChange={(event) => handleFileChange(event.target.files?.[0] ?? null)}
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              disabled={disabled}
+              onClick={() => inputRef.current?.click()}
+              aria-label={t("media.upload")}
+              className="h-10 w-10 rounded-full border border-border/60 bg-background/70 backdrop-blur hover:bg-background"
+            >
+              <UploadCloud className="h-4 w-4" />
+            </Button>
+            {currentPreview && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={handleRemove}
+                disabled={disabled}
+                aria-label={t("media.remove")}
+                className="h-10 w-10 rounded-full border border-border/60 bg-background/70 backdrop-blur hover:bg-background"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            )}
           </div>
         )}
       </div>
