@@ -252,6 +252,10 @@
         "label": "環境設定",
         "description": "タイムライン、メディア、UI"
       },
+      "appearance": {
+        "label": "外観",
+        "description": "テーマ、レイアウト、ビジュアル"
+      },
       "about": {
         "label": "概要",
         "description": "クライアント情報とクレジット"
@@ -287,6 +291,11 @@
       "title": "環境設定",
       "description": "クライアントの動作をカスタマイズします。",
       "placeholder": "環境設定は近日追加予定です。タイムライン、言語、メディアの設定を含みます。"
+    },
+    "appearance": {
+      "title": "外観",
+      "description": "テーマとレイアウトをカスタマイズします。",
+      "placeholder": "外観設定は近日提供予定です。色、レイアウト、密度を調整できます。"
     },
     "about": {
       "title": "概要",

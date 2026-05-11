@@ -252,6 +252,10 @@
         "label": "Preferences",
         "description": "Timeline, media, and UI"
       },
+      "appearance": {
+        "label": "Appearance",
+        "description": "Theme, layout, and visuals"
+      },
       "about": {
         "label": "About",
         "description": "Client details and credits"
@@ -287,6 +291,11 @@
       "title": "Preferences",
       "description": "Customize how the client behaves for you.",
       "placeholder": "Preference settings are coming next. This section will cover timeline behavior, language, and media options."
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Customize theme and layout.",
+      "placeholder": "Appearance settings are coming soon. You'll be able to tune colors, layout, and density."
     },
     "about": {
       "title": "About",

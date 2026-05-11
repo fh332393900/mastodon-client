@@ -252,6 +252,10 @@
         "label": "偏好設定",
         "description": "時間軸、媒體與介面"
       },
+      "appearance": {
+        "label": "外觀",
+        "description": "主題、版面與視覺"
+      },
       "about": {
         "label": "關於",
         "description": "用戶端資訊與致謝"
@@ -287,6 +291,11 @@
       "title": "偏好設定",
       "description": "自訂用戶端行為。",
       "placeholder": "偏好設定即將推出，本區將涵蓋時間軸、語言與媒體選項。"
+    },
+    "appearance": {
+      "title": "外觀",
+      "description": "自訂主題與版面。",
+      "placeholder": "外觀設定即將推出，可調整色彩、版面與密度。"
     },
     "about": {
       "title": "關於",

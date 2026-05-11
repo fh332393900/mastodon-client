@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Home, Heart, Search, Settings, Menu, X, LogOut, PenSquare, MessageCircle, ArrowLeft } from "lucide-react"
+import { Home, Heart, Search, Settings, LogOut, PenSquare, ArrowLeft, User } from "lucide-react"
 import { LoginModal } from "@/components/auth/login-modal"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
@@ -15,7 +15,6 @@ import { useTranslations } from "next-intl"
 
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false)
-  const [isMobileOpen, setIsMobileOpen] = useState(true)
   const pathname = usePathname()
   const router = useRouter()
   const { user, logout, isInitialized } = useAuth()
@@ -35,6 +34,8 @@ export function Sidebar() {
     : ""
 
   const isMenuPage = navigationItems.some((item) => pathname === `/${server}/${item.route}`)
+  const activeItem = navigationItems.find((item) => pathname === `/${server}/${item.route}`)
+  const mobileTitle = activeItem?.label ?? t("common.menu.home")
 
   const handleLogout = async () => {
     await logout()
@@ -43,28 +44,56 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile Menu Button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="fixed top-4 left-4 z-50 lg:hidden bg-card/80 backdrop-blur-sm"
-        onClick={() => setIsMobileOpen(!isMobileOpen)}
-      >
-        {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </Button>
+      {/* Mobile Top Bar */}
+      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between gap-2 border-b border-border/60 bg-card/90 px-4 py-2 backdrop-blur lg:hidden">
+        <div className="flex min-w-0 items-center gap-2">
+          {activeItem && <activeItem.icon className="h-4 w-4 text-muted-foreground" />}
+          <span className="truncate text-sm font-semibold text-foreground">{mobileTitle}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          {user ? (
+            <Link href={`/${server}/@${user.username}`} aria-label={userNameText || "Profile"}>
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={user.avatar || "/placeholder.svg"} alt={userNameText} />
+                <AvatarFallback>{userNameText.charAt(0)}</AvatarFallback>
+              </Avatar>
+            </Link>
+          ) : (
+            <LoginModal>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <User className="h-4 w-4" />
+              </Button>
+            </LoginModal>
+          )}
+        </div>
+      </div>
 
-      {/* Mobile Overlay */}
-      {isMobileOpen && (
-        <div
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
-          onClick={() => setIsMobileOpen(false)}
-        />
-      )}
+      {/* Mobile Bottom Nav */}
+      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border/60 bg-card/90 px-4 py-2 backdrop-blur lg:hidden">
+        <div className="flex items-center justify-between">
+          {navigationItems.map((item) => {
+            const href = `/${server}/${item.route}`
+            const isActive = pathname === href
+            return (
+              <Link key={item.route} href={href} aria-label={item.label} className="flex-1">
+                <div
+                  className={cn(
+                    "flex h-10 items-center justify-center rounded-sm transition-colors",
+                    isActive ? "bg-primary/10 text-primary" : "text-muted-foreground",
+                  )}
+                >
+                  <item.icon className="h-5 w-5" />
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+      </nav>
 
       {/* Sidebar */}
       <aside
         className={cn(
-          isMobileOpen ? "fixed inset-y-0 left-0 z-50 bg-card border-r border-border/60" : "hidden lg:block bg-card border-r border-border/60",
+          "hidden bg-card border-r border-border/60 lg:block",
           isCollapsed ? "w-20 lg:w-20" : "w-72 lg:w-72",
           "lg:sticky lg:top-0 lg:h-screen",
         )}
@@ -120,7 +149,6 @@ export function Sidebar() {
                         "w-full justify-start transition-bg duration-200 hover:scale-[1.02] py-5",
                         isCollapsed && "px-2",
                       )}
-                      onClick={() => setIsMobileOpen(false)}
                     >
                       <item.icon
                         size={28}

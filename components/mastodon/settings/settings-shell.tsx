@@ -4,10 +4,10 @@ import type { ReactNode } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-import { Info, Settings, SlidersHorizontal, User } from "lucide-react"
+import { Info, Palette, Settings, SlidersHorizontal, User } from "lucide-react"
 import { useTranslations } from "next-intl"
 
-export type SettingsSection = "profile" | "preferences" | "about"
+export type SettingsSection = "profile" | "preferences" | "appearance" | "about"
 
 type SettingsShellProps = {
   section: SettingsSection
@@ -29,6 +29,12 @@ export function SettingsShell({ section, onSectionChange, children }: SettingsSh
       label: t("sections.preferences.label"),
       description: t("sections.preferences.description"),
       icon: SlidersHorizontal,
+    },
+    {
+      id: "appearance",
+      label: t("sections.appearance.label"),
+      description: t("sections.appearance.description"),
+      icon: Palette,
     },
     { id: "about", label: t("sections.about.label"), description: t("sections.about.description"), icon: Info },
   ]

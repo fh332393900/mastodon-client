@@ -252,6 +252,10 @@
         "label": "환경 설정",
         "description": "타임라인, 미디어, UI"
       },
+      "appearance": {
+        "label": "외관",
+        "description": "테마, 레이아웃, 시각 요소"
+      },
       "about": {
         "label": "정보",
         "description": "클라이언트 정보 및 크레딧"
@@ -287,6 +291,11 @@
       "title": "환경 설정",
       "description": "클라이언트 동작을 맞춤 설정합니다.",
       "placeholder": "환경 설정은 곧 제공됩니다. 타임라인, 언어, 미디어 옵션을 포함합니다."
+    },
+    "appearance": {
+      "title": "외관",
+      "description": "테마와 레이아웃을 사용자화합니다.",
+      "placeholder": "외관 설정은 곧 제공됩니다. 색상, 레이아웃, 밀도를 조정할 수 있습니다."
     },
     "about": {
       "title": "정보",

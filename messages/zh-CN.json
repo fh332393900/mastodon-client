@@ -252,6 +252,10 @@
         "label": "首选项",
         "description": "时间线、媒体和界面"
       },
+      "appearance": {
+        "label": "外观",
+        "description": "主题、布局与视觉"
+      },
       "about": {
         "label": "关于",
         "description": "客户端信息与致谢"
@@ -287,6 +291,11 @@
       "title": "首选项",
       "description": "自定义客户端行为。",
       "placeholder": "首选项即将上线，本区将涵盖时间线、语言和媒体选项。"
+    },
+    "appearance": {
+      "title": "外观",
+      "description": "自定义主题与布局。",
+      "placeholder": "外观设置即将上线，可调整颜色、布局与密度。"
     },
     "about": {
       "title": "关于",

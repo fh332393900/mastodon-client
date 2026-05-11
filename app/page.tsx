@@ -61,7 +61,7 @@ export default function HomePage() {
           <span className="text-2xl font-bold text-foreground font-['Quicksand']">MastoClient</span>
         </div>
         <div className="flex items-center gap-3">
-          <LocaleSwitcher />
+          <div className="hidden md:block"><LocaleSwitcher /></div>
           <ThemeToggle />
         </div>
       </header>
