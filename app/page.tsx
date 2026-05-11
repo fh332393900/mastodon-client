@@ -51,7 +51,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#0a0a0f] text-foreground antialiased">
       {/* ── Header ── */}
-      <header className="sticky top-0 z-20 flex items-center justify-between px-8 py-4 bg-[#f5f5f7]/80 dark:bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-black/5 dark:border-white/5">
+      <header className="sticky top-0 z-20 flex items-center justify-between px-4 md:px-8 py-2 md:py-4 bg-[#f5f5f7]/80 dark:bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-black/5 dark:border-white/5">
         <div className="flex items-center gap-2.5">
           <img
             src="/icon.svg"
