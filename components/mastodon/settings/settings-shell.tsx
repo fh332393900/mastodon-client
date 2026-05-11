@@ -41,7 +41,7 @@ export function SettingsShell({ section, onSectionChange, children }: SettingsSh
 
   return (
     <div className="space-y-6 px-4 py-6">
-      <div className="flex items-center gap-3 border-b border-border pb-4">
+      <div className="hidden md:flex items-center gap-3 border-b border-border pb-4">
         <Settings className="h-8 w-8 text-muted-foreground" />
         <div>
           <h1 className="text-3xl font-bold">{t("title")}</h1>
