@@ -96,7 +96,7 @@ const toFormState = (account: mastodon.v1.AccountCredentials): ProfileFormState 
   return {
     displayName: account.displayName ?? "",
     username: account.username ?? account.acct ?? "",
-    bio: account.note ?? "",
+    bio: account.source?.note ?? "",
     fields: fields.length > 0 ? fields : [{ id: newId(), label: "", value: "" }],
   }
 }
@@ -127,7 +127,7 @@ export function useAccountSettings() {
   const [form, setForm] = useState<ProfileFormState>(() => ({
     displayName: user?.displayName ?? "",
     username: user?.username ?? user?.acct ?? "",
-    bio: user?.note ?? "",
+    bio: user?.source?.note ?? "",
     fields: [{ id: newId(), label: "", value: "" }],
   }))
   const [avatar, setAvatar] = useState<CroppedImage | null>(null)

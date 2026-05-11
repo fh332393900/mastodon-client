@@ -147,7 +147,7 @@ export function ThreadPostItem({
                 {media.type === "image" ? (
                   <img src={media.previewUrl} alt="Preview" className="h-36 w-full object-cover" />
                 ) : (
-                  <video src={media.previewUrl} className="h-36 w-full object-cover" controls />
+                  <video src={media.previewUrl} className="h-36 w-full object-cover fullscreen:object-contain" controls />
                 )}
                 <button
                   type="button"

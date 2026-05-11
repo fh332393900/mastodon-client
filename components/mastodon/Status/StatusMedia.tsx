@@ -42,6 +42,17 @@ function AutoPlayVideo({ src }: { src?: string }) {
     const video = videoRef.current
     if (!video || !src) return
 
+    const handleFullscreenChange = () => {
+      const isFullscreen = !!(
+        document.fullscreenElement === video ||
+        (document as Document & { webkitFullscreenElement?: Element }).webkitFullscreenElement === video
+      )
+      video.style.objectFit = isFullscreen ? "contain" : "cover"
+    }
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange)
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange)
+
     const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent)
     if (isIOS) {
       video.pause()
@@ -69,6 +80,8 @@ function AutoPlayVideo({ src }: { src?: string }) {
     observer.observe(video)
     return () => {
       observer.disconnect()
+      document.removeEventListener("fullscreenchange", handleFullscreenChange)
+      document.removeEventListener("webkitfullscreenchange", handleFullscreenChange)
     }
   }, [src])
 
@@ -80,7 +93,7 @@ function AutoPlayVideo({ src }: { src?: string }) {
       muted
       playsInline
       preload="metadata"
-      className="h-auto w-full max-h-[100vh] object-cover"
+      className="h-auto w-full max-h-[90vh] object-cover"
     />
   )
 }

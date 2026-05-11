@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { ImageCropperDialog } from "@/components/mastodon/settings/image-cropper"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
-import { Trash2, UploadCloud } from "lucide-react"
+import { UploadCloud } from "lucide-react"
 
 export type CroppedImageValue = {
   file: File
@@ -31,7 +31,7 @@ type MediaUploadFieldProps = {
   resetKey?: number
   variant?: "stacked" | "overlay"
   showMeta?: boolean
-  overlayPosition?: "top-right" | "bottom-right"
+  overlayPosition?: "top-right" | "bottom-right" | "center"
   className?: string
   frameClassName?: string
   onChange: (value: CroppedImageValue | null) => void
@@ -121,7 +121,11 @@ export function MediaUploadField({
     return { width: "100%", aspectRatio: `${aspect}` }
   }, [aspect, previewBoxHeight, previewHeight, previewWidth])
   const overlayPositionClass =
-    overlayPosition === "bottom-right" ? "bottom-3 right-3" : "top-3 right-3"
+    overlayPosition === "center"
+      ? "inset-0 flex items-center justify-center"
+      : overlayPosition === "bottom-right"
+        ? "bottom-3 right-3"
+        : "top-3 right-3"
 
   return (
     <div className={cn("space-y-2", className)}>
@@ -176,7 +180,7 @@ export function MediaUploadField({
         )}
 
         {variant === "overlay" && (
-          <div className={cn("absolute flex flex-col gap-2", overlayPositionClass)}>
+          <div className={cn("absolute", overlayPosition !== "center" && "flex flex-col gap-2", overlayPositionClass)}>
             <input
               ref={inputRef}
               type="file"
@@ -196,19 +200,6 @@ export function MediaUploadField({
             >
               <UploadCloud className="h-4 w-4" />
             </Button>
-            {currentPreview && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={handleRemove}
-                disabled={disabled}
-                aria-label={t("media.remove")}
-                className="h-10 w-10 rounded-full border border-border/60 bg-background/70 backdrop-blur hover:bg-background"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            )}
           </div>
         )}
       </div>

@@ -376,6 +376,21 @@ export function ComposeEditor({
     editor.commands.clearContent()
   }, [value, editor])
 
+  // Initialize with existing value (e.g. bio pre-fill).
+  // Wait until both editor is ready AND value is non-empty, to handle the
+  // case where data loads after the editor mounts (e.g. page refresh).
+  const initializedRef = useRef(false)
+  useEffect(() => {
+    if (!editor || initializedRef.current || !value) return
+    initializedRef.current = true
+    const paragraphs = value.split("\n").map((line) => ({
+      type: "paragraph" as const,
+      content: line ? [{ type: "text" as const, text: line }] : [],
+    }))
+    editor.commands.setContent({ type: "doc", content: paragraphs }, false)
+    onLengthChange?.(value.length)
+  }, [editor, value, onLengthChange])
+
   // ── EditorRef ─────────────────────────────────────────────────────────────
 
   useEffect(() => {
