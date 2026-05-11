@@ -305,7 +305,8 @@
       "useImage": "使用图片",
       "cancel": "取消",
       "saving": "保存中...",
-      "previewAlt": "{label} 预览"
+      "previewAlt": "{label} 预览",
+      "altDescription": "描述"
     },
     "validation": {
       "displayNameTooLong": "显示名称过长",

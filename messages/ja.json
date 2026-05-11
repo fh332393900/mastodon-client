@@ -305,7 +305,8 @@
       "useImage": "画像を使用",
       "cancel": "キャンセル",
       "saving": "保存中...",
-      "previewAlt": "{label} プレビュー"
+      "previewAlt": "{label} プレビュー",
+      "altDescription": "説明"
     },
     "validation": {
       "displayNameTooLong": "表示名が長すぎます",

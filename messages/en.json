@@ -305,7 +305,8 @@
       "useImage": "Use image",
       "cancel": "Cancel",
       "saving": "Saving...",
-      "previewAlt": "{label} preview"
+      "previewAlt": "{label} preview",
+      "altDescription": "Description"
     },
     "validation": {
       "displayNameTooLong": "Display name is too long",

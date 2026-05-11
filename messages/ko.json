@@ -305,7 +305,8 @@
       "useImage": "이미지 사용",
       "cancel": "취소",
       "saving": "저장 중...",
-      "previewAlt": "{label} 미리보기"
+      "previewAlt": "{label} 미리보기",
+      "altDescription": "설명"
     },
     "validation": {
       "displayNameTooLong": "표시 이름이 너무 깁니다",

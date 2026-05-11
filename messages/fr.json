@@ -305,7 +305,8 @@
       "useImage": "Utiliser l'image",
       "cancel": "Annuler",
       "saving": "Enregistrement...",
-      "previewAlt": "Aperçu {label}"
+      "previewAlt": "Aperçu {label}",
+      "altDescription": "Description"
     },
     "validation": {
       "displayNameTooLong": "Le nom d'affichage est trop long",
