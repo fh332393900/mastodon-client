@@ -45,7 +45,7 @@ export function Sidebar() {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="fixed inset-x-0 top-0 z-40 flex items-center justify-between gap-2 border-b border-border/60 bg-card/90 px-4 py-2 backdrop-blur lg:hidden">
+      <div className="sticky inset-x-0 top-0 z-40 flex items-center justify-between gap-2 border-b border-border/60 bg-card/90 px-4 py-2 backdrop-blur lg:hidden">
         <div className="flex min-w-0 items-center gap-2">
           {activeItem && <activeItem.icon className="h-4 w-4 text-muted-foreground" />}
           <span className="truncate text-sm font-semibold text-foreground">{mobileTitle}</span>
