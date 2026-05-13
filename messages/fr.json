@@ -8,6 +8,7 @@
       "favorites": "Favoris",
       "compose": "Composer",
       "explore": "Explorer",
+      "notifications": "Notifications",
       "settings": "Paramètres"
     },
     "statusActions": {
@@ -290,7 +291,16 @@
     "preferences": {
       "title": "Préférences",
       "description": "Personnalisez le comportement du client pour vous.",
-      "placeholder": "Les préférences arrivent bientôt. Cette section couvrira le fil, la langue et les options média."
+      "placeholder": "Les préférences arrivent bientôt. Cette section couvrira le fil, la langue et les options média.",
+      "mobileMenu": {
+        "title": "Menu bas mobile",
+        "description": "Glissez des éléments pour ajuster l'ordre de navigation en bas.",
+        "reset": "Réinitialiser",
+        "availableLabel": "Éléments disponibles (glisser vers le menu)",
+        "noAvailable": "Tous les éléments sont déjà utilisés dans le menu du bas.",
+        "remove": "Retirer",
+        "hint": "Le menu du bas prend en charge de {min} à {max} icônes. Glissez pour réordonner et faites glisser depuis la zone du bas pour remplacer une icône."
+      }
     },
     "appearance": {
       "title": "Apparence",

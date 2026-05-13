@@ -8,6 +8,7 @@
       "favorites": "Favorites",
       "compose": "Compose",
       "explore": "Explore",
+      "notifications": "Notifications",
       "settings": "Settings"
     },
     "statusActions": {
@@ -290,7 +291,16 @@
     "preferences": {
       "title": "Preferences",
       "description": "Customize how the client behaves for you.",
-      "placeholder": "Preference settings are coming next. This section will cover timeline behavior, language, and media options."
+      "placeholder": "Preference settings are coming next. This section will cover timeline behavior, language, and media options.",
+      "mobileMenu": {
+        "title": "Mobile bottom menu",
+        "description": "Drag menu items to adjust the bottom navigation order.",
+        "reset": "Reset default",
+        "availableLabel": "Available items (drag into menu)",
+        "noAvailable": "All menu items are currently in use.",
+        "remove": "Remove",
+        "hint": "The bottom menu supports {min} to {max} icons. Drag to reorder, and drag icons from below onto an icon to replace it."
+      }
     },
     "appearance": {
       "title": "Appearance",

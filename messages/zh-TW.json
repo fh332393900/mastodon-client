@@ -8,6 +8,7 @@
       "favorites": "收藏",
       "compose": "發文",
       "explore": "探索",
+      "notifications": "通知",
       "settings": "設定"
     },
     "statusActions": {
@@ -290,7 +291,16 @@
     "preferences": {
       "title": "偏好設定",
       "description": "自訂用戶端行為。",
-      "placeholder": "偏好設定即將推出，本區將涵蓋時間軸、語言與媒體選項。"
+      "placeholder": "偏好設定即將上線，此區將涵蓋時間軸、語言和媒體選項。",
+      "mobileMenu": {
+        "title": "行動端底部選單",
+        "description": "拖曳選單項目，調整底部導覽順序。",
+        "reset": "還原預設",
+        "availableLabel": "可用選單（拖入上方選單）",
+        "noAvailable": "目前所有選單項目都已在底部選單中。",
+        "remove": "移除",
+        "hint": "底部選單支援 {min} 到 {max} 個圖示。可拖曳重排，也可從下方選單拖到圖示上替換。"
+      }
     },
     "appearance": {
       "title": "外觀",

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Home, Heart, Search, Settings, LogOut, PenSquare, ArrowLeft, User } from "lucide-react"
+import { Home, Heart, Search, Settings, LogOut, PenSquare, ArrowLeft, User, Bell } from "lucide-react"
 import { LoginModal } from "@/components/auth/login-modal"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
@@ -12,6 +12,8 @@ import { useAuth } from "@/components/auth/auth-provider"
 import { useMasto } from "../auth/masto-provider"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import { useTranslations } from "next-intl"
+import { useMobileBottomMenuSettings } from "@/hooks/mastodon/useMobileBottomMenuSettings"
+import { MOBILE_BOTTOM_MENU_LABEL_KEY } from "@/lib/mastodon/mobile-navigation"
 
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -20,14 +22,20 @@ export function Sidebar() {
   const { user, logout, isInitialized } = useAuth()
   const { server } = useMasto()
   const t = useTranslations()
+  const { routes: mobileBottomMenuRoutes } = useMobileBottomMenuSettings()
 
   const navigationItems = [
-    { icon: Home, label: t("common.menu.home"), route: "timeline", color: "text-blue-300" },
-    { icon: Heart, label: t("common.menu.favorites"), route: "favorites", color: "text-red-500" },
-    { icon: PenSquare, label: t("common.menu.compose"), route: "compose", color: "text-purple-200" },
-    { icon: Search, label: t("common.menu.explore"), route: "explore", color: "text-[#8eff43]" },
-    { icon: Settings, label: t("common.menu.settings"), route: "settings", color: "text-orange-300" },
+    { icon: Home, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.timeline), route: "timeline", color: "text-blue-300" },
+    { icon: Heart, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.favorites), route: "favorites", color: "text-red-500" },
+    { icon: PenSquare, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.compose), route: "compose", color: "text-purple-200" },
+    { icon: Search, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.explore), route: "explore", color: "text-[#8eff43]" },
+    { icon: Settings, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.settings), route: "settings", color: "text-orange-300" },
+    { icon: Bell, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.notifications), route: "notifications", color: "text-cyan-300" },
   ]
+
+  const mobileNavigationItems = mobileBottomMenuRoutes
+    .map((route) => navigationItems.find((item) => item.route === route))
+    .filter((item): item is (typeof navigationItems)[number] => !!item)
 
   const userNameText = user
     ? getDisplayNameText({ displayName: user.displayName, username: user.username })
@@ -71,18 +79,18 @@ export function Sidebar() {
       {/* Mobile Bottom Nav */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border/60 bg-card/90 px-4 py-2 backdrop-blur lg:hidden">
         <div className="flex items-center justify-between">
-          {navigationItems.map((item) => {
+          {mobileNavigationItems.map((item) => {
             const href = `/${server}/${item.route}`
             const isActive = pathname === href
             return (
               <Link key={item.route} href={href} aria-label={item.label} className="flex-1">
                 <div
                   className={cn(
-                    "flex h-10 items-center justify-center rounded-sm transition-colors",
+                    "flex h-11 items-center justify-center rounded-sm transition-colors",
                     isActive ? "bg-primary/10 text-primary" : "text-muted-foreground",
                   )}
                 >
-                  <item.icon className="h-5 w-5" />
+                  <item.icon className="h-6 w-6" />
                 </div>
               </Link>
             )

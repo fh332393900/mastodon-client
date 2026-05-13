@@ -8,6 +8,7 @@
       "favorites": "お気に入り",
       "compose": "作成",
       "explore": "探索",
+      "notifications": "通知",
       "settings": "設定"
     },
     "statusActions": {
@@ -290,7 +291,16 @@
     "preferences": {
       "title": "環境設定",
       "description": "クライアントの動作をカスタマイズします。",
-      "placeholder": "環境設定は近日追加予定です。タイムライン、言語、メディアの設定を含みます。"
+      "placeholder": "環境設定は近日追加予定です。タイムライン、言語、メディアの設定を含みます。",
+      "mobileMenu": {
+        "title": "モバイル下部メニュー",
+        "description": "メニュー項目をドラッグして下部ナビの並び順を変更できます。",
+        "reset": "初期状態に戻す",
+        "availableLabel": "利用可能な項目（上のメニューへドラッグ）",
+        "noAvailable": "現在、すべての項目が下部メニューで使用中です。",
+        "remove": "削除",
+        "hint": "下部メニューは {min} 〜 {max} 個のアイコンを設定できます。ドラッグで並べ替え、下のメニューからアイコンにドラッグして置き換えます。"
+      }
     },
     "appearance": {
       "title": "外観",

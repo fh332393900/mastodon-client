@@ -8,6 +8,7 @@
       "favorites": "收藏",
       "compose": "发布",
       "explore": "探索",
+      "notifications": "通知",
       "settings": "设置"
     },
     "statusActions": {
@@ -290,7 +291,16 @@
     "preferences": {
       "title": "首选项",
       "description": "自定义客户端行为。",
-      "placeholder": "首选项即将上线，本区将涵盖时间线、语言和媒体选项。"
+      "placeholder": "首选项即将上线，本区将涵盖时间线、语言和媒体选项。",
+      "mobileMenu": {
+        "title": "移动端底部菜单",
+        "description": "拖拽菜单项，调整底部导航顺序。",
+        "reset": "恢复默认",
+        "availableLabel": "可用菜单（拖入到上方菜单）",
+        "noAvailable": "当前所有菜单项都已在底部菜单中。",
+        "remove": "移除",
+        "hint": "底部菜单支持 {min} 到 {max} 个图标。可拖拽重排，也可从下方菜单拖到图标上替换。"
+      }
     },
     "appearance": {
       "title": "外观",
