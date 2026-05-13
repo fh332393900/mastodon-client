@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
+import { motion } from "framer-motion"
 
 export type MediaAttachment = mastodon.v1.MediaAttachment
 
@@ -36,6 +37,17 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
   const currentImage = images[current] ?? media
   const altText = media.description || ""
   const canNavigate = images.length > 1
+  const totalImages = images.length
+
+  const goNext = () => {
+    if (!canNavigate) return
+    setCurrent((prev) => (prev + 1) % totalImages)
+  }
+
+  const goPrev = () => {
+    if (!canNavigate) return
+    setCurrent((prev) => (prev - 1 + totalImages) % totalImages)
+  }
 
   const handleOpen = () => {
     setCurrent(index)
@@ -98,20 +110,55 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogPortal>
-          <DialogOverlay className="bg-black/60" />
+          <DialogOverlay
+            className="bg-black/60"
+            onClick={() => setIsOpen(false)}
+          />
           <DialogPrimitive.Content
             data-slot="image-dialog"
             className="fixed inset-0 z-50 flex items-center justify-center outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+            onClick={(event) => {
+              if (event.target === event.currentTarget) {
+                setIsOpen(false)
+              }
+            }}
           >
             <DialogTitle className="sr-only">图片预览</DialogTitle>
-            <div className="relative flex h-[90vh] w-[100vw] items-center justify-center">
+            <div
+              className="relative flex h-[90vh] w-[100vw] items-center justify-center"
+              onClick={(event) => event.stopPropagation()}
+            >
             {/* Image - no extra background or border */}
-            <div className="flex max-h-full max-w-full items-center justify-center">
-              <img
-                src={currentImage?.url || currentImage?.previewUrl || undefined}
-                alt={currentImage?.description || "media"}
-                className="max-h-[85vh] max-w-[95vw] object-contain"
-              />
+            <div className="relative h-[85vh] w-[95vw] overflow-hidden">
+              <motion.div
+                className="flex h-full"
+                animate={{ x: `-${current * 100}%` }}
+                transition={{ type: "spring", stiffness: 260, damping: 30 }}
+                drag={canNavigate ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={(_, info) => {
+                  if (!canNavigate) return
+                  if (info.offset.x < -60) {
+                    goNext()
+                  } else if (info.offset.x > 60) {
+                    goPrev()
+                  }
+                }}
+              >
+                {images.map((item, idx) => (
+                  <div
+                    key={`${item.id ?? idx}-${idx}`}
+                    className="flex h-full w-full shrink-0 items-center justify-center"
+                  >
+                    <img
+                      src={item?.url || item?.previewUrl || undefined}
+                      alt={item?.description || "media"}
+                      className="max-h-[85vh] max-w-[95vw] object-contain"
+                    />
+                  </div>
+                ))}
+              </motion.div>
             </div>
 
             {/* Close button on the overlay background (top-right) */}
@@ -129,12 +176,12 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
                 <>
                   <button
                     type="button"
-                    onClick={() => setCurrent((prev) => Math.max(prev - 1, 0))}
+                    onClick={goPrev}
                     className={cn(
                       "absolute left-4 z-50 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60",
-                      current === 0 && "opacity-40 cursor-not-allowed",
+                      !canNavigate && "opacity-40 cursor-not-allowed",
                     )}
-                    disabled={current === 0}
+                    disabled={!canNavigate}
                     aria-label="上一张"
                   >
                     <ChevronLeft className="h-5 w-5" />
@@ -142,12 +189,12 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
 
                   <button
                     type="button"
-                    onClick={() => setCurrent((prev) => Math.min(prev + 1, images.length - 1))}
+                    onClick={goNext}
                     className={cn(
                       "absolute right-4 z-50 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/60",
-                      current === images.length - 1 && "opacity-40 cursor-not-allowed",
+                      !canNavigate && "opacity-40 cursor-not-allowed",
                     )}
-                    disabled={current === images.length - 1}
+                    disabled={!canNavigate}
                     aria-label="下一张"
                   >
                     <ChevronRight className="h-5 w-5" />
@@ -156,7 +203,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
               )}
 
             {/* Bottom index and alt bar */}
-              <div className="absolute -bottom-3 left-1/2 z-50 max-w-[min(90%,600px)] -translate-x-1/2 px-4">
+              <div className="absolute -bottom-3 left-1/2 z-50 w-full md:max-w-[min(90%,600px)] -translate-x-1/2 px-4">
                 {canNavigate && (
                   <div className="mb-2 text-center">
                     <span className="inline-flex items-center rounded-full bg-black/50 px-2.5 py-1 text-xs font-semibold text-white">
