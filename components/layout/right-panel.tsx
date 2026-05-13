@@ -5,9 +5,36 @@ import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LocaleSwitcher } from "@/components/i18n/locale-switcher"
 import { Card, CardContent } from "@/components/ui/card"
-import { TrendingTagsPanel } from "@/components/layout/trending-tags-panel"
-import { SearchPopover } from "@/components/search/search-popover"
+import dynamic from "next/dynamic"
 import { useTranslations } from "next-intl"
+
+const SearchPopover = dynamic(
+  () => import("@/components/search/search-popover").then((mod) => mod.SearchPopover),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-9 items-center justify-center rounded-md border border-border/60 bg-card/50">
+        <div className="loading-orbit loading-orbit--xs" aria-hidden="true">
+          <div className="loading-orbit-core" />
+        </div>
+      </div>
+    ),
+  },
+)
+
+const TrendingTagsPanel = dynamic(
+  () => import("@/components/layout/trending-tags-panel").then((mod) => mod.TrendingTagsPanel),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-64 items-center justify-center rounded-xl border border-border/60 bg-card/50">
+        <div className="loading-orbit loading-orbit--sm" aria-hidden="true">
+          <div className="loading-orbit-core" />
+        </div>
+      </div>
+    ),
+  },
+)
 
 export function RightPanel() {
   const t = useTranslations("common")

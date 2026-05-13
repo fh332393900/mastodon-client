@@ -158,6 +158,26 @@
   }
 }
 
+@keyframes orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-pulse {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.7;
+    box-shadow: 0 0 8px var(--primary);
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+    box-shadow: 0 0 18px var(--primary);
+  }
+}
+
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
@@ -168,6 +188,96 @@
 
 .animate-slide-in-up {
   animation: slide-in-up 0.5s ease-out;
+}
+
+.loading-orbit {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  --ring: 3px;
+  --gap: 8px;
+  --core: 10px;
+}
+
+.loading-orbit::before,
+.loading-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+}
+
+.loading-orbit::before {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--primary) 90deg,
+    transparent 180deg,
+    var(--primary) 270deg,
+    transparent 360deg
+  );
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - var(--ring)),
+    #000 calc(100% - var(--ring))
+  );
+  mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - var(--ring)),
+    #000 calc(100% - var(--ring))
+  );
+  animation: orbit-spin 1.2s linear infinite;
+  opacity: 0.9;
+}
+
+.loading-orbit::after {
+  inset: var(--gap);
+  background: conic-gradient(
+    from 180deg,
+    transparent 0deg,
+    var(--accent) 120deg,
+    transparent 240deg
+  );
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - var(--ring)),
+    #000 calc(100% - var(--ring))
+  );
+  mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - var(--ring)),
+    #000 calc(100% - var(--ring))
+  );
+  animation: orbit-spin 1.8s linear infinite reverse;
+  opacity: 0.75;
+}
+
+.loading-orbit-core {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: var(--core);
+  height: var(--core);
+  border-radius: 9999px;
+  background: var(--primary);
+  box-shadow: 0 0 12px var(--primary);
+  animation: orbit-pulse 1.6s ease-in-out infinite;
+}
+
+.loading-orbit--sm {
+  width: 36px;
+  height: 36px;
+  --ring: 2px;
+  --gap: 5px;
+  --core: 6px;
+}
+
+.loading-orbit--xs {
+  width: 26px;
+  height: 26px;
+  --ring: 2px;
+  --gap: 4px;
+  --core: 5px;
 }
 
 /* Per-letter handwriting animation */
