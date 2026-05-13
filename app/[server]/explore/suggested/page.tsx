@@ -74,11 +74,11 @@ function SuggestionCard({
         {/* 名称 + acct */}
         <div className="min-w-0 flex-1">
           <UserHoverCard account={a} profileHref={href}>
-            <div className="cursor-pointer">
-              <div className="font-medium truncate leading-tight">
+            <div className="cursor-pointer min-w-0 w-full">
+              <div className="font-medium truncate line-clamp-1 leading-tight">
                 {renderDisplayName({ displayName: a.displayName, username: a.username, emojis: a.emojis })}
               </div>
-              <div className="text-sm text-muted-foreground truncate">@{a.acct}</div>
+              <div className="text-sm text-muted-foreground truncate line-clamp-1">@{a.acct}</div>
             </div>
           </UserHoverCard>
           {a.note && (

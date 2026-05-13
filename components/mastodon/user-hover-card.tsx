@@ -166,7 +166,7 @@ export function UserHoverCard({
           onMouseLeave={scheduleClose}
           onFocus={scheduleOpen}
           onBlur={scheduleClose}
-          className={children ? "inline-flex min-w-0" : "flex min-w-0"}
+          className={children ? "inline md:inline-flex min-w-0" : "flex min-w-0"}
         >
           {trigger}
         </span>
