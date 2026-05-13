@@ -141,7 +141,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
               }}
             >
             {/* Image - no extra background or border */}
-            <div className="relative h-[85vh] w-[95vw] overflow-hidden">
+            <div className="relative w-[95vw] overflow-hidden">
               <Swiper
                 className="h-full w-full"
                 onSwiper={setSwiper}
@@ -218,7 +218,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
 
                 {currentImage?.description ? (
                   <div
-                    className="line-clamp-1 rounded-full bg-black/60 px-3 py-1 text-sm/6 text-white"
+                    className="line-clamp-1 rounded-full bg-black/60 px-3 py-1 text-xs/6 text-white"
                     title={currentImage.description}
                   >
                     {currentImage.description}
