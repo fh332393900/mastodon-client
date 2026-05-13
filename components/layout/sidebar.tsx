@@ -77,7 +77,7 @@ export function Sidebar() {
       </div>
 
       {/* Mobile Bottom Nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border/60 bg-card/90 px-4 py-2 backdrop-blur lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border/60 bg-card/90 px-4 pt-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] backdrop-blur lg:hidden">
         <div className="flex items-center justify-between">
           {mobileNavigationItems.map((item) => {
             const href = `/${server}/${item.route}`

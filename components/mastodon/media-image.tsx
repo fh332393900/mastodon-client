@@ -122,11 +122,16 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
                 setIsOpen(false)
               }
             }}
+            onEscapeKeyDown={() => setIsOpen(false)}
           >
             <DialogTitle className="sr-only">图片预览</DialogTitle>
             <div
               className="relative flex h-[90vh] w-[100vw] items-center justify-center"
-              onClick={(event) => event.stopPropagation()}
+              onClick={(event) => {
+                if (event.target === event.currentTarget) {
+                  setIsOpen(false)
+                }
+              }}
             >
             {/* Image - no extra background or border */}
             <div className="relative h-[85vh] w-[95vw] overflow-hidden">
