@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import type { mastodon } from "masto"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
@@ -13,7 +13,9 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
-import { motion } from "framer-motion"
+import { Swiper, SwiperSlide } from "swiper/react"
+import type { Swiper as SwiperType } from "swiper"
+import "swiper/css"
 
 export type MediaAttachment = mastodon.v1.MediaAttachment
 
@@ -28,6 +30,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
   const [showAlt, setShowAlt] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [current, setCurrent] = useState(index)
+  const [swiper, setSwiper] = useState<SwiperType | null>(null)
 
   const images = useMemo(() => {
     const list = group && group.length > 0 ? group : [media]
@@ -37,22 +40,26 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
   const currentImage = images[current] ?? media
   const altText = media.description || ""
   const canNavigate = images.length > 1
-  const totalImages = images.length
-
   const goNext = () => {
-    if (!canNavigate) return
-    setCurrent((prev) => (prev + 1) % totalImages)
+    if (!canNavigate || !swiper) return
+    swiper.slideNext()
   }
 
   const goPrev = () => {
-    if (!canNavigate) return
-    setCurrent((prev) => (prev - 1 + totalImages) % totalImages)
+    if (!canNavigate || !swiper) return
+    swiper.slidePrev()
   }
 
   const handleOpen = () => {
     setCurrent(index)
     setIsOpen(true)
   }
+
+  useEffect(() => {
+    if (!swiper) return
+    if (!isOpen) return
+    swiper.slideToLoop(index, 0)
+  }, [index, isOpen, swiper])
 
   return (
     <div className="relative h-full overflow-hidden rounded-2xl border border-border/60 bg-muted/40">
@@ -135,35 +142,27 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
             >
             {/* Image - no extra background or border */}
             <div className="relative h-[85vh] w-[95vw] overflow-hidden">
-              <motion.div
-                className="flex h-full"
-                animate={{ x: `-${current * 100}%` }}
-                transition={{ type: "spring", stiffness: 260, damping: 30 }}
-                drag={canNavigate ? "x" : false}
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.2}
-                onDragEnd={(_, info) => {
-                  if (!canNavigate) return
-                  if (info.offset.x < -60) {
-                    goNext()
-                  } else if (info.offset.x > 60) {
-                    goPrev()
-                  }
-                }}
+              <Swiper
+                className="h-full w-full"
+                onSwiper={setSwiper}
+                onSlideChange={(instance) => setCurrent(instance.realIndex)}
+                loop={canNavigate}
+                allowTouchMove={canNavigate}
+                initialSlide={index}
               >
                 {images.map((item, idx) => (
-                  <div
+                  <SwiperSlide
                     key={`${item.id ?? idx}-${idx}`}
-                    className="flex h-full w-full shrink-0 items-center justify-center"
+                    className="flex h-full w-full items-center justify-center"
                   >
                     <img
                       src={item?.url || item?.previewUrl || undefined}
                       alt={item?.description || "media"}
-                      className="max-h-[85vh] max-w-[95vw] object-contain"
+                      className="max-h-[85vh] w-full object-contain"
                     />
-                  </div>
+                  </SwiperSlide>
                 ))}
-              </motion.div>
+              </Swiper>
             </div>
 
             {/* Close button on the overlay background (top-right) */}
