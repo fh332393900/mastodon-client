@@ -27,10 +27,10 @@ export function Sidebar() {
   const navigationItems = [
     { icon: Home, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.timeline), route: "timeline", color: "text-blue-300" },
     { icon: Heart, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.favorites), route: "favorites", color: "text-red-500" },
+    { icon: Bell, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.notifications), route: "notifications", color: "text-cyan-300" },
     { icon: PenSquare, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.compose), route: "compose", color: "text-purple-200" },
     { icon: Search, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.explore), route: "explore", color: "text-[#8eff43]" },
     { icon: Settings, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.settings), route: "settings", color: "text-orange-300" },
-    { icon: Bell, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.notifications), route: "notifications", color: "text-cyan-300" },
   ]
 
   const mobileNavigationItems = mobileBottomMenuRoutes
@@ -55,13 +55,13 @@ export function Sidebar() {
       {/* Mobile Top Bar */}
       <div className="sticky inset-x-0 top-0 z-40 flex items-center justify-between gap-2 border-b border-border/60 bg-card/90 px-4 py-2 backdrop-blur lg:hidden">
         <div className="flex min-w-0 items-center gap-2">
-          {activeItem && <activeItem.icon className="h-4 w-4 text-muted-foreground" />}
+          {activeItem && <activeItem.icon className="h-5 w-5 text-primary" />}
           <span className="truncate text-sm font-semibold text-foreground">{mobileTitle}</span>
         </div>
         <div className="flex items-center gap-2">
           {user ? (
             <Link href={`/${server}/@${user.username}`} aria-label={userNameText || "Profile"}>
-              <Avatar className="h-8 w-8">
+              <Avatar className="h-10 w-10">
                 <AvatarImage src={user.avatar || "/placeholder.svg"} alt={userNameText} />
                 <AvatarFallback>{userNameText.charAt(0)}</AvatarFallback>
               </Avatar>
@@ -81,7 +81,7 @@ export function Sidebar() {
         <div className="flex items-center justify-between">
           {mobileNavigationItems.map((item) => {
             const href = `/${server}/${item.route}`
-            const isActive = pathname === href
+            const isActive = pathname.includes(item.route)
             return (
               <Link key={item.route} href={href} aria-label={item.label} className="flex-1">
                 <div
@@ -147,7 +147,7 @@ export function Sidebar() {
           <nav className="flex-1 p-4 space-y-3">
             {navigationItems.map((item) => {
               const href = `/${server}/${item.route}`
-              const isActive = pathname === href
+              const isActive = pathname.includes(item.route)
               return (
                 <div key={item.route}>
                   <Link href={href}>

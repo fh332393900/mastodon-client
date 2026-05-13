@@ -24,7 +24,7 @@ export default function FavoritesPage() {
   if (!isReady || isLoading) {
     return (
       <div className="space-y-6 px-4 py-6">
-        <div className="flex items-center space-x-3 border-b border-border pb-4">
+        <div className="hidden md:flex items-center space-x-3 border-b border-border pb-4">
           <Heart className="w-8 h-8 text-red-500" />
           <h1 className="text-3xl font-bold">{headerTitle}</h1>
         </div>
