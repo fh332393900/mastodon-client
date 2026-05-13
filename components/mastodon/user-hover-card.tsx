@@ -12,6 +12,7 @@ import MastodonContent from "@/components/mastodon/MastodonContent"
 import { useFormat } from "@/hooks/format"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
 import { FollowButton } from "@/components/mastodon/FollowButton"
+import { cn } from "@/lib/utils"
 
 export function UserHoverCard({
   account,
@@ -19,12 +20,14 @@ export function UserHoverCard({
   className,
   children,
   forceOpen,
+  triggerClassName,
 }: {
   account: mastodon.v1.Account
   profileHref?: string
   className?: string
   children?: React.ReactNode
   forceOpen?: boolean
+  triggerClassName?: string
 }) {
   const { client, server } = useMasto()
   const { user } = useAuth()
@@ -89,7 +92,7 @@ export function UserHoverCard({
   const trigger = children ? (
     <span className={className}>{children}</span>
   ) : profileHref ? (
-    <Link href={profileHref} className="font-semibold text-foreground flex flex-1 flex-wrap md:flex-nowrap items-center min-w-0 w-full px-3 py-1 -ml-3 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
+    <Link href={profileHref} className="font-semibold text-foreground flex flex-1 flex-wrap md:flex-nowrap items-center min-w-0 w-full px-1 md:px-3 py-1 ml-0 md:-ml-3 rounded-full hover:bg-primary-foreground dark:hover:bg-muted overflow-hidden">
       <span className="block md:shrink-0 line-clamp-1 truncate max-w-full">
         {renderDisplayName({
           displayName: account.displayName,
@@ -97,7 +100,7 @@ export function UserHoverCard({
           emojis: account.emojis,
         })}
       </span>
-      <span className="block text-sm ml-1 line-clamp-1 text-muted-foreground/70 truncate">@{account.acct}</span>
+      <span className="block text-sm ml-0 md:ml-1 line-clamp-1 text-muted-foreground/70 truncate">@{account.acct}</span>
     </Link>
   ) : (
     <span className={className}>
@@ -163,7 +166,7 @@ export function UserHoverCard({
           onMouseLeave={scheduleClose}
           onFocus={scheduleOpen}
           onBlur={scheduleClose}
-          className="inline-flex min-w-0"
+          className="flex min-w-0"
         >
           {trigger}
         </span>

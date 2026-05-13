@@ -12,6 +12,7 @@ import {
   PopoverArrow,
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "next-intl"
 
 export type MediaAttachment = mastodon.v1.MediaAttachment
 
@@ -22,6 +23,7 @@ type MediaImageProps = {
 }
 
 export function MediaImage({ media, index, group }: MediaImageProps) {
+  const t = useTranslations("settings.media")
   const [showAlt, setShowAlt] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [current, setCurrent] = useState(index)
@@ -87,7 +89,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
               <X className="h-3 w-3" />
             </button>
             <div className="pr-6">
-              <div className="text-[11px] font-semibold text-primary/70">描述</div>
+              <div className="text-[11px] font-semibold text-primary/70">{t("altDescription")}</div>
               <div className="mt-1 leading-relaxed">{altText}</div>
             </div>
           </PopoverContent>

@@ -252,6 +252,10 @@
         "label": "首选项",
         "description": "时间线、媒体和界面"
       },
+      "appearance": {
+        "label": "外观",
+        "description": "主题、布局与视觉"
+      },
       "about": {
         "label": "关于",
         "description": "客户端信息与致谢"
@@ -270,9 +274,11 @@
       "usernameLabel": "用户名",
       "usernameHint": "用户名无法修改。",
       "bioLabel": "简介",
+      "bioPlaceholder": "简单介绍一下自己…",
       "fieldsTitle": "资料标签",
       "fieldsDescription": "添加链接或标签以展示在个人资料中。",
       "fieldLabel": "标签 {index}",
+      "fieldLabelInput": "标签名",
       "fieldValue": "内容",
       "addField": "添加标签",
       "saveTitle": "保存更改",
@@ -285,6 +291,11 @@
       "title": "首选项",
       "description": "自定义客户端行为。",
       "placeholder": "首选项即将上线，本区将涵盖时间线、语言和媒体选项。"
+    },
+    "appearance": {
+      "title": "外观",
+      "description": "自定义主题与布局。",
+      "placeholder": "外观设置即将上线，可调整颜色、布局与密度。"
     },
     "about": {
       "title": "关于",
@@ -303,7 +314,8 @@
       "useImage": "使用图片",
       "cancel": "取消",
       "saving": "保存中...",
-      "previewAlt": "{label} 预览"
+      "previewAlt": "{label} 预览",
+      "altDescription": "描述"
     },
     "validation": {
       "displayNameTooLong": "显示名称过长",

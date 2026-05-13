@@ -4,10 +4,10 @@ import type { ReactNode } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-import { Info, Settings, SlidersHorizontal, User } from "lucide-react"
+import { Info, Palette, Settings, SlidersHorizontal, User } from "lucide-react"
 import { useTranslations } from "next-intl"
 
-export type SettingsSection = "profile" | "preferences" | "about"
+export type SettingsSection = "profile" | "preferences" | "appearance" | "about"
 
 type SettingsShellProps = {
   section: SettingsSection
@@ -30,12 +30,18 @@ export function SettingsShell({ section, onSectionChange, children }: SettingsSh
       description: t("sections.preferences.description"),
       icon: SlidersHorizontal,
     },
+    {
+      id: "appearance",
+      label: t("sections.appearance.label"),
+      description: t("sections.appearance.description"),
+      icon: Palette,
+    },
     { id: "about", label: t("sections.about.label"), description: t("sections.about.description"), icon: Info },
   ]
 
   return (
     <div className="space-y-6 px-4 py-6">
-      <div className="flex items-center gap-3 border-b border-border pb-4">
+      <div className="hidden md:flex items-center gap-3 border-b border-border pb-4">
         <Settings className="h-8 w-8 text-muted-foreground" />
         <div>
           <h1 className="text-3xl font-bold">{t("title")}</h1>

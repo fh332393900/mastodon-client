@@ -252,6 +252,10 @@
         "label": "Préférences",
         "description": "Fil, médias et interface"
       },
+      "appearance": {
+        "label": "Apparence",
+        "description": "Thème, mise en page et visuels"
+      },
       "about": {
         "label": "À propos",
         "description": "Détails du client et crédits"
@@ -270,9 +274,11 @@
       "usernameLabel": "Nom d'utilisateur",
       "usernameHint": "Le nom d'utilisateur ne peut pas être modifié.",
       "bioLabel": "Bio",
+      "bioPlaceholder": "Écrivez quelque chose sur vous…",
       "fieldsTitle": "Champs de profil",
       "fieldsDescription": "Ajoutez des liens ou tags à mettre en avant sur votre profil.",
       "fieldLabel": "Libellé {index}",
+      "fieldLabelInput": "Libellé",
       "fieldValue": "Valeur",
       "addField": "Ajouter un champ",
       "saveTitle": "Enregistrer les modifications",
@@ -285,6 +291,11 @@
       "title": "Préférences",
       "description": "Personnalisez le comportement du client pour vous.",
       "placeholder": "Les préférences arrivent bientôt. Cette section couvrira le fil, la langue et les options média."
+    },
+    "appearance": {
+      "title": "Apparence",
+      "description": "Personnalisez le thème et la mise en page.",
+      "placeholder": "Les réglages d'apparence arrivent bientôt. Vous pourrez ajuster les couleurs, la mise en page et la densité."
     },
     "about": {
       "title": "À propos",
@@ -303,7 +314,8 @@
       "useImage": "Utiliser l'image",
       "cancel": "Annuler",
       "saving": "Enregistrement...",
-      "previewAlt": "Aperçu {label}"
+      "previewAlt": "Aperçu {label}",
+      "altDescription": "Description"
     },
     "validation": {
       "displayNameTooLong": "Le nom d'affichage est trop long",

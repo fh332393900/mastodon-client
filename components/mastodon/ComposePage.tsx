@@ -53,7 +53,7 @@ export function ComposePage() {
   return (
     <div className="space-y-6 px-4 py-6">
       <div className="space-y-6">
-        <div className="border-b border-border pb-4">
+        <div className="hidden md:block border-b border-border pb-4">
           <h1 className="text-2xl font-bold">{t("compose.title")}</h1>
           <p className="text-muted-foreground">{t("compose.subtitle", { server })}</p>
         </div>

@@ -4,10 +4,7 @@ import { useRouter } from "next/navigation"
 import type { MouseEvent } from "react"
 
 import Link from "next/link"
-import { Pin } from "lucide-react"
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
 import MastodonContent from "@/components/mastodon/MastodonContent"
 import { UserHoverCard } from "@/components/mastodon/user-hover-card"
 import { useFormat } from "@/hooks/format"
@@ -16,7 +13,7 @@ import type { mastodon } from "masto"
 import { useMasto } from "@/components/auth/masto-provider"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
 import { useStatusActions } from "@/hooks/mastodon/useStatusActions"
-import { StatusMoreActions } from "./StatusMoreActions"
+import { StatusHeaderRow } from "./StatusHeaderRow"
 
 import { StatusPoll } from "./StatusPoll"
 import { StatusMedia } from "./StatusMedia"
@@ -64,14 +61,14 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
   }
 
   return (
-    <article className="rounded-3xl border border-border/70 bg-card/90 p-4 shadow-sm">
+    <article className="rounded-3xl border border-border/70 bg-card/90 p-3 md:p-4 shadow-sm">
       {status.reblog && server ? (
         <StatusRepostHeader account={status.account} server={server} />
       ) : null}
 
-      <div className="flex gap-4">
+      <div className="block md:flex md:gap-4">
         {profileHref ? (
-          <div>
+          <div className="flex min-w-0 items-center gap-3 md:block md:mb-0">
             <UserHoverCard account={author} profileHref={profileHref}>
               <Link href={profileHref}>
                 <Avatar className="h-12 w-12 ring-2 ring-border/70">
@@ -80,32 +77,44 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
                 </Avatar>
               </Link>
             </UserHoverCard>
+            <StatusHeaderRow
+              account={author}
+              profileHref={profileHref}
+              timeLabel={formatRelativeTime(renderedStatus.createdAt)}
+              timeTitle={formatFullDate(renderedStatus.createdAt)}
+              isPinned={renderedStatus.pinned}
+              status={status}
+              className="flex flex-1 min-w-0 items-center justify-between gap-2 md:hidden"
+            />
           </div>
         ) : (
-          <Avatar className="h-12 w-12 ring-2 ring-border/70">
-            <AvatarImage src={author.avatar} alt={authorNameText} />
-            <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
-          </Avatar>
+          <div className="flex min-w-0 items-center gap-3 md:block md:mb-0">
+            <Avatar className="h-12 w-12 ring-2 ring-border/70">
+              <AvatarImage src={author.avatar} alt={authorNameText} />
+              <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <StatusHeaderRow
+              account={author}
+              profileHref={profileHref}
+              timeLabel={formatRelativeTime(renderedStatus.createdAt)}
+              timeTitle={formatFullDate(renderedStatus.createdAt)}
+              isPinned={renderedStatus.pinned}
+              status={status}
+              className="flex flex-1 min-w-0 items-center justify-between gap-2 md:hidden"
+            />
+          </div>
         )}
 
         <div className="min-w-0 flex-1 space-y-3">
-          <div className="flex gap-2 md:gap-4 justify-between items-center">
-            <UserHoverCard account={author} profileHref={profileHref} className="" />
-            <div className="flex items-center gap-2">
-              <span
-                className="text-sm text-muted-foreground shrink-0 whitespace-nowrap"
-                title={formatFullDate(renderedStatus.createdAt)}
-              >
-                {formatRelativeTime(renderedStatus.createdAt)}
-              </span>
-              <StatusMoreActions status={status} />
-            </div>
-            {renderedStatus.pinned ? (
-              <Badge variant="outline">
-                <Pin className="mr-1 h-3 w-3" />置顶
-              </Badge>
-            ) : null}
-          </div>
+          <StatusHeaderRow
+            account={author}
+            profileHref={profileHref}
+            timeLabel={formatRelativeTime(renderedStatus.createdAt)}
+            timeTitle={formatFullDate(renderedStatus.createdAt)}
+            isPinned={renderedStatus.pinned}
+            status={status}
+            className="hidden items-center justify-between gap-2 md:flex md:gap-4"
+          />
 
           {renderedStatus.spoilerText ? (
             <div className="rounded-2xl bg-muted/70 px-4 py-3 text-sm text-muted-foreground">
