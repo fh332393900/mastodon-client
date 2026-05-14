@@ -40,7 +40,7 @@ export function RightPanel() {
 
         {/* Trending Tags */}
         <div className="min-h-0">
-          {/* <TrendingTagsPanel /> */}
+          <TrendingTagsPanel />
         </div>
 
         {/* Footer Section */}
