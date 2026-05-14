@@ -9,9 +9,12 @@ const SyntaxHighlighter = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-16 w-full items-center justify-center bg-muted/60">
-        <div className="loading-orbit loading-orbit--xs" aria-hidden="true">
-          <div className="loading-orbit-core" />
+      <div className="flex items-center justify-between px-3.5 py-1.5 bg-muted/60 border-b border-border/50">
+        <span className="text-[11px] font-mono text-muted-foreground/70 tracking-wide"></span>
+        <div className="flex gap-1">
+          <span className="h-2 w-2 rounded-full bg-red-400/70" />
+          <span className="h-2 w-2 rounded-full bg-yellow-400/70" />
+          <span className="h-2 w-2 rounded-full bg-green-400/70" />
         </div>
       </div>
     ),

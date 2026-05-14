@@ -57,8 +57,8 @@ const getNotificationIcon = (type: string) => {
 
 export default function NotificationsPage() {
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 px-4 py-6">
+      <div className="flex items-center justify-between border-b border-border pb-4">
         <div className="flex items-center space-x-3">
           <Bell className="w-8 h-8 text-accent" />
           <h1 className="text-3xl font-bold">Notifications</h1>

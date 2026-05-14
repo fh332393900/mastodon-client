@@ -1,9 +1,10 @@
 "use client"
 
-import { Github, Shield, Info } from "lucide-react"
+import { Github, Shield, Info, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LocaleSwitcher } from "@/components/i18n/locale-switcher"
+import { TrendingTagsPanel } from "@/components/layout/trending-tags-panel"
 import { Card, CardContent } from "@/components/ui/card"
 import dynamic from "next/dynamic"
 import { useTranslations } from "next-intl"
@@ -14,23 +15,11 @@ const SearchPopover = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex h-9 items-center justify-center rounded-md border border-border/60 bg-card/50">
-        <div className="loading-orbit loading-orbit--xs" aria-hidden="true">
-          <div className="loading-orbit-core" />
-        </div>
-      </div>
-    ),
-  },
-)
-
-const TrendingTagsPanel = dynamic(
-  () => import("@/components/layout/trending-tags-panel").then((mod) => mod.TrendingTagsPanel),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-64 items-center justify-center rounded-xl border border-border/60 bg-card/50">
-        <div className="loading-orbit loading-orbit--sm" aria-hidden="true">
-          <div className="loading-orbit-core" />
-        </div>
+        {Array.from({ length: 1 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-3 animate-pulse">
+            <div className="h-4 w-36 bg-border/60 dark:bg-muted-foreground/40 rounded" />
+          </div>
+        ))}
       </div>
     ),
   },
