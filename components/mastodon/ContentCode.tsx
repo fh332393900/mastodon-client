@@ -3,23 +3,24 @@
 import dynamic from "next/dynamic"
 import { useTheme } from "next-themes"
 import { atomOneDark, atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
+import SyntaxHighlighter from 'react-syntax-highlighter'
 
-const SyntaxHighlighter = dynamic(
-  () => import("react-syntax-highlighter").then((mod) => mod.default),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex items-center justify-between px-3.5 py-1.5 bg-muted/60 border-b border-border/50">
-        <span className="text-[11px] font-mono text-muted-foreground/70 tracking-wide"></span>
-        <div className="flex gap-1">
-          <span className="h-2 w-2 rounded-full bg-red-400/70" />
-          <span className="h-2 w-2 rounded-full bg-yellow-400/70" />
-          <span className="h-2 w-2 rounded-full bg-green-400/70" />
-        </div>
-      </div>
-    ),
-  },
-)
+// const SyntaxHighlighter = dynamic(
+//   () => import("react-syntax-highlighter").then((mod) => mod.default),
+//   {
+//     ssr: false,
+//     loading: () => (
+//       <div className="flex items-center justify-between px-3.5 py-1.5 bg-muted/60 border-b border-border/50">
+//         <span className="text-[11px] font-mono text-muted-foreground/70 tracking-wide"></span>
+//         <div className="flex gap-1">
+//           <span className="h-2 w-2 rounded-full bg-red-400/70" />
+//           <span className="h-2 w-2 rounded-full bg-yellow-400/70" />
+//           <span className="h-2 w-2 rounded-full bg-green-400/70" />
+//         </div>
+//       </div>
+//     ),
+//   },
+// )
 
 export default function ContentCode({
   code,

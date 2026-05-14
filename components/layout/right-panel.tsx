@@ -8,22 +8,23 @@ import { TrendingTagsPanel } from "@/components/layout/trending-tags-panel"
 import { Card, CardContent } from "@/components/ui/card"
 import dynamic from "next/dynamic"
 import { useTranslations } from "next-intl"
+import { SearchPopover } from "@/components/search/search-popover"
 
-const SearchPopover = dynamic(
-  () => import("@/components/search/search-popover").then((mod) => mod.SearchPopover),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-9 items-center justify-center rounded-md border border-border/60 bg-card/50">
-        {Array.from({ length: 1 }).map((_, i) => (
-          <div key={i} className="flex items-center gap-3 animate-pulse">
-            <div className="h-4 w-36 bg-border/60 dark:bg-muted-foreground/40 rounded" />
-          </div>
-        ))}
-      </div>
-    ),
-  },
-)
+// const SearchPopover = dynamic(
+//   () => import("@/components/search/search-popover").then((mod) => mod.SearchPopover),
+//   {
+//     ssr: false,
+//     loading: () => (
+//       <div className="flex h-9 items-center justify-center rounded-md border border-border/60 bg-card/50">
+//         {Array.from({ length: 1 }).map((_, i) => (
+//           <div key={i} className="flex items-center gap-3 animate-pulse">
+//             <div className="h-4 w-36 bg-border/60 dark:bg-muted-foreground/40 rounded" />
+//           </div>
+//         ))}
+//       </div>
+//     ),
+//   },
+// )
 
 export function RightPanel() {
   const t = useTranslations("common")
