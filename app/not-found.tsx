@@ -1,12 +1,13 @@
 "use client"
 
+import { Suspense } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { AlertCircle, User, FileText, Home, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { AppLayout } from "@/components/layout/app-layout"
 
-export default function NotFoundPage() {
+function NotFoundContent() {
   const router = useRouter()
   const params = useSearchParams()
   const type = params?.get("type")
@@ -48,5 +49,13 @@ export default function NotFoundPage() {
         </div>
       </div>
     </AppLayout>
+  )
+}
+
+export default function NotFoundPage() {
+  return (
+    <Suspense>
+      <NotFoundContent />
+    </Suspense>
   )
 }

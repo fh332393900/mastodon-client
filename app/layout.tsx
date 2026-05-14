@@ -1,17 +1,11 @@
 import type React from "react"
 import type { Metadata } from "next"
 import 'tailwindcss/index.css'
-
-export const runtime = "edge"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Suspense } from "react"
 import "@/styles/globals.css"
-import { cookies } from "next/headers"
 import { ClientProviders } from "@/components/providers/client-providers"
-import { NextIntlClientProvider } from "next-intl"
-import { getMessages, getLocale } from "next-intl/server"
 
 export const metadata: Metadata = {
   title: "Mastodon Client - Connect to the Fediverse",
@@ -22,19 +16,13 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const cookieStore = await cookies()
-  const accessToken = cookieStore.get("mastodon_token")?.value ?? ""
-  const server = cookieStore.get("mastodon_server")?.value ?? process.env.NEXT_PUBLIC_DEFAULT_MASTODON_SERVER ?? "m.webtoo.ls"
-  const locale = await getLocale()
-  const messages = await getMessages()
-
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -44,15 +32,11 @@ export default async function RootLayout({
         />
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased overflow-y-scroll`}>
-        <Suspense fallback={null}>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
-            <NextIntlClientProvider locale={locale} messages={messages}>
-              <ClientProviders accessToken={accessToken} server={server}>
-                {children}
-              </ClientProviders>
-            </NextIntlClientProvider>
-          </ThemeProvider>
-        </Suspense>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
+          <ClientProviders>
+            {children}
+          </ClientProviders>
+        </ThemeProvider>
       </body>
     </html>
   )
