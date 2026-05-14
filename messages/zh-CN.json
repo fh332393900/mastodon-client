@@ -227,7 +227,13 @@
     "writeReply": "写下你的回复...",
     "loginToReply": "登录后才能回复",
     "sending": "发送中...",
-    "postReply": "发布回复"
+    "postReply": "发布回复",
+    "editProfile": "编辑个人资料",
+    "bot": "机器人",
+    "locked": "已锁定",
+    "joinedIn": "加入于 {time}",
+    "recentlyActive": "最近活跃于 {time}",
+    "movedTo": "已迁移至"
   },
   "carbonBadge": {
     "calculating": "计算中…",

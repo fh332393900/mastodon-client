@@ -227,7 +227,13 @@
     "writeReply": "답글을 작성하세요...",
     "loginToReply": "답글을 달려면 로그인하세요",
     "sending": "보내는 중...",
-    "postReply": "답글 게시"
+    "postReply": "답글 게시",
+    "editProfile": "프로필 편집",
+    "bot": "봇",
+    "locked": "잠금 계정",
+    "joinedIn": "{time}에 가입",
+    "recentlyActive": "최근 활동 {time}",
+    "movedTo": "으로 이전됨"
   },
   "carbonBadge": {
     "calculating": "계산 중…",

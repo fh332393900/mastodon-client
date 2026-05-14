@@ -227,7 +227,13 @@
     "writeReply": "Write your reply...",
     "loginToReply": "Log in to reply",
     "sending": "Sending...",
-    "postReply": "Post Reply"
+    "postReply": "Post Reply",
+    "editProfile": "Edit Profile",
+    "bot": "Bot",
+    "locked": "Locked",
+    "joinedIn": "Joined {time}",
+    "recentlyActive": "Recently active {time}",
+    "movedTo": "Moved to"
   },
   "carbonBadge": {
     "calculating": "calculating…",

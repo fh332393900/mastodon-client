@@ -227,7 +227,13 @@
     "writeReply": "Écrivez votre réponse...",
     "loginToReply": "Connectez-vous pour répondre",
     "sending": "Envoi en cours...",
-    "postReply": "Publier la réponse"
+    "postReply": "Publier la réponse",
+    "editProfile": "Modifier le profil",
+    "bot": "Bot",
+    "locked": "Verrouillé",
+    "joinedIn": "Inscrit {time}",
+    "recentlyActive": "Actif récemment {time}",
+    "movedTo": "Déplacé vers"
   },
   "carbonBadge": {
     "calculating": "calcul en cours…",
