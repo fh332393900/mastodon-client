@@ -1,3 +1,5 @@
+export const runtime = 'nodejs'
+
 import { NextResponse } from "next/server"
 import { getMastodonClient } from "@/app/api/_lib/mastodon"
 

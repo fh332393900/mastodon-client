@@ -1,3 +1,5 @@
+export const runtime = 'nodejs'
+
 import { type NextRequest, NextResponse } from "next/server"
 import { createRestAPIClient } from "masto"
 import { cookies } from "next/headers"

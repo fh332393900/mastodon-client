@@ -1,3 +1,5 @@
+export const runtime = 'nodejs'
+
 import { getApp, getRedirectURI } from "@/lib/shared"
 import { type NextRequest, NextResponse } from "next/server"
 import fetch from 'node-fetch'

@@ -30,11 +30,6 @@ export default function HomePage() {
   const { isAuthenticated } = useAuth()
   const t = useTranslations("home")
 
-  useEffect(() => {
-    if (accessToken) {
-      // router.replace(`/${server}/timeline`)
-    }
-  }, [accessToken, router, server])
 
   const handleGuestMode = () => {
     router.push(`/${server}/timeline`)

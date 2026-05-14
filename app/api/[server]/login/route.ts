@@ -1,3 +1,5 @@
+export const runtime = 'nodejs'
+
 import { type NextRequest, NextResponse } from "next/server"
 import { getApp, getRedirectURI } from "@/lib/shared"
 import { stringifyQuery } from "ufo"
