@@ -98,7 +98,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <section className="overflow-hidden bg-card/90 shadow-xl shadow-primary/5">
-        <div className="relative h-44 overflow-hidden bg-gradient-to-r from-primary/30 via-secondary/20 to-accent/20 sm:h-56">
+        <div className="relative h-40 overflow-hidden bg-gradient-to-r from-primary/30 via-secondary/20 to-accent/20 sm:h-56">
           {account.header ? (
             <>
               <img
@@ -113,9 +113,9 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 
         <div className="px-4">
           <div className="relative px-0 pb-5 sm:px-8 sm:pb-7">
-            <div className="-mt-14 flex gap-5 sm:-mt-14 sm:flex-row items-end sm:justify-between">
+            <div className="-mt-10 flex gap-5 sm:-mt-14 sm:flex-row items-end justify-between">
               <div className="flex items-center gap-4">
-                <Avatar className="h-12 w-12 md:h-28 md:w-28 border-2 border-card shadow-lg sm:h-32 sm:w-32">
+                <Avatar className="h-22 w-22 md:h-28 md:w-28 border-2 border-card shadow-lg sm:h-32 sm:w-32">
                   <AvatarImage src={account.avatar} alt={accountNameText} />
                   <AvatarFallback>{accountNameText.charAt(0)}</AvatarFallback>
                 </Avatar>
@@ -138,7 +138,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
               </div>
             </div>
 
-            <div className="pb-2 mt-2">
+            <div className="pb-2 mt-4">
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
                   {renderDisplayName({

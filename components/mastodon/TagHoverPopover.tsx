@@ -7,6 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button"
 import { Loader2, Star } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "next-intl"
 import { useMasto } from "@/components/auth/masto-provider"
 import { useAuth } from "@/components/auth/auth-provider"
 import { TagTrend } from "@/components/mastodon/TagCard"
@@ -20,6 +21,7 @@ export default function TagHoverPopover({
 }) {
   const { client, server } = useMasto()
   const { user } = useAuth()
+  const t = useTranslations("common.tag")
   const [open, setOpen] = useState(false)
   const [tag, setTag] = useState<mastodon.v1.Tag | null>(null)
   const [isLoaded, setIsLoaded] = useState(false)
@@ -127,7 +129,7 @@ export default function TagHoverPopover({
             )}
             onClick={handleToggleFollow}
             disabled={!canInteract || !tag || isPending}
-            aria-label={isFollowing ? "取消收藏话题" : "收藏话题"}
+            aria-label={isFollowing ? t("unfollowTag") : t("followTag")}
           >
             {isPending ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -148,10 +150,10 @@ export default function TagHoverPopover({
             </div>
             <div className="mt-1 text-xs text-muted-foreground line-clamp-2">
               {isFetching
-                ? "加载话题信息..."
+                ? t("loading")
                 : tag?.history?.[0]
-                ? `最近${2}天 ${tag.history[0].accounts ?? 0} 人访问`
-                : "该话题的详情暂不可用"}
+                ? t("recentActivity", { accounts: tag.history[0].accounts ?? 0, days: 2 })
+                : t("noInfo")}
             </div>
           </div>
 
@@ -163,7 +165,7 @@ export default function TagHoverPopover({
             href={baseHref}
             className="mt-4 block rounded-lg border border-border/60 bg-muted/40 px-3 py-2 text-center text-sm text-primary hover:bg-muted transition-colors"
           >
-            查看话题页面
+            {t("viewTagPage")}
           </Link>
         ) : null}
       </PopoverContent>

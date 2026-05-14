@@ -38,7 +38,15 @@
     "search": "搜索",
     "viewMoreTrendingTags": "查看更多热门话题",
     "justNow": "刚刚",
-    "close": "关闭"
+    "close": "关闭",
+    "tag": {
+      "followTag": "关注话题",
+      "unfollowTag": "取消关注话题",
+      "recentActivity": "过去 {days} 天 {accounts} 人參与",
+      "loading": "加载话题信息...",
+      "noInfo": "该话题的详情暂不可用。",
+      "viewTagPage": "查看话题页面"
+    }
   },
   "home": {
     "hero": {

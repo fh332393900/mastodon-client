@@ -38,7 +38,15 @@
     "search": "Rechercher",
     "viewMoreTrendingTags": "Voir plus de tags tendance",
     "justNow": "À l'instant",
-    "close": "Fermer"
+    "close": "Fermer",
+    "tag": {
+      "followTag": "Suivre le hashtag",
+      "unfollowTag": "Ne plus suivre le hashtag",
+      "recentActivity": "{accounts} personnes ces {days} derniers jours",
+      "loading": "Chargement du hashtag...",
+      "noInfo": "Aucun détail disponible pour ce hashtag.",
+      "viewTagPage": "Voir la page du hashtag"
+    }
   },
   "home": {
     "hero": {

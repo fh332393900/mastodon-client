@@ -38,7 +38,15 @@
     "search": "검색",
     "viewMoreTrendingTags": "더 많은 트렌딩 태그 보기",
     "justNow": "방금 전",
-    "close": "닫기"
+    "close": "닫기",
+    "tag": {
+      "followTag": "해시태그 팔로우",
+      "unfollowTag": "해시태그 언팔로우",
+      "recentActivity": "최근 {days}일간 {accounts}명",
+      "loading": "해시태그 정보 로딩 중...",
+      "noInfo": "이 해시태그에 대한 정보가 없습니다.",
+      "viewTagPage": "해시태그 페이지 보기"
+    }
   },
   "home": {
     "hero": {

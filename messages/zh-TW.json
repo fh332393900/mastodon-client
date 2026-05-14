@@ -38,7 +38,15 @@
     "search": "搜尋",
     "viewMoreTrendingTags": "查看更多熱門話題",
     "justNow": "剛剛",
-    "close": "關閉"
+    "close": "關閉",
+    "tag": {
+      "followTag": "追蹤話題",
+      "unfollowTag": "取消追蹤話題",
+      "recentActivity": "過去 {days} 天 {accounts} 人參與",
+      "loading": "載入話題資訊...",
+      "noInfo": "該話題的詳細資訊目前不可用。",
+      "viewTagPage": "查看話題頁面"
+    }
   },
   "home": {
     "hero": {
