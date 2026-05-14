@@ -1,5 +1,7 @@
 "use client"
 
+export const runtime = "nodejs"
+
 import { useEffect } from "react"
 import Link from "next/link"
 import { CalendarDays, ExternalLink, MapPin, Sparkles } from "lucide-react"
