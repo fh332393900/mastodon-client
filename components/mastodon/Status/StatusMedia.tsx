@@ -53,12 +53,6 @@ function AutoPlayVideo({ src }: { src?: string }) {
     document.addEventListener("fullscreenchange", handleFullscreenChange)
     document.addEventListener("webkitfullscreenchange", handleFullscreenChange)
 
-    const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent)
-    if (isIOS) {
-      video.pause()
-      return
-    }
-
     const threshold = video.clientHeight > window.innerHeight ? 0.5 : 0.7
 
     const observer = new IntersectionObserver(
@@ -68,7 +62,7 @@ function AutoPlayVideo({ src }: { src?: string }) {
 
         if (entry.isIntersecting && entry.intersectionRatio >= threshold) {
           void video.play().catch(() => {
-            // ignore autoplay failures
+            // ignore autoplay failures (e.g. browser policy)
           })
         } else {
           video.pause()
