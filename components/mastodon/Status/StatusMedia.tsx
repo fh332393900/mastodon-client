@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { MediaImage } from "@/components/mastodon/media-image"
 import type { mastodon } from "masto"
 
@@ -37,8 +37,10 @@ export function StatusMedia({ attachments }: StatusMediaProps) {
 
 function AutoPlayVideo({ src }: { src?: string }) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const [showControls, setShowControls] = useState(true)
 
   useEffect(() => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
     const video = videoRef.current
     if (!video || !src) return
 
@@ -48,6 +50,8 @@ function AutoPlayVideo({ src }: { src?: string }) {
         (document as Document & { webkitFullscreenElement?: Element }).webkitFullscreenElement === video
       )
       video.style.objectFit = isFullscreen ? "contain" : "cover"
+      // 全屏时始终显示控件
+      if (isIOS) setShowControls(isFullscreen)
     }
 
     document.addEventListener("fullscreenchange", handleFullscreenChange)
@@ -64,8 +68,11 @@ function AutoPlayVideo({ src }: { src?: string }) {
           void video.play().catch(() => {
             // ignore autoplay failures (e.g. browser policy)
           })
+          // 自动播放时 iOS 隐藏控件
+          if (isIOS) setShowControls(false)
         } else {
           video.pause()
+          if (isIOS) setShowControls(true)
         }
       },
       { threshold: [0, threshold, 1] },
@@ -83,11 +90,12 @@ function AutoPlayVideo({ src }: { src?: string }) {
     <video
       ref={videoRef}
       src={src}
-      controls
+      controls={showControls}
       muted
       playsInline
       preload="metadata"
       className="h-auto w-full max-h-[90vh] object-cover"
+      onClick={() => setShowControls(true)}
     />
   )
 }
