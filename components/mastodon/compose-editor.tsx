@@ -359,6 +359,8 @@ export function ComposeEditor({
       },
     },
     onUpdate({ editor: e }) {
+      // 一旦用户开始编辑，禁止初始化 effect 再覆盖内容（修复首次插入 emoji/代码块被还原为字符的 bug）
+      initializedRef.current = true
       const json = e.getJSON() as DocNode
       const text = docToPlainText(json)
       onChange(text)
