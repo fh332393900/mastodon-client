@@ -13,6 +13,8 @@ export function TrendingTagsPanel() {
   const { server } = useMasto()
   const t = useTranslations()
   const { tags, query } = useExploreTagsCache({ limit: 5 })
+  const showSkeleton = !query.isFetched
+  const showEmpty = query.isFetched && tags.length === 0
 
   return (
     <Card className="h-full flex flex-col bg-card/50 backdrop-blur-sm border-border/50 shadow-lg shadow-primary/5 overflow-hidden">
@@ -24,7 +26,7 @@ export function TrendingTagsPanel() {
       </CardHeader>
       <CardContent className="pt-0 px-0 pb-0 flex flex-col min-h-0">
         <div className="min-h-0 flex-1 overflow-y-auto">
-        {query.isLoading ? (
+        {showSkeleton ? (
           <div className="space-y-3 px-4 pb-3">
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="flex items-center gap-3 animate-pulse">
@@ -33,7 +35,7 @@ export function TrendingTagsPanel() {
               </div>
             ))}
           </div>
-        ) : tags.length === 0 ? (
+        ) : showEmpty ? (
           <p className="px-4 pb-3 text-xs text-muted-foreground">No trending topics</p>
         ) : (
           <div className="divide-y divide-border/40">

@@ -38,7 +38,15 @@
     "search": "Search",
     "viewMoreTrendingTags": "View More Trending Tags",
     "justNow": "just now",
-    "close": "Close"
+    "close": "Close",
+    "tag": {
+      "followTag": "Follow hashtag",
+      "unfollowTag": "Unfollow hashtag",
+      "recentActivity": "{accounts} people in the past {days} days",
+      "loading": "Loading hashtag info...",
+      "noInfo": "No details available for this hashtag.",
+      "viewTagPage": "View hashtag page"
+    }
   },
   "home": {
     "hero": {
@@ -227,7 +235,13 @@
     "writeReply": "Write your reply...",
     "loginToReply": "Log in to reply",
     "sending": "Sending...",
-    "postReply": "Post Reply"
+    "postReply": "Post Reply",
+    "editProfile": "Edit Profile",
+    "bot": "Bot",
+    "locked": "Locked",
+    "joinedIn": "Joined {time}",
+    "recentlyActive": "Recently active {time}",
+    "movedTo": "Moved to"
   },
   "carbonBadge": {
     "calculating": "calculating…",

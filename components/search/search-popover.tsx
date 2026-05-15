@@ -13,19 +13,23 @@ import { cn } from "@/lib/utils"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
 import { useMasto } from "@/components/auth/masto-provider"
-const StatusCard = dynamic(
-  () => import("@/components/mastodon/Status/StatusCard").then((mod) => mod.StatusCard),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-20 items-center justify-center rounded-2xl border border-border/60 bg-card/60">
-        <div className="loading-orbit loading-orbit--xs" aria-hidden="true">
-          <div className="loading-orbit-core" />
-        </div>
-      </div>
-    ),
-  },
-)
+import { StatusCard } from "@/components/mastodon/Status/StatusCard"
+// const StatusCard = dynamic(
+//   () => import("@/components/mastodon/Status/StatusCard").then((mod) => mod.StatusCard),
+//   {
+//     ssr: false,
+//     loading: () => (
+//       <div className="space-y-3 px-4 pb-3">
+//         {Array.from({ length: 5 }).map((_, i) => (
+//           <div key={i} className="flex items-center gap-3 animate-pulse">
+//             <div className="h-4 w-24 bg-border/60 dark:bg-muted-foreground/40 rounded" />
+//             <div className="ml-auto h-7 w-16 bg-border/60 dark:bg-muted-foreground/40 rounded" />
+//           </div>
+//         ))}
+//       </div>
+//     ),
+//   },
+// )
 import { useTranslations } from "next-intl"
 
 type Props = {

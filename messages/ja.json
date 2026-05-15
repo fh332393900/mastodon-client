@@ -38,7 +38,15 @@
     "search": "検索",
     "viewMoreTrendingTags": "さらにトレンドタグを見る",
     "justNow": "たった今",
-    "close": "閉じる"
+    "close": "閉じる",
+    "tag": {
+      "followTag": "ハッシュタグをフォロー",
+      "unfollowTag": "ハッシュタグをフォロー解除",
+      "recentActivity": "過去{days}日間で{accounts}人",
+      "loading": "ハッシュタグ情報を読み込み中...",
+      "noInfo": "このハッシュタグの詳細はありません。",
+      "viewTagPage": "ハッシュタグページを見る"
+    }
   },
   "home": {
     "hero": {
@@ -227,7 +235,13 @@
     "writeReply": "返信を書き込む...",
     "loginToReply": "返信するにはログインしてください",
     "sending": "送信中...",
-    "postReply": "返信を投稿"
+    "postReply": "返信を投稿",
+    "editProfile": "プロフィールを編集",
+    "bot": "ボット",
+    "locked": "鍵垢",
+    "joinedIn": "{time}に参加",
+    "recentlyActive": "最近アクティブ {time}",
+    "movedTo": "に移転"
   },
   "carbonBadge": {
     "calculating": "計算中…",
