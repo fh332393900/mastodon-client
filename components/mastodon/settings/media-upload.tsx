@@ -72,10 +72,11 @@ export function MediaUploadField({
   }, [sourceUrl, previewUrl])
 
   useEffect(() => {
-    if (resetKey === undefined) return
-    if (previewUrl) URL.revokeObjectURL(previewUrl)
-    setPreviewUrl(null)
-  }, [resetKey, previewUrl])
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl)
+      setPreviewUrl(null)
+    }
+  }, [valueUrl, resetKey])
 
   const handleFileChange = (file: File | null) => {
     if (!file || !file.type.startsWith("image/")) return

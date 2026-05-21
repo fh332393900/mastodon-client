@@ -64,97 +64,113 @@ export function ProfileSettingsForm() {
   }
 
   return (
-    <div className="space-y-6">
-      <Card className="overflow-hidden">
-        <CardHeader className="pb-0">
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5 text-primary" />
-            {t("profile.title")}
-          </CardTitle>
-          <CardDescription>{t("profile.description")}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6 px-0">
-          <div className="relative px-6">
-            <MediaUploadField
-              label={t("profile.headerLabel")}
-              description={t("profile.headerDescription")}
-              valueUrl={headerUrl}
-              resetKey={resetCounter}
-              aspect={3}
-              outputSize={{ width: 1500, height: 500 }}
-              onChange={(value) => setHeader(value)}
-              disabled={isSaving}
-              variant="overlay"
-              showMeta={false}
-              overlayPosition="center"
-              frameClassName="rounded-2xl border-border/60"
-            />
-            <div className="pointer-events-none absolute inset-x-6 bottom-0 h-24 rounded-b-2xl bg-gradient-to-t from-background via-background/40 to-transparent" />
-            <div className="absolute -bottom-12 left-10">
+    <div className="space-y-8 max-w-2xl mx-auto">
+      <section className="space-y-4">
+        <div className="flex items-center gap-3 px-2">
+          <div className="p-2 rounded-xl bg-primary/10 text-primary">
+            <User className="h-5 w-5" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold tracking-tight">{t("profile.title")}</h2>
+            <p className="text-sm text-muted-foreground">{t("profile.description")}</p>
+          </div>
+        </div>
+
+        <Card className="overflow-hidden border-border/50 shadow-sm transition-all hover:shadow-md">
+          <CardContent className="p-0">
+            <div className="relative group">
               <MediaUploadField
-                label={t("profile.avatarLabel")}
-                description={t("profile.avatarDescription")}
-                valueUrl={avatarUrl}
+                label={t("profile.headerLabel")}
+                description={t("profile.headerDescription")}
+                valueUrl={headerUrl}
                 resetKey={resetCounter}
-                aspect={1}
-                outputSize={{ width: 512, height: 512 }}
-                onChange={(value) => setAvatar(value)}
+                aspect={3}
+                outputSize={{ width: 1500, height: 500 }}
+                onChange={(value) => setHeader(value)}
                 disabled={isSaving}
                 variant="overlay"
                 showMeta={false}
                 overlayPosition="center"
-                previewWidth={120}
-                frameClassName="rounded-full border-4 border-background shadow-lg"
-                className="w-[120px]"
+                frameClassName="rounded-none border-none h-48 sm:h-64"
+                className="space-y-0"
               />
+              <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background/80 via-background/20 to-transparent pointer-events-none" />
+              
+              <div className="absolute -bottom-14 left-6 sm:left-10 z-10">
+                <MediaUploadField
+                  label={t("profile.avatarLabel")}
+                  description={t("profile.avatarDescription")}
+                  valueUrl={avatarUrl}
+                  resetKey={resetCounter}
+                  aspect={1}
+                  outputSize={{ width: 512, height: 512 }}
+                  onChange={(value) => setAvatar(value)}
+                  disabled={isSaving}
+                  variant="overlay"
+                  showMeta={false}
+                  overlayPosition="center"
+                  previewWidth={120}
+                  frameClassName="rounded-full border-4 border-background shadow-xl scale-100 group-hover:scale-105 transition-transform duration-300"
+                  className="w-[120px] space-y-0"
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="grid gap-4 mt-12 px-6 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="display-name">{t("profile.displayNameLabel")}</Label>
-              <Input
-                id="display-name"
-                value={form.displayName}
-                onChange={(event) => setFieldValue("displayName", event.target.value)}
-                disabled={isSaving}
-              />
-              {fieldErrors.displayName && (
-                <p className="text-xs text-destructive">{fieldErrors.displayName.join(" ")}</p>
-              )}
+            <div className="pt-20 pb-8 px-6 sm:px-10 space-y-6">
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-2.5">
+                  <Label htmlFor="display-name" className="text-sm font-bold ml-1">{t("profile.displayNameLabel")}</Label>
+                  <Input
+                    id="display-name"
+                    value={form.displayName}
+                    onChange={(event) => setFieldValue("displayName", event.target.value)}
+                    disabled={isSaving}
+                    placeholder="Enter your name"
+                    className="h-11 rounded-xl bg-muted/30 border-border/50 focus:bg-background transition-all"
+                  />
+                  {fieldErrors.displayName && (
+                    <p className="text-xs font-medium text-destructive mt-1.5 ml-1">{fieldErrors.displayName.join(" ")}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between ml-1">
+                  <Label htmlFor="bio" className="text-sm font-bold">{t("profile.bioLabel")}</Label>
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{bioLength}/500</span>
+                </div>
+                <div className="rounded-xl border border-border/50 bg-muted/30 focus-within:bg-background transition-all overflow-hidden">
+                  <ComposeEditor
+                    value={form.bio}
+                    onChange={(v) => setFieldValue("bio", v)}
+                    placeholder={t("profile.bioPlaceholder")}
+                    className="min-h-[140px] p-4"
+                    onLengthChange={(n) => setBioLength(n)}
+                  />
+                </div>
+                {fieldErrors.bio && <p className="text-xs font-medium text-destructive mt-1.5 ml-1">{fieldErrors.bio.join(" ")}</p>}
+              </div>
             </div>
-          </div>
+          </CardContent>
+        </Card>
+      </section>
 
-          <div className="space-y-2 px-6 pb-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="bio">{t("profile.bioLabel")}</Label>
-              <span className="text-xs text-muted-foreground">{bioLength}/500</span>
-            </div>
-            <ComposeEditor
-              value={form.bio}
-              onChange={(v) => setFieldValue("bio", v)}
-              placeholder={t("profile.bioPlaceholder")}
-              className="min-h-[120px]"
-              onLengthChange={(n) => setBioLength(n)}
-            />
-            {fieldErrors.bio && <p className="text-xs text-destructive">{fieldErrors.bio.join(" ")}</p>}
+      <section className="space-y-4">
+        <div className="flex items-center gap-3 px-2">
+          <div className="p-2 rounded-xl bg-primary/10 text-primary">
+            <BadgeCheck className="h-5 w-5" />
           </div>
-        </CardContent>
-      </Card>
+          <div>
+            <h2 className="text-xl font-bold tracking-tight">{t("profile.fieldsTitle")}</h2>
+            <p className="text-sm text-muted-foreground">{t("profile.fieldsDescription")}</p>
+          </div>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BadgeCheck className="h-5 w-5 text-primary" />
-            {t("profile.fieldsTitle")}
-          </CardTitle>
-          <CardDescription>{t("profile.fieldsDescription")}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
+        <div className="grid gap-4">
           {form.fields.map((field, index) => (
-            <div key={field.id} className="relative rounded-xl border border-border/60 bg-card p-4 space-y-3">
+            <div key={field.id} className="group relative rounded-2xl border border-border/50 bg-card p-5 space-y-4 shadow-sm hover:shadow-md transition-all">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-primary/80 uppercase tracking-wider">
+                <span className="text-[10px] font-black text-primary/60 uppercase tracking-[0.2em]">
                   {t("profile.fieldLabel", { index: index + 1 })}
                 </span>
                 <Button
@@ -163,77 +179,85 @@ export function ProfileSettingsForm() {
                   size="icon"
                   onClick={() => removeField(field.id)}
                   disabled={isSaving}
-                  aria-label="Remove field"
-                  className="h-6 w-6 text-muted-foreground hover:text-destructive"
+                  className="h-8 w-8 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
-                  <X className="h-3.5 w-3.5" />
+                  <X className="h-4 w-4" />
                 </Button>
               </div>
-              <div className="grid gap-3 md:grid-cols-2">
-                <div className="space-y-1">
-                  <Label htmlFor={`field-label-${field.id}`} className="text-xs text-muted-foreground">
-                    {t("profile.fieldLabelInput")}
-                  </Label>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold text-muted-foreground/80 ml-1">{t("profile.fieldLabelInput")}</Label>
                   <Input
-                    id={`field-label-${field.id}`}
                     value={field.label}
                     onChange={(event) => setTagValue(field.id, "label", event.target.value)}
                     disabled={isSaving}
-                    className="h-8 text-sm"
+                    className="h-10 rounded-xl bg-muted/30 border-border/40"
                   />
                 </div>
-                <div className="space-y-1">
-                  <Label htmlFor={`field-value-${field.id}`} className="text-xs text-muted-foreground">
-                    {t("profile.fieldValue")}
-                  </Label>
+                <div className="space-y-2">
+                  <Label className="text-xs font-bold text-muted-foreground/80 ml-1">{t("profile.fieldValue")}</Label>
                   <Input
-                    id={`field-value-${field.id}`}
                     value={field.value}
                     onChange={(event) => setTagValue(field.id, "value", event.target.value)}
                     disabled={isSaving}
-                    className="h-8 text-sm"
+                    className="h-10 rounded-xl bg-muted/30 border-border/40"
                   />
                 </div>
               </div>
             </div>
           ))}
-          {fieldErrorMessage && <p className="text-xs text-destructive">{fieldErrorMessage}</p>}
-          <Button type="button" variant="outline" size="sm" onClick={addField} disabled={!canAddField || isSaving}>
-            <Plus className="h-4 w-4" />
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={addField} 
+            disabled={!canAddField || isSaving}
+            className="h-12 border-dashed border-2 rounded-2xl hover:bg-primary/5 hover:border-primary/50 transition-all group"
+          >
+            <Plus className="h-4 w-4 mr-2 group-hover:scale-125 transition-transform" />
             {t("profile.addField")}
           </Button>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ImageIcon className="h-5 w-5 text-primary" />
-            {t("profile.saveTitle")}
-          </CardTitle>
-          <CardDescription>{t("profile.saveDescription")}</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {formError && <p className="text-sm text-destructive">{formError}</p>}
-          {notice && <p className="text-sm text-primary">{notice}</p>}
-        </CardContent>
-        <CardFooter className="flex flex-wrap items-center gap-2">
+      <div className="sticky bottom-6 z-20 flex flex-col gap-3 p-4 bg-background/80 backdrop-blur-lg border border-border/50 rounded-2xl shadow-xl">
+        {formError && (
+          <div className="px-4 py-2.5 rounded-xl bg-destructive/10 border border-destructive/20 text-xs font-semibold text-destructive animate-in fade-in slide-in-from-bottom-2">
+            {formError}
+          </div>
+        )}
+        {notice && (
+          <div className="px-4 py-2.5 rounded-xl bg-primary/10 border border-primary/20 text-xs font-semibold text-primary animate-in fade-in slide-in-from-bottom-2">
+            {notice}
+          </div>
+        )}
+        <div className="flex items-center gap-3">
           <Button
             type="button"
             onClick={() => {
               resetForm()
               setResetCounter((prev) => prev + 1)
             }}
-            variant="outline"
+            variant="ghost"
             disabled={isSaving}
+            className="flex-1 rounded-xl h-11"
           >
             {t("profile.reset")}
           </Button>
-          <Button type="button" onClick={() => void save()} disabled={isSaving} className="ml-auto">
-            {isSaving ? t("profile.saving") : t("profile.save")}
+          <Button 
+            type="button" 
+            onClick={() => void save()} 
+            disabled={isSaving} 
+            className="flex-[2] rounded-xl h-11 shadow-lg shadow-primary/20 font-bold"
+          >
+            {isSaving ? (
+              <span className="flex items-center gap-2">
+                <span className="h-4 w-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                {t("profile.saving")}
+              </span>
+            ) : t("profile.save")}
           </Button>
-        </CardFooter>
-      </Card>
+        </div>
+      </div>
     </div>
   )
 }
