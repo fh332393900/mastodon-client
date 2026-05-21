@@ -1,5 +1,6 @@
 ---
 alwaysApply: true
+scene: git_message
 ---
 # Generate a concise, complete English git commit message
 Generate a concise, complete English git commit message that accurately describes the changes made.
