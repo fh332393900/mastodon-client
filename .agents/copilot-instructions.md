@@ -30,6 +30,12 @@
 - Lint: `pnpm lint`
 - Build: `pnpm run build`
 
+## Git commit messages
+- Any generated git commit message must be written in English only.
+- Do not output Chinese or bilingual commit messages, even when the prompt is in Chinese.
+- Return only the final commit message text unless the user explicitly asks for alternatives or explanation.
+- Keep the subject concise, imperative, and under 72 characters when possible.
+
 ## When changing UI/logic
 - Prefer adding hooks in `hooks/mastodon/**` over embedding fetch logic in components.
 - Keep compose editor changes compatible with `getEditorText` serialization.
@@ -37,6 +43,16 @@
 
 # Project Rules
 
-- Use TypeScript only
-- Use React hooks
-- Avoid any
+- Use TypeScript only and keep types explicit; avoid `any`.
+- Prefer React hooks for shared state, derived data, side effects, and Mastodon data access.
+- Keep route pages thin: put Mastodon fetching/caching logic in `hooks/mastodon/**`, not directly in JSX-heavy components.
+- For list or feed pages, reuse `components/mastodon/infinite-scroller.tsx` and provide a stable `scrollCacheKey`.
+- Treat React Query as the source of truth for Mastodon lists; prefer cache updates over full refetch after mutations.
+- Mastodon client access should follow the existing client-side pattern with `useMasto()` / `useAuth()` and `client.v1.*`.
+- Keep Mastodon instance and auth token handling compatible with existing cookie-based flow (`mastodon_server`, `mastodon_token`).
+- Reuse existing Mastodon UI building blocks before creating new ones, especially `StatusCard`, compose-related components, and content rendering helpers.
+- Keep compose editor changes compatible with markdown serialization, custom emoji handling, and fenced code block output.
+- Reuse `lib/mastodon/contentToReactNode.tsx` and related code-rendering helpers for read views instead of introducing parallel renderers.
+- All user-facing strings must use `next-intl`; add matching keys to every locale file in `messages/*.json`.
+- Follow existing component conventions: PascalCase component files/symbols, typed props, and clear separation between view and logic.
+- Add `"use client"` only when a component actually needs browser APIs, client hooks, or interactivity.

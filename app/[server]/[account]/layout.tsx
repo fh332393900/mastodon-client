@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import Link from "next/link"
-import { Bot, CalendarDays, ExternalLink, Facebook, Github, Globe, Instagram, Link2, Linkedin, Lock, MapPin, Sparkles, Twitter, Youtube } from "lucide-react"
+import { Bot, CalendarDays, Facebook, Github, Globe, Instagram, Link2, Linkedin, Lock, MapPin, Sparkles, Twitter, Youtube } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 
@@ -13,7 +13,6 @@ import { ProfileFollowButton } from "@/components/mastodon/profile/ProfileFollow
 import { Button } from "@/components/ui/button"
 import { ProfileTabs } from "@/components/mastodon/profile/ProfileTabs"
 import type { MastodonFeaturedTag } from "@/lib/mastodon/account"
-import { normalizeAccountParam } from "@/lib/mastodon/account"
 import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToReactNode"
 import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
 import { useAuth } from "@/components/auth/auth-provider"
@@ -40,7 +39,6 @@ function getFieldIcon(value: string) {
 }
 
 export default function ProfileLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter()
   const params = useParams()
   const serverParam = params?.server
   const accountParam = params?.account
@@ -48,13 +46,31 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   const server = Array.isArray(serverParam) ? serverParam[0] : serverParam
   const rawAccount = Array.isArray(accountParam) ? accountParam[0] : accountParam
   const statusId = Array.isArray(statusIdParam) ? statusIdParam[0] : statusIdParam
-  const { formatCompactNumber, formatRelativeTime } = useFormat()
-  const { user } = useAuth()
-  const t = useTranslations()
 
   if (statusId) {
     return <div className="mx-auto max-w-4xl space-y-6 px-4 py-6">{children}</div>
   }
+
+  return (
+    <ProfileShell server={server} rawAccount={rawAccount}>
+      {children}
+    </ProfileShell>
+  )
+}
+
+function ProfileShell({
+  children,
+  server,
+  rawAccount,
+}: {
+  children: React.ReactNode
+  server?: string
+  rawAccount?: string
+}) {
+  const router = useRouter()
+  const { formatCompactNumber, formatRelativeTime } = useFormat()
+  const { user } = useAuth()
+  const t = useTranslations()
 
   const { data, query, normalizedAccount } = useProfileViewData({
     server,
