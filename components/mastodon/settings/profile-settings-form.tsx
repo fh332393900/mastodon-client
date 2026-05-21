@@ -64,9 +64,9 @@ export function ProfileSettingsForm() {
   }
 
   return (
-    <div className="space-y-8 max-w-2xl mx-auto">
+    <div className="space-y-6 sm:space-y-8 w-full max-w-2xl mx-auto">
       <section className="space-y-4">
-        <div className="flex items-center gap-3 px-2">
+        <div className="flex items-center gap-3 px-1 sm:px-2">
           <div className="p-2 rounded-xl bg-primary/10 text-primary">
             <User className="h-5 w-5" />
           </div>
@@ -76,7 +76,7 @@ export function ProfileSettingsForm() {
           </div>
         </div>
 
-        <Card className="overflow-hidden border-border/50 shadow-sm transition-all hover:shadow-md">
+        <Card className="min-w-0 overflow-hidden py-0 border-border/50 shadow-sm transition-all hover:shadow-md">
           <CardContent className="p-0">
             <div className="relative group">
               <MediaUploadField
@@ -91,12 +91,12 @@ export function ProfileSettingsForm() {
                 variant="overlay"
                 showMeta={false}
                 overlayPosition="center"
-                frameClassName="rounded-none border-none h-48 sm:h-64"
+                frameClassName="rounded-none border-none"
                 className="space-y-0"
               />
               <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background/80 via-background/20 to-transparent pointer-events-none" />
               
-              <div className="absolute -bottom-14 left-6 sm:left-10 z-10">
+              <div className="absolute -bottom-10 left-6 sm:left-10 z-10">
                 <MediaUploadField
                   label={t("profile.avatarLabel")}
                   description={t("profile.avatarDescription")}
@@ -109,14 +109,13 @@ export function ProfileSettingsForm() {
                   variant="overlay"
                   showMeta={false}
                   overlayPosition="center"
-                  previewWidth={120}
-                  frameClassName="rounded-full border-4 border-background shadow-xl scale-100 group-hover:scale-105 transition-transform duration-300"
-                  className="w-[120px] space-y-0"
+                  frameClassName="rounded-full border-2 border-background shadow-xl scale-100 group-hover:scale-105 transition-transform duration-300"
+                  className="w-18 md:w-24 space-y-0"
                 />
               </div>
             </div>
 
-            <div className="pt-20 pb-8 px-6 sm:px-10 space-y-6">
+            <div className="pt-20 pb-8 px-4 sm:px-10 space-y-6">
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2.5">
                   <Label htmlFor="display-name" className="text-sm font-bold ml-1">{t("profile.displayNameLabel")}</Label>
@@ -155,7 +154,7 @@ export function ProfileSettingsForm() {
         </Card>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-4 pb-6">
         <div className="flex items-center gap-3 px-2">
           <div className="p-2 rounded-xl bg-primary/10 text-primary">
             <BadgeCheck className="h-5 w-5" />
@@ -219,7 +218,7 @@ export function ProfileSettingsForm() {
         </div>
       </section>
 
-      <div className="sticky bottom-6 z-20 flex flex-col gap-3 p-4 bg-background/80 backdrop-blur-lg border border-border/50 rounded-2xl shadow-xl">
+      <div className="sticky bottom-20 md:bottom-18 lg:bottom-8 z-20 flex flex-col gap-3 p-4 bg-background/80 backdrop-blur-lg border border-border/50 rounded-2xl shadow-xl">
         {formError && (
           <div className="px-4 py-2.5 rounded-xl bg-destructive/10 border border-destructive/20 text-xs font-semibold text-destructive animate-in fade-in slide-in-from-bottom-2">
             {formError}

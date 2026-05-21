@@ -7,21 +7,22 @@ import { ExternalLink, Newspaper } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { useExploreNewsCache } from "@/hooks/mastodon/useExploreNewsCache"
+import { LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
 import type { ExploreTrendingLink } from "@/hooks/mastodon/useExploreNewsCache"
 
 function NewsCardSkeleton() {
   return (
     <div className="flex gap-4 rounded-3xl border border-border/70 bg-card/90 px-4 py-3 animate-pulse">
       {/* 左侧方形封面 */}
-      <div className="shrink-0 w-20 h-20 rounded-xl bg-muted/60 dark:bg-muted-foreground/40" />
+      <div className="shrink-0 w-20 h-20 rounded-xl bg-border/60 dark:bg-muted-foreground/40" />
       {/* 右侧文字区 */}
       <div className="flex flex-1 flex-col gap-2 pb-2 min-w-0">
         {/* 标题 */}
-        <div className="h-5 w-2/5 rounded bg-muted/60 dark:bg-muted-foreground/40" />
+        <div className="h-5 w-2/5 rounded bg-border/60 dark:bg-muted-foreground/40" />
         {/* 正文三行 */}
-        <div className="h-4 w-full rounded bg-muted/60 dark:bg-muted-foreground/40" />
-        <div className="h-4 w-4/5 rounded bg-muted/60 dark:bg-muted-foreground/40" />
-        <div className="h-4 w-2/5 rounded bg-muted/60 dark:bg-muted-foreground/40" />
+        <div className="h-4 w-full rounded bg-border/60 dark:bg-muted-foreground/40" />
+        <div className="h-4 w-4/5 rounded bg-border/60 dark:bg-muted-foreground/40" />
+        <div className="h-4 w-2/5 rounded bg-border/60 dark:bg-muted-foreground/40" />
       </div>
     </div>
   )
@@ -43,7 +44,7 @@ export default function ExploreNewsPage() {
             </h2>
         </div>
         <div className="space-y-3">
-          {Array.from({ length: 5 }).map((_, i) => (
+          {Array.from({ length: 8 }).map((_, i) => (
             <NewsCardSkeleton key={i} />
           ))}
         </div>
@@ -109,7 +110,7 @@ export default function ExploreNewsPage() {
                 </div>
 
                 {/* 来源行 */}
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5 text-xs text-foreground/80">
                   {item.providerName && (
                     <>
                       <span className="font-medium truncate max-w-[120px]">{item.providerName}</span>

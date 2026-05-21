@@ -197,7 +197,7 @@ export function MediaUploadField({
               disabled={disabled}
               onClick={() => inputRef.current?.click()}
               aria-label={t("media.upload")}
-              className="h-10 w-10 rounded-full border border-border/60 bg-background/70 backdrop-blur hover:bg-background"
+              className="h-8 w-8 rounded-full border border-border/60 bg-background/70 backdrop-blur hover:bg-background"
             >
               <UploadCloud className="h-4 w-4" />
             </Button>

@@ -21,7 +21,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       <Sidebar />
       <div className="flex-1 min-w-0 pb-14 md:pb-0">
         <div className="h-full">
-          <div className="container">{children}</div>
+          <div className="w-full">{children}</div>
         </div>
       </div>
       {!isSettings && <RightPanel />}

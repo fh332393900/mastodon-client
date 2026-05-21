@@ -120,7 +120,7 @@ export function Sidebar() {
                 />
               </div>
               {!isCollapsed && (
-                <span className="text-2xl font-black tracking-tighter text-foreground font-['Quicksand'] bg-clip-text text-transparent bg-gradient-to-br from-foreground to-foreground/70">
+                <span className="text-2xl font-bold text-foreground/80 font-['Quicksand']">
                   MastoClient
                 </span>
               )}

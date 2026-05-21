@@ -58,8 +58,8 @@ export function AppearancePanel() {
   }
 
   return (
-    <div className="space-y-6">
-      <Card className="border-none shadow-none bg-transparent">
+    <div className="space-y-6 w-full max-w-2xl mx-auto">
+      <Card className="min-w-0 border-none shadow-none bg-transparent">
         <CardHeader className="px-0 pt-0">
           <CardTitle className="flex items-center gap-2 text-2xl font-bold">
             <Palette className="h-6 w-6 text-primary" />
@@ -68,8 +68,8 @@ export function AppearancePanel() {
           <CardDescription className="text-base">{t("appearance.description")}</CardDescription>
         </CardHeader>
         <CardContent className="px-0 space-y-8">
-          <div className="rounded-2xl border border-border/50 bg-muted/30 p-6 transition-all hover:bg-muted/40">
-            <div className="flex items-center justify-between gap-4 mb-6">
+          <div className="rounded-2xl border border-border/50 bg-muted/30 p-3 sm:p-6 transition-all hover:bg-muted/40">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div>
                 <h3 className="text-lg font-bold text-foreground">{t("preferences.mobileMenu.title")}</h3>
                 <p className="text-sm text-muted-foreground">{t("preferences.mobileMenu.description")}</p>
@@ -79,24 +79,24 @@ export function AppearancePanel() {
                 variant="outline" 
                 size="sm" 
                 onClick={resetRoutes}
-                className="rounded-full px-4 hover:bg-background"
+                className="rounded-full px-4 hover:bg-background self-start sm:self-auto"
               >
                 {t("preferences.mobileMenu.reset")}
               </Button>
             </div>
 
             <div className="mx-auto mb-8 w-full max-w-lg">
-              <div className="relative rounded-[32px] border-4 border-muted bg-background p-4 shadow-2xl">
-                <div className="mb-4 h-32 rounded-2xl border border-dashed border-border/40 bg-muted/20 flex items-center justify-center text-xs text-muted-foreground italic">
+              <div className="relative rounded-[24px] sm:rounded-[32px] border-2 sm:border-4 border-muted bg-background p-2 sm:p-4 shadow-2xl overflow-hidden">
+                <div className="mb-4 h-24 sm:h-32 rounded-xl sm:rounded-2xl border border-dashed border-border/40 bg-muted/20 flex items-center justify-center text-[10px] sm:text-xs text-muted-foreground italic">
                   Preview Area
                 </div>
                 
-                <div className="rounded-2xl bg-muted/10 p-2">
+                <div className="rounded-xl sm:rounded-2xl bg-muted/10 p-1 sm:p-2 w-full">
                   <Reorder.Group
                     axis="x"
                     values={routes}
                     onReorder={setRoutes}
-                    className="flex items-center justify-around gap-1"
+                    className="flex items-center justify-around gap-1 w-full"
                   >
                     {routeOptions.map((item) => {
                       const key = `menu:${item.route}`
@@ -113,13 +113,13 @@ export function AppearancePanel() {
                                 onMouseEnter={() => setPopoverKey(key)}
                                 onMouseLeave={() => setPopoverKey(null)}
                                 className={cn(
-                                  "flex h-14 w-14 items-center justify-center rounded-2xl border transition-all active:scale-95 touch-none",
+                                  "flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-xl sm:rounded-2xl border transition-all active:scale-95 touch-none",
                                   "border-transparent text-muted-foreground hover:bg-background hover:text-primary hover:shadow-sm",
                                   "cursor-grab active:cursor-grabbing"
                                 )}
                                 aria-label={item.label}
                               >
-                                <item.Icon className="h-6 w-6" />
+                                <item.Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                                 {routes.length > MOBILE_BOTTOM_MENU_MIN_ITEMS && (
                                   <button
                                     type="button"
@@ -129,7 +129,7 @@ export function AppearancePanel() {
                                       e.stopPropagation()
                                       removeRoute(item.route)
                                     }}
-                                    className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full border border-border bg-background text-[10px] text-muted-foreground hover:bg-destructive hover:text-destructive-foreground shadow-sm transition-colors"
+                                    className="absolute -right-1 -top-1 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full border border-border bg-background text-[8px] sm:text-[10px] text-muted-foreground hover:bg-destructive hover:text-destructive-foreground shadow-sm transition-colors"
                                   >
                                     ×
                                   </button>
