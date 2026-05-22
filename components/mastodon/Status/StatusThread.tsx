@@ -6,12 +6,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import MastodonContent from "@/components/mastodon/MastodonContent"
 import { UserHoverCard } from "@/components/mastodon/user-hover-card"
 import { cn } from "@/lib/utils"
-import { formatRelativeTime, formatFullDate } from "@/lib/utils"
 import { getDisplayNameText } from "@/lib/mastodon/contentToReactNode"
 import type { mastodon } from "masto"
 import { useMasto } from "@/components/auth/masto-provider"
 import { getAccountProfileHref } from "@/lib/mastodon/account"
 import { useStatusActions } from "@/hooks/mastodon/useStatusActions"
+import { useFormat } from "@/hooks/format"
 
 import { StatusPoll } from "./StatusPoll"
 import { StatusMedia } from "./StatusMedia"
@@ -37,6 +37,7 @@ function ThreadItem({
     toggleFavourite,
     toggleBookmark,
   } = useStatusActions({ status })
+  const { formatRelativeTime, formatFullDate } = useFormat()
 
   const author = renderedStatus.account
   const authorNameText = getDisplayNameText({
@@ -46,7 +47,7 @@ function ThreadItem({
   const profileHref = server ? getAccountProfileHref(author, server) : undefined
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-2 xs:gap-4">
       {/* Avatar column with thread line */}
       <div className="flex flex-col items-center">
         {profileHref ? (
@@ -105,7 +106,7 @@ function ThreadItem({
         <StatusMedia attachments={renderedStatus.mediaAttachments} />
 
         {renderedStatus.card ? (
-          <StatusPreviewCard card={renderedStatus.card} />
+          <StatusPreviewCard card={renderedStatus.card} hasMedia={(renderedStatus.mediaAttachments?.length ?? 0) > 0} />
         ) : null}
 
         <StatusActions

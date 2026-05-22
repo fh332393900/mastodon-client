@@ -6,6 +6,7 @@ import { ProviderIcon } from "./ProviderIcon"
 
 interface StatusPreviewCardProps {
   card: mastodon.v1.PreviewCard
+  hasMedia?: boolean
 }
 
 /** Detect GitHub URLs and extract user/repo/issue meta */
@@ -116,7 +117,7 @@ function GitHubCard({ card }: StatusPreviewCardProps) {
   )
 }
 
-function NormalCard({ card }: StatusPreviewCardProps) {
+function NormalCard({ card, hasMedia = true }: StatusPreviewCardProps) {
   const hasImage = !!card.image
   const isVideo = card.type === "video" || card.type === "rich"
 
@@ -125,42 +126,45 @@ function NormalCard({ card }: StatusPreviewCardProps) {
   try { hostname = new URL(card.url).hostname } catch {}
 
   if (hasImage) {
+    const isFlexLayout = hasMedia
     return (
-      <a
-        href={card.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex min-h-40 overflow-hidden rounded-2xl border border-border/60 bg-card hover:border-border transition-colors no-underline group"
-      >
-        {/* Thumbnail */}
-        <div className="relative shrink-0 w-32 sm:w-40 bg-muted overflow-hidden">
-          <img
-            src={card.image ?? undefined}
-            alt={card.title ?? ""}
-            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        </div>
+      <div className="rounded-md overflow-hidden">
+        <a
+          href={card.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${isFlexLayout ? "flex min-h-40 border border-border/60 bg-card hover:border-border" : "flex-col bg-muted/50"} overflow-hidden rounded-2xl transition-colors no-underline group`}
+        >
+          {/* Thumbnail */}
+          <div className={`relative ${isFlexLayout ? "shrink-0 w-32 sm:w-40" : "w-full aspect-[2/1]"} bg-muted overflow-hidden`}>
+            <img
+              src={card.image ?? undefined}
+              alt={card.title ?? ""}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
 
-        {/* Content */}
-        <div className="flex flex-col justify-center min-w-0 flex-1 p-3">
-          <div className="space-y-1 min-w-0">
-            {card.title && (
-              <div className="text-base font-semibold text-foreground line-clamp-3 leading-snug">
-                {card.title}
-              </div>
-            )}
-            {card.description && (
-              <div className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
-                {card.description}
-              </div>
-            )}
+          {/* Content */}
+          <div className={`${isFlexLayout ? "flex flex-col justify-center min-w-0 flex-1 p-3" : "flex bg-muted/50 flex-col justify-center min-w-0 flex-1 p-3 sm:p-4"}`}>
+            <div className="space-y-1 min-w-0">
+              {card.title && (
+                <div className="text-base font-semibold text-foreground line-clamp-3 leading-snug">
+                  {card.title}
+                </div>
+              )}
+              {card.description && (
+                <div className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                  {card.description}
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-1.5 mt-2 text-xs text-muted-foreground">
+              <ProviderIcon url={card.url} providerName={card.providerName} className="h-3 w-3" />
+              <span className="truncate">{card.providerName || hostname}</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5 mt-2 text-xs text-muted-foreground">
-            <ProviderIcon url={card.url} providerName={card.providerName} className="h-3 w-3" />
-            <span className="truncate">{card.providerName || hostname}</span>
-          </div>
-        </div>
-      </a>
+        </a>
+      </div>
     )
   }
 
@@ -189,11 +193,11 @@ function NormalCard({ card }: StatusPreviewCardProps) {
   )
 }
 
-export function StatusPreviewCard({ card }: StatusPreviewCardProps) {
+export function StatusPreviewCard({ card, hasMedia = true }: StatusPreviewCardProps) {
   if (!card?.url) return null
 
   const isGitHub = card.url.startsWith("https://github.com/")
 
   if (isGitHub) return <GitHubCard card={card} />
-  return <NormalCard card={card} />
+  return <NormalCard card={card} hasMedia={hasMedia} />
 }

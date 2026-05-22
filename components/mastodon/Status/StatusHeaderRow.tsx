@@ -13,7 +13,7 @@ type StatusHeaderRowProps = {
   profileHref?: string
   timeLabel: string
   timeTitle: string
-  isPinned: boolean
+  isPinned?: boolean | null | undefined
   status: mastodon.v1.Status
   className?: string
 }

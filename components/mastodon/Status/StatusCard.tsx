@@ -175,7 +175,7 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
               />
 
               {renderedStatus.card ? (
-                <StatusPreviewCard card={renderedStatus.card} />
+                <StatusPreviewCard card={renderedStatus.card} hasMedia={(renderedStatus.mediaAttachments?.length ?? 0) > 0} />
               ) : null}
             </>
           )}
