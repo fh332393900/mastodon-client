@@ -84,7 +84,7 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
               onClick={(event) => {
                 event.stopPropagation()
               }}
-              className="absolute text-xs bottom-2 left-2 cursor-pointer rounded-xs bg-black/80 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-white"
+              className="absolute text-xs bottom-2 left-2 cursor-pointer rounded-xs bg-black/80 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-white"
             >
               ALT
             </button>

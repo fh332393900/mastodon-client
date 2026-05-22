@@ -1,7 +1,9 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import type { MouseEvent } from "react"
+import { MouseEvent, useState } from "react"
+import { useTranslations } from "next-intl"
+import { Eye, EyeOff } from "lucide-react"
 
 import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -29,9 +31,11 @@ type StatusCardProps = {
 }
 
 export function StatusCard({ status, showActions = true }: StatusCardProps) {
+  const t = useTranslations("settings")
   const { server } = useMasto()
   const router = useRouter()
   const { formatRelativeTime, formatFullDate } = useFormat()
+  const [showSpoiler, setShowSpoiler] = useState(false)
   const {
     renderedStatus,
     isLoading,
@@ -49,6 +53,14 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
 
   const profileHref = server ? getAccountProfileHref(author, server) : undefined
   const detailHref = server ? `/${server}/@${author.username}/${renderedStatus.id}` : undefined
+
+  const hasSpoiler = !!renderedStatus.spoilerText
+
+  const handleSpoilerClick = (event: MouseEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setShowSpoiler((prev) => !prev)
+  }
 
   const handleContentClick = (event: MouseEvent<HTMLDivElement>) => {
     if (!detailHref) return
@@ -116,37 +128,57 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
             className="hidden items-center justify-between gap-2 md:flex md:gap-4"
           />
 
-          {renderedStatus.spoilerText ? (
-            <div className="rounded-2xl bg-muted/70 px-4 py-3 text-sm text-muted-foreground">
-              {renderedStatus.spoilerText}
-            </div>
+          {hasSpoiler ? (
+            <button
+              type="button"
+              onClick={handleSpoilerClick}
+              className="w-full rounded-2xl bg-muted/70 px-4 py-3 text-left text-sm font-bold text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
+            >
+              <span className="flex items-center justify-between gap-2">
+                <span className="flex items-center gap-2">
+                  
+                  <MastodonContent content={renderedStatus.spoilerText} emojis={renderedStatus.emojis} />
+                </span>
+                <span className="shrink-0 flex text-xs font-bold text-primary">
+                  <span className="mr-2">{showSpoiler ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}</span>
+                  {showSpoiler ? t("status.spoilerHide") : t("status.spoilerShow")}
+                </span>
+              </span>
+            </button>
           ) : null}
 
-          <div
-            role={detailHref ? "link" : undefined}
-            tabIndex={detailHref ? 0 : -1}
-            className="cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 [&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_a]:text-primary [&_.prose_p]:my-2"
-            onClick={handleContentClick}
-            onKeyDown={(event) => {
-              if (!detailHref) return
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault()
-                router.push(detailHref)
-              }
-            }}
-          >
-            <MastodonContent content={renderedStatus.content} emojis={renderedStatus.emojis} />
-          </div>
+          {(!hasSpoiler || showSpoiler) && (
+            <>
+              <div
+                role={detailHref ? "link" : undefined}
+                tabIndex={detailHref ? 0 : -1}
+                className="cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 [&_.prose]:max-w-none [&_.prose]:text-sm [&_.prose_a]:text-primary [&_.prose_p]:my-2"
+                onClick={handleContentClick}
+                onKeyDown={(event) => {
+                  if (!detailHref) return
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault()
+                    router.push(detailHref)
+                  }
+                }}
+              >
+                <MastodonContent content={renderedStatus.content} emojis={renderedStatus.emojis} />
+              </div>
 
-          {renderedStatus.poll ? (
-            <StatusPoll poll={renderedStatus.poll} />
-          ) : null}
+              {renderedStatus.poll ? (
+                <StatusPoll poll={renderedStatus.poll} />
+              ) : null}
 
-          <StatusMedia attachments={renderedStatus.mediaAttachments} />
+              <StatusMedia
+                attachments={renderedStatus.mediaAttachments}
+                spoilered={hasSpoiler && !showSpoiler}
+              />
 
-          {renderedStatus.card ? (
-            <StatusPreviewCard card={renderedStatus.card} />
-          ) : null}
+              {renderedStatus.card ? (
+                <StatusPreviewCard card={renderedStatus.card} />
+              ) : null}
+            </>
+          )}
 
           {showActions ? (
             <StatusActions

@@ -341,6 +341,11 @@
       "previewAlt": "Aperçu {label}",
       "altDescription": "Description"
     },
+    "status": {
+      "spoilerShow": "Afficher le contenu",
+      "spoilerHide": "Masquer",
+      "spoilerMediaReveal": "Cliquer pour voir"
+    },
     "validation": {
       "displayNameTooLong": "Le nom d'affichage est trop long",
       "usernameRequired": "Le nom d'utilisateur est requis",

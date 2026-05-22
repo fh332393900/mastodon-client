@@ -2,20 +2,23 @@
 
 import { useEffect, useRef, useState } from "react"
 import { MediaImage } from "@/components/mastodon/media-image"
+import { useTranslations } from "next-intl"
 import type { mastodon } from "masto"
 
 interface StatusMediaProps {
   attachments: mastodon.v1.MediaAttachment[]
+  spoilered?: boolean
 }
 
-export function StatusMedia({ attachments }: StatusMediaProps) {
+export function StatusMedia({ attachments, spoilered = false }: StatusMediaProps) {
+  const t = useTranslations("settings")
   if (attachments.length === 0) return null
   const hasVideo = attachments.some((item) => item.type === "video")
   const isSingleItem = attachments.length === 1
 
   return (
     <div
-      className={`grid gap-3 ${hasVideo || isSingleItem ? "grid-cols-1" : "sm:grid-cols-2"}`}
+      className={`relative grid gap-3 ${hasVideo || isSingleItem ? "grid-cols-1" : "sm:grid-cols-2"}`}
     >
       {attachments.map((item, index) => (
         <div
@@ -24,13 +27,22 @@ export function StatusMedia({ attachments }: StatusMediaProps) {
             item.type === "video" ? "sm:col-span-2" : ""
           }`}
         >
-          {item.type === "image" ? (
-            <MediaImage media={item} index={index} group={attachments} />
-          ) : (
-            <AutoPlayVideo src={item.url || undefined} />
-          )}
+          <div className={spoilered ? "blur-[20px] scale-105" : ""}>
+            {item.type === "image" ? (
+              <MediaImage media={item} index={index} group={attachments} />
+            ) : (
+              <AutoPlayVideo src={item.url || undefined} />
+            )}
+          </div>
         </div>
       ))}
+      {spoilered && (
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-background/60 backdrop-blur-sm">
+          <span className="text-sm font-bold text-foreground/80">
+            {t("status.spoilerMediaReveal")}
+          </span>
+        </div>
+      )}
     </div>
   )
 }

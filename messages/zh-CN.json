@@ -341,6 +341,11 @@
       "previewAlt": "{label} 预览",
       "altDescription": "描述"
     },
+    "status": {
+      "spoilerShow": "显示内容",
+      "spoilerHide": "隐藏",
+      "spoilerMediaReveal": "点击查看"
+    },
     "validation": {
       "displayNameTooLong": "显示名称过长",
       "usernameRequired": "用户名不能为空",

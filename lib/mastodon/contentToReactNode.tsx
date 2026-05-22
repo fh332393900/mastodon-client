@@ -278,7 +278,7 @@ function renderTextWithEmojis(text: string, emojiMap: EmojiMap) {
           src={emoji.url}
           alt={`${code}`}
           title={`${code}`}
-          className="inline h-4 w-4"
+          className="inline h-[1.2em]"
           loading="lazy"
         />,
       )

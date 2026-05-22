@@ -341,6 +341,11 @@
       "previewAlt": "{label} 미리보기",
       "altDescription": "설명"
     },
+    "status": {
+      "spoilerShow": "콘텐츠 보기",
+      "spoilerHide": "숨기기",
+      "spoilerMediaReveal": "클릭하여 보기"
+    },
     "validation": {
       "displayNameTooLong": "표시 이름이 너무 깁니다",
       "usernameRequired": "사용자 이름은 필수입니다",

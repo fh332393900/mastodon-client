@@ -341,6 +341,11 @@
       "previewAlt": "{label} preview",
       "altDescription": "Description"
     },
+    "status": {
+      "spoilerShow": "Show content",
+      "spoilerHide": "Hide",
+      "spoilerMediaReveal": "Click to view"
+    },
     "validation": {
       "displayNameTooLong": "Display name is too long",
       "usernameRequired": "Username is required",

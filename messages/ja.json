@@ -341,6 +341,11 @@
       "previewAlt": "{label} プレビュー",
       "altDescription": "説明"
     },
+    "status": {
+      "spoilerShow": "内容を表示",
+      "spoilerHide": "隠す",
+      "spoilerMediaReveal": "クリックして表示"
+    },
     "validation": {
       "displayNameTooLong": "表示名が長すぎます",
       "usernameRequired": "ユーザー名は必須です",
