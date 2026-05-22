@@ -53,14 +53,14 @@ function ThreadItem({
         {profileHref ? (
           <UserHoverCard account={author} profileHref={profileHref}>
             <Link href={profileHref}>
-              <Avatar className="h-10 w-10 md:h-12 md:w-12 ring-2 ring-border/70 shrink-0">
+              <Avatar className="h-12 w-12 ring-2 ring-border/70 shrink-0">
                 <AvatarImage src={author.avatar} alt={authorNameText} />
                 <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
               </Avatar>
             </Link>
           </UserHoverCard>
         ) : (
-          <Avatar className="h-10 w-10 md:h-12 md:w-12 ring-2 ring-border/70 shrink-0">
+          <Avatar className="h-12 w-12 ring-2 ring-border/70 shrink-0">
             <AvatarImage src={author.avatar} alt={authorNameText} />
             <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
           </Avatar>
