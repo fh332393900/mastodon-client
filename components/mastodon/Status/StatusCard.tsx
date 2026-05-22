@@ -83,7 +83,7 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
           <div className="flex min-w-0 items-center gap-3 md:block md:mb-0">
             <UserHoverCard account={author} profileHref={profileHref}>
               <Link href={profileHref}>
-                <Avatar className="h-12 w-12 ring-2 ring-border/70">
+                <Avatar className="h-10 w-10 md:h-12 md:w-12 ring-2 ring-border/70">
                   <AvatarImage src={author.avatar} alt={authorNameText} />
                   <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
                 </Avatar>
@@ -101,7 +101,7 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
           </div>
         ) : (
           <div className="flex min-w-0 items-center gap-3 md:block md:mb-0">
-            <Avatar className="h-12 w-12 ring-2 ring-border/70">
+            <Avatar className="h-10 w-10 md:h-12 md:w-12 ring-2 ring-border/70">
               <AvatarImage src={author.avatar} alt={authorNameText} />
               <AvatarFallback>{authorNameText.charAt(0)}</AvatarFallback>
             </Avatar>
@@ -132,7 +132,7 @@ export function StatusCard({ status, showActions = true }: StatusCardProps) {
             <button
               type="button"
               onClick={handleSpoilerClick}
-              className="w-full rounded-2xl bg-muted/70 px-4 py-3 text-left text-sm font-bold text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
+              className="w-full rounded-2xl mt-2 bg-muted/70 px-4 py-3 text-left text-sm font-bold text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
             >
               <span className="flex items-center justify-between gap-2">
                 <span className="flex items-center gap-2">
