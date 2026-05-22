@@ -11,6 +11,7 @@ import { cookies } from "next/headers"
 import { ClientProviders } from "@/components/providers/client-providers"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages, getLocale } from "next-intl/server"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: "Mastodon Client - Connect to the Fediverse",
@@ -52,6 +53,8 @@ export default async function RootLayout({
             </NextIntlClientProvider>
           </ThemeProvider>
         </Suspense>
+
+        <SpeedInsights />
       </body>
     </html>
   )
