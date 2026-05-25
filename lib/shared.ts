@@ -11,10 +11,10 @@ export function getRedirectURI(origin: string, server: string) {
 async function fetchAppInfo(origin: string, server: string) {
   console.log(origin, 'origin')
   const form = new URLSearchParams();
-  form.append("client_name", "v0-mastodon-client");
+  form.append("client_name", "mastodon-client");
   form.append("redirect_uris", getRedirectURI(origin, server));
   form.append("scopes", "read write follow push");
-  form.append("website", "https://v0-mastodon-client.vercel.app");
+  form.append("website", origin);
 
   try {
     const res = await fetch(`https://${server}/api/v1/apps`, {
