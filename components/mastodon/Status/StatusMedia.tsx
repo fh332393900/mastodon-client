@@ -128,10 +128,9 @@ function AutoPlayVideo({ src, blurhash, previewUrl, autoPlay = true, dataSaver =
         <>
           <MediaBlurhash
             blurhash={blurhash}
-            src={previewUrl || undefined}
+            previewUrl={previewUrl || undefined}
             shouldLoad={false}
             alt=""
-            className="brightness-60"
           />
           <div className="absolute inset-0 z-10 flex items-center justify-center">
             <button

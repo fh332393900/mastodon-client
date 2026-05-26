@@ -88,10 +88,10 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
       >
         <MediaBlurhash
           blurhash={media.blurhash}
-          src={isLoaded ? (media.url || media.previewUrl || undefined) : (media.previewUrl || media.url || undefined)}
+          src={media.url || undefined}
+          previewUrl={media.previewUrl || undefined}
           shouldLoad={isLoaded}
           alt={media.description || "media"}
-          className={isLoaded ? "" : "brightness-60"}
         />
         {!isLoaded && (
           <div className="absolute inset-0 z-10 flex items-center justify-center">

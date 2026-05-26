@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 interface MediaBlurhashProps {
   blurhash?: string | null
   src?: string
+  previewUrl?: string
   alt?: string
   shouldLoad?: boolean
   className?: string
@@ -28,34 +29,48 @@ function renderBlurhash(canvas: HTMLCanvasElement, hash: string) {
 export function MediaBlurhash({
   blurhash,
   src,
+  previewUrl,
   alt = "",
   shouldLoad = true,
   className = "",
 }: MediaBlurhashProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [isReady, setIsReady] = useState(false)
+  const [canvasReady, setCanvasReady] = useState(false)
 
   useEffect(() => {
-    if (shouldLoad) return
+    if (shouldLoad || previewUrl) return
     if (!blurhash || !canvasRef.current) {
-      setIsReady(false)
+      setCanvasReady(false)
       return
     }
-    setIsReady(false)
+    setCanvasReady(false)
     try {
       renderBlurhash(canvasRef.current, blurhash)
-      setIsReady(true)
+      setCanvasReady(true)
     } catch {
-      setIsReady(false)
+      setCanvasReady(false)
     }
-  }, [blurhash, shouldLoad])
+  }, [blurhash, shouldLoad, previewUrl])
 
   if (shouldLoad && src) {
     return (
       <img
         src={src}
         alt={alt}
-        className={`absolute inset-0 w-full h-full object-cover ${className}`}
+        className={cn("absolute inset-0 w-full h-full object-cover", className)}
+      />
+    )
+  }
+
+  if (!shouldLoad && previewUrl) {
+    return (
+      <img
+        src={previewUrl}
+        alt={alt}
+        className={cn(
+          "absolute inset-0 w-full h-full object-cover blur-3xl scale-105",
+          className,
+        )}
       />
     )
   }
@@ -71,7 +86,9 @@ export function MediaBlurhash({
       ) : (
         <div className="absolute inset-0 bg-muted/60" />
       )}
-      {!isReady && <div className="absolute inset-0 bg-muted/60" />}
+      {!canvasReady && !blurhash && (
+        <div className="absolute inset-0 bg-muted/60" />
+      )}
     </div>
   )
 }
