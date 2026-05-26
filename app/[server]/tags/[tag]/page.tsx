@@ -110,24 +110,25 @@ export default function TagPage() {
           <Star className="h-4 w-4" />
         </Button>
       </div>
-
-      <InfiniteScroller
-        onLoadMore={handleLoadMore}
-        hasMore={!!hasNextPage}
-        isLoadingMore={isFetchingNextPage}
-        scrollCacheKey={`tag:${tagName}`}
-        scrollThrottleMs={120}
-      >
-        <div className="space-y-6 px-4 pb-2">
-          {groupedPosts.map((group) =>
-            group.length > 1 ? (
-              <StatusThread key={group[0].id} statuses={group} />
-            ) : (
-              <StatusCard key={group[0].id} status={group[0]} />
-            )
-          )}
-        </div>
-      </InfiniteScroller>
+      <div className="px-4 pb-2">
+        <InfiniteScroller
+          onLoadMore={handleLoadMore}
+          hasMore={!!hasNextPage}
+          isLoadingMore={isFetchingNextPage}
+          scrollCacheKey={`tag:${tagName}`}
+          scrollThrottleMs={120}
+        >
+          <div className="space-y-6">
+            {groupedPosts.map((group) =>
+              group.length > 1 ? (
+                <StatusThread key={group[0].id} statuses={group} />
+              ) : (
+                <StatusCard key={group[0].id} status={group[0]} />
+              )
+            )}
+          </div>
+        </InfiniteScroller>
+      </div>
     </div>
   )
 }

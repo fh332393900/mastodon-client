@@ -49,6 +49,11 @@ export function StatusMedia({ attachments, spoilered = false }: StatusMediaProps
 
 function AutoPlayVideo({ src }: { src?: string }) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    setReady(false)
+  }, [src])
 
   useEffect(() => {
     const video = videoRef.current
@@ -92,14 +97,22 @@ function AutoPlayVideo({ src }: { src?: string }) {
   }, [src])
 
   return (
-    <video
-      ref={videoRef}
-      src={src}
-      controls
-      muted
-      playsInline
-      preload="metadata"
-      className="h-auto w-full max-h-[90vh] object-cover"
-    />
+    <div className="relative min-h-[200px]">
+      {!ready && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-muted/60 animate-pulse rounded-2xl">
+          <div className="h-8 w-8 rounded-full border-2 border-muted-foreground/20 border-t-primary animate-spin" />
+        </div>
+      )}
+      <video
+        ref={videoRef}
+        src={src}
+        controls
+        muted
+        playsInline
+        preload="metadata"
+        className="h-auto w-full max-h-[90vh] object-cover"
+        onLoadedMetadata={() => setReady(true)}
+      />
+    </div>
   )
 }
