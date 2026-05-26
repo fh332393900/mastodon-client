@@ -305,7 +305,10 @@
     "preferences": {
       "title": "首选项",
       "description": "自定义客户端行为。",
-      "placeholder": "首选项即将上线，本区将涵盖时间线、语言和媒体选项。",
+      "autoPlayVideo": "自动播放视频",
+      "autoPlayVideoDescription": "视频出现在视野中时自动播放",
+      "dataSaver": "省流量模式",
+      "dataSaverDescription": "关闭自动播放和媒体预加载以节省流量",
       "mobileMenu": {
         "title": "移动端底部菜单",
         "description": "拖拽菜单项，调整底部导航顺序。",

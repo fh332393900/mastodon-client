@@ -305,7 +305,10 @@
     "preferences": {
       "title": "環境設定",
       "description": "クライアントの動作をカスタマイズします。",
-      "placeholder": "環境設定は近日追加予定です。タイムライン、言語、メディアの設定を含みます。",
+      "autoPlayVideo": "動画の自動再生",
+      "autoPlayVideoDescription": "画面に表示された動画を自動再生します",
+      "dataSaver": "データ節約モード",
+      "dataSaverDescription": "自動再生とメディアの先読みを無効にしてデータを節約",
       "mobileMenu": {
         "title": "モバイル下部メニュー",
         "description": "メニュー項目をドラッグして下部ナビの並び順を変更できます。",

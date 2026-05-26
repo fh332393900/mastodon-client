@@ -305,7 +305,10 @@
     "preferences": {
       "title": "偏好設定",
       "description": "自訂用戶端行為。",
-      "placeholder": "偏好設定即將上線，此區將涵蓋時間軸、語言和媒體選項。",
+      "autoPlayVideo": "自動播放影片",
+      "autoPlayVideoDescription": "影片出現在視野中時自動播放",
+      "dataSaver": "省流量模式",
+      "dataSaverDescription": "關閉自動播放和媒體預載以節省流量",
       "mobileMenu": {
         "title": "行動端底部選單",
         "description": "拖曳選單項目，調整底部導覽順序。",

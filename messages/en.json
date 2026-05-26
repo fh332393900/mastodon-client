@@ -305,7 +305,10 @@
     "preferences": {
       "title": "Preferences",
       "description": "Customize how the client behaves for you.",
-      "placeholder": "Preference settings are coming next. This section will cover timeline behavior, language, and media options.",
+      "autoPlayVideo": "Auto-play videos",
+      "autoPlayVideoDescription": "Videos will automatically play when in view",
+      "dataSaver": "Data saver mode",
+      "dataSaverDescription": "Reduce data usage by disabling auto-play and media preloading",
       "mobileMenu": {
         "title": "Mobile bottom menu",
         "description": "Drag menu items to adjust the bottom navigation order.",

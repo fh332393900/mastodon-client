@@ -34,6 +34,7 @@
     "@vercel/analytics": "latest",
     "@vercel/kv": "latest",
     "@vercel/speed-insights": "^2.0.0",
+    "blurhash": "^2.0.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "latest",

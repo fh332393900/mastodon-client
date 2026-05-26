@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
 import { Swiper, SwiperSlide } from "swiper/react"
 import type { Swiper as SwiperType } from "swiper"
+import { MediaBlurhash } from "@/components/mastodon/media-blurhash"
+import { useAppPreferences } from "@/hooks/mastodon/useAppPreferences"
 import "swiper/css"
 
 export type MediaAttachment = mastodon.v1.MediaAttachment
@@ -27,16 +29,24 @@ type MediaImageProps = {
 
 export function MediaImage({ media, index, group }: MediaImageProps) {
   const t = useTranslations("settings.media")
+  const { prefs } = useAppPreferences()
   const [showAlt, setShowAlt] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [current, setCurrent] = useState(index)
   const [swiper, setSwiper] = useState<SwiperType | null>(null)
-  const [loaded, setLoaded] = useState(false)
-  const [dialogLoaded, setDialogLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(!prefs.dataSaver)
+
+  const aspectRatio = useMemo(() => {
+    const meta = media.meta as Record<string, { width?: number; height?: number; aspect?: number } | null | undefined> | undefined
+    const source = meta?.small ?? meta?.original
+    if (source?.aspect && source.aspect > 0) return source.aspect
+    if (source?.width && source?.height && source.height > 0) return source.width / source.height
+    return undefined
+  }, [media.meta])
 
   useEffect(() => {
-    setLoaded(false)
-  }, [media.url, media.previewUrl])
+    setIsLoaded(!prefs.dataSaver)
+  }, [media.url, media.previewUrl, prefs.dataSaver])
 
   const images = useMemo(() => {
     const list = group && group.length > 0 ? group : [media]
@@ -68,24 +78,39 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
   }, [index, isOpen, swiper])
 
   return (
-    <div className="relative h-full overflow-hidden rounded-2xl border border-border/60 bg-muted/40">
-      {!loaded && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-muted/60 animate-pulse">
-          <div className="h-8 w-8 rounded-full border-2 border-muted-foreground/20 border-t-primary animate-spin" />
-        </div>
-      )}
+    <div className="relative w-full overflow-hidden rounded-2xl border border-border/60 bg-muted/40">
       <button
         type="button"
         onClick={handleOpen}
-        className="block w-full min-h-[200px]"
+        className="block w-full min-h-[200px] sm:min-h-[300px] relative overflow-hidden"
+        style={aspectRatio ? { aspectRatio } : undefined}
         aria-label="预览图片"
       >
-        <img
-          src={ media.url || media.previewUrl || undefined}
+        <MediaBlurhash
+          blurhash={media.blurhash}
+          src={isLoaded ? (media.url || media.previewUrl || undefined) : (media.previewUrl || media.url || undefined)}
+          shouldLoad={isLoaded}
           alt={media.description || "media"}
-          className="w-full max-h-[80vh] object-cover"
-          onLoad={() => setLoaded(true)}
+          className={isLoaded ? "" : "brightness-60"}
         />
+        {!isLoaded && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsLoaded(true)
+              }}
+              className="flex cursor-pointer items-center justify-center rounded-full bg-black/60 p-2.5 text-white hover:bg-black transition-colors"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+            </button>
+          </div>
+        )}
       </button>
 
       {altText ? (
@@ -154,15 +179,10 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
             >
             {/* Image - no extra background or border */}
             <div className="relative w-[95vw] overflow-hidden">
-              {!dialogLoaded && (
-                <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 animate-pulse">
-                  <div className="h-10 w-10 rounded-full border-2 border-white/20 border-t-white animate-spin" />
-                </div>
-              )}
               <Swiper
                 className="h-full w-full"
                 onSwiper={setSwiper}
-                onSlideChange={(instance) => {setCurrent(instance.realIndex); setDialogLoaded(false)}}
+                onSlideChange={(instance) => setCurrent(instance.realIndex)}
                 loop={canNavigate}
                 allowTouchMove={canNavigate}
                 initialSlide={index}
@@ -176,7 +196,6 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
                       src={item?.url || item?.previewUrl || undefined}
                       alt={item?.description || "media"}
                       className="max-h-[85vh] w-full object-contain"
-                      onLoad={() => setDialogLoaded(true)}
                     />
                   </SwiperSlide>
                 ))}

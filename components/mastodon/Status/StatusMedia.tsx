@@ -1,9 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { MediaImage } from "@/components/mastodon/media-image"
+import { MediaBlurhash } from "@/components/mastodon/media-blurhash"
 import { useTranslations } from "next-intl"
 import type { mastodon } from "masto"
+import { useAppPreferences } from "@/hooks/mastodon/useAppPreferences"
 
 interface StatusMediaProps {
   attachments: mastodon.v1.MediaAttachment[]
@@ -12,6 +14,7 @@ interface StatusMediaProps {
 
 export function StatusMedia({ attachments, spoilered = false }: StatusMediaProps) {
   const t = useTranslations("settings")
+  const { prefs } = useAppPreferences()
   if (attachments.length === 0) return null
   const hasVideo = attachments.some((item) => item.type === "video")
   const isSingleItem = attachments.length === 1
@@ -31,7 +34,7 @@ export function StatusMedia({ attachments, spoilered = false }: StatusMediaProps
             {item.type === "image" ? (
               <MediaImage media={item} index={index} group={attachments} />
             ) : (
-              <AutoPlayVideo src={item.url || undefined} />
+              <AutoPlayVideo src={item.url || undefined} blurhash={item.blurhash} previewUrl={item.previewUrl} autoPlay={prefs.autoPlayVideo} dataSaver={prefs.dataSaver} meta={item.meta as Record<string, { width?: number; height?: number; aspect?: number } | null | undefined> | null | undefined} />
             )}
           </div>
         </div>
@@ -47,13 +50,21 @@ export function StatusMedia({ attachments, spoilered = false }: StatusMediaProps
   )
 }
 
-function AutoPlayVideo({ src }: { src?: string }) {
+function AutoPlayVideo({ src, blurhash, previewUrl, autoPlay = true, dataSaver = false, meta }: { src?: string; blurhash?: string | null; previewUrl?: string | null; autoPlay?: boolean; dataSaver?: boolean; meta?: Record<string, { width?: number; height?: number; aspect?: number } | null | undefined> | null }) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
-  const [ready, setReady] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(!dataSaver)
+
+  const aspectRatio = useMemo(() => {
+    const source = (meta as Record<string, { width?: number; height?: number; aspect?: number } | null | undefined> | undefined)?.small
+      ?? (meta as Record<string, { width?: number; height?: number; aspect?: number } | null | undefined> | undefined)?.original
+    if (source?.aspect && source.aspect > 0) return source.aspect
+    if (source?.width && source?.height && source.height > 0) return source.width / source.height
+    return undefined
+  }, [meta])
 
   useEffect(() => {
-    setReady(false)
-  }, [src])
+    setIsLoaded(!dataSaver)
+  }, [src, dataSaver])
 
   useEffect(() => {
     const video = videoRef.current
@@ -77,6 +88,8 @@ function AutoPlayVideo({ src }: { src?: string }) {
         const entry = entries[0]
         if (!entry) return
 
+        if (!autoPlay) return
+
         if (entry.isIntersecting && entry.intersectionRatio >= threshold) {
           void video.play().catch(() => {
             // ignore autoplay failures (e.g. browser policy)
@@ -94,25 +107,48 @@ function AutoPlayVideo({ src }: { src?: string }) {
       document.removeEventListener("fullscreenchange", handleFullscreenChange)
       document.removeEventListener("webkitfullscreenchange", handleFullscreenChange)
     }
-  }, [src])
+  }, [src, autoPlay])
 
   return (
-    <div className="relative min-h-[200px]">
-      {!ready && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-muted/60 animate-pulse rounded-2xl">
-          <div className="h-8 w-8 rounded-full border-2 border-muted-foreground/20 border-t-primary animate-spin" />
-        </div>
+    <div
+      className="relative w-full min-h-[200px] sm:min-h-[300px] overflow-hidden"
+      style={aspectRatio ? { aspectRatio } : undefined}
+    >
+      {isLoaded ? (
+        <video
+          ref={videoRef}
+          src={src}
+          controls
+          muted
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      ) : (
+        <>
+          <MediaBlurhash
+            blurhash={blurhash}
+            src={previewUrl || undefined}
+            shouldLoad={false}
+            alt=""
+            className="brightness-60"
+          />
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsLoaded(true)
+              }}
+              className="flex cursor-pointer items-center justify-center rounded-full bg-black/60 p-2.5 text-white hover:bg-black transition-colors"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <polygon points="5,3 19,12 5,21" />
+              </svg>
+            </button>
+          </div>
+        </>
       )}
-      <video
-        ref={videoRef}
-        src={src}
-        controls
-        muted
-        playsInline
-        preload="metadata"
-        className="h-auto w-full max-h-[90vh] object-cover"
-        onLoadedMetadata={() => setReady(true)}
-      />
     </div>
   )
 }

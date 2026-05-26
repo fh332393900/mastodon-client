@@ -305,7 +305,10 @@
     "preferences": {
       "title": "Préférences",
       "description": "Personnalisez le comportement du client pour vous.",
-      "placeholder": "Les préférences arrivent bientôt. Cette section couvrira le fil, la langue et les options média.",
+      "autoPlayVideo": "Lecture automatique des vidéos",
+      "autoPlayVideoDescription": "Les vidéos sont lues automatiquement lorsqu'elles sont visibles",
+      "dataSaver": "Mode économie de données",
+      "dataSaverDescription": "Réduire l'utilisation des données en désactivant la lecture automatique",
       "mobileMenu": {
         "title": "Menu bas mobile",
         "description": "Glissez des éléments pour ajuster l'ordre de navigation en bas.",
