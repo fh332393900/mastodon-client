@@ -26,7 +26,7 @@ export function StatusMedia({ attachments, spoilered = false }: StatusMediaProps
       {attachments.map((item, index) => (
         <div
           key={item.id}
-          className={`overflow-hidden rounded-2xl border border-border/60 bg-muted/40 max-h-[100vh] ${
+          className={`overflow-hidden rounded-2xl border border-border/60 bg-muted/40 max-h-[80vh] ${
             item.type === "video" ? "sm:col-span-2" : ""
           }`}
         >
@@ -75,7 +75,11 @@ function AutoPlayVideo({ src, blurhash, previewUrl, autoPlay = true, dataSaver =
         document.fullscreenElement === video ||
         (document as Document & { webkitFullscreenElement?: Element }).webkitFullscreenElement === video
       )
-      video.style.objectFit = isFullscreen ? "contain" : "cover"
+      if (isFullscreen) {
+        video.style.objectFit = "contain"
+      } else {
+        video.style.objectFit = ""
+      }
     }
 
     document.addEventListener("fullscreenchange", handleFullscreenChange)
@@ -112,7 +116,7 @@ function AutoPlayVideo({ src, blurhash, previewUrl, autoPlay = true, dataSaver =
   return (
     <div
       className="relative w-full min-h-[200px] sm:min-h-[300px] overflow-hidden"
-      style={aspectRatio ? { aspectRatio } : undefined}
+      style={aspectRatio ? { aspectRatio, maxHeight: "70vh" } : { maxHeight: "70vh" }}
     >
       {isLoaded ? (
         <video
@@ -122,7 +126,7 @@ function AutoPlayVideo({ src, blurhash, previewUrl, autoPlay = true, dataSaver =
           muted
           playsInline
           preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="h-full w-full object-contain"
         />
       ) : (
         <>
