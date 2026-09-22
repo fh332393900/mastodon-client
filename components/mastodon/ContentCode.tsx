@@ -3,24 +3,26 @@
 import dynamic from "next/dynamic"
 import { useTheme } from "next-themes"
 import { atomOneDark, atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
-import SyntaxHighlighter from 'react-syntax-highlighter'
 
-// const SyntaxHighlighter = dynamic(
-//   () => import("react-syntax-highlighter").then((mod) => mod.default),
-//   {
-//     ssr: false,
-//     loading: () => (
-//       <div className="flex items-center justify-between px-3.5 py-1.5 bg-muted/60 border-b border-border/50">
-//         <span className="text-[11px] font-mono text-muted-foreground/70 tracking-wide"></span>
-//         <div className="flex gap-1">
-//           <span className="h-2 w-2 rounded-full bg-red-400/70" />
-//           <span className="h-2 w-2 rounded-full bg-yellow-400/70" />
-//           <span className="h-2 w-2 rounded-full bg-green-400/70" />
-//         </div>
-//       </div>
-//     ),
-//   },
-// )
+// react-syntax-highlighter / highlight.js 体积极大（含全部语言包），
+// 改成懒加载，仅当帖子里出现代码块时才下载，避免拖垮全站首屏与路由切换。
+const SyntaxHighlighter = dynamic(
+  () => import("react-syntax-highlighter").then((mod) => mod.default),
+  {
+    ssr: false,
+    loading: () => <CodeBlockSkeleton />,
+  },
+)
+
+function CodeBlockSkeleton() {
+  return (
+    <div className="my-3 space-y-1.5 rounded-lg border border-border/60 bg-muted/30 p-4">
+      <div className="h-3 w-24 rounded bg-border/60 dark:bg-muted-foreground/40" />
+      <div className="h-3 w-11/12 rounded bg-border/50 dark:bg-muted-foreground/30" />
+      <div className="h-3 w-3/4 rounded bg-border/50 dark:bg-muted-foreground/30" />
+    </div>
+  )
+}
 
 export default function ContentCode({
   code,

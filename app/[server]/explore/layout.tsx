@@ -31,6 +31,7 @@ export default function ExploreLayout({ children }: { children: ReactNode }) {
               <Link
                 key={t.href}
                 href={fullHref}
+                prefetch
                 className={cn(
                   "relative flex h-12 md:h-15 items-center justify-center text-sm font-medium transition-colors",
                   "text-muted-foreground hover:text-foreground hover:bg-muted/50",

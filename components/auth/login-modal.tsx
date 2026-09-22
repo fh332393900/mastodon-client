@@ -2,7 +2,6 @@
 
 import type React from "react"
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -105,12 +104,7 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
           </DialogHeader>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22 }}
-          className="px-3 sm:px-7 pb-4 space-y-3"
-        >
+        <div className="px-3 sm:px-7 pb-4 space-y-3 animate-in fade-in-0 slide-in-from-bottom-2 duration-200">
           {/* Popular Instances */}
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-widest text-foreground/60 mb-3">Popular Instances</p>
@@ -199,19 +193,12 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
             </div>
           </div>
 
-          <AnimatePresence>
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="text-[12px] text-destructive bg-destructive/8 border border-destructive/20 rounded-lg px-3 py-2.5 flex items-center gap-2"
-              >
-                <span className="w-1 h-1 rounded-full bg-destructive shrink-0" />
-                {error}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {error && (
+            <div className="text-[12px] text-destructive bg-destructive/8 border border-destructive/20 rounded-lg px-3 py-2.5 flex items-center gap-2 animate-in fade-in-0 duration-200">
+              <span className="w-1 h-1 rounded-full bg-destructive shrink-0" />
+              {error}
+            </div>
+          )}
 
           <Button
             onClick={handleLogin}
@@ -239,7 +226,7 @@ export function LoginModal({ children, open, onOpenChange }: LoginModalProps) {
             </a>{" "}
             to sign up
           </p>
-        </motion.div>
+        </div>
       </DialogContent>
     </Dialog>
   )

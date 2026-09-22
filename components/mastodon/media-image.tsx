@@ -13,11 +13,16 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
-import { Swiper, SwiperSlide } from "swiper/react"
+import dynamic from "next/dynamic"
 import type { Swiper as SwiperType } from "swiper"
 import { MediaBlurhash } from "@/components/mastodon/media-blurhash"
 import { useAppPreferences } from "@/hooks/mastodon/useAppPreferences"
-import "swiper/css"
+
+// swiper 仅在打开图片预览(轮播)时才需要，懒加载避免拖累全站首屏与路由切换。
+const MediaSwiper = dynamic(() =>
+  import("@/components/mastodon/MediaSwiper").then((m) => m.MediaSwiper),
+  { ssr: false },
+)
 
 export type MediaAttachment = mastodon.v1.MediaAttachment
 
@@ -179,27 +184,15 @@ export function MediaImage({ media, index, group }: MediaImageProps) {
             >
             {/* Image - no extra background or border */}
             <div className="relative w-[95vw] overflow-hidden">
-              <Swiper
-                className="h-full w-full"
-                onSwiper={setSwiper}
-                onSlideChange={(instance) => setCurrent(instance.realIndex)}
-                loop={canNavigate}
-                allowTouchMove={canNavigate}
-                initialSlide={index}
-              >
-                {images.map((item, idx) => (
-                  <SwiperSlide
-                    key={`${item.id ?? idx}-${idx}`}
-                    className="flex h-full w-full items-center justify-center"
-                  >
-                    <img
-                      src={item?.url || item?.previewUrl || undefined}
-                      alt={item?.description || "media"}
-                      className="max-h-[85vh] w-full object-contain"
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+              {isOpen && (
+                <MediaSwiper
+                  images={images}
+                  index={index}
+                  canNavigate={canNavigate}
+                  onSwiper={setSwiper}
+                  onSlideChange={(realIndex) => setCurrent(realIndex)}
+                />
+              )}
             </div>
 
             {/* Close button on the overlay background (top-right) */}

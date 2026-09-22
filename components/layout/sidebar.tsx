@@ -63,7 +63,7 @@ export function Sidebar() {
         </div>
         <div className="flex items-center gap-3">
           {user ? (
-            <Link href={`/${server}/@${user.username}`} className="transition-transform active:scale-95">
+            <Link href={`/${server}/@${user.username}`} prefetch className="transition-transform active:scale-95">
               <Avatar className="h-9 w-9 border-2 border-background shadow-sm">
                 <AvatarImage src={user.avatar || "/placeholder.svg"} alt={userNameText} />
                 <AvatarFallback className="bg-primary/10 text-primary font-bold">{userNameText.charAt(0)}</AvatarFallback>
@@ -86,7 +86,7 @@ export function Sidebar() {
             const href = `/${server}/${item.route}`
             const isActive = pathname.includes(item.route)
             return (
-              <Link key={item.route} href={href} aria-label={item.label} className="flex-1">
+              <Link key={item.route} href={href} aria-label={item.label} prefetch className="flex-1">
                 <div
                   className={cn(
                     "flex h-11 items-center justify-center rounded-sm transition-colors",
@@ -145,7 +145,7 @@ export function Sidebar() {
               const href = `/${server}/${item.route}`
               const isActive = pathname.includes(item.route)
               return (
-                <Link key={item.route} href={href} className="block">
+                <Link key={item.route} href={href} prefetch className="block">
                   <Button
                     variant="ghost"
                     className={cn(
@@ -214,7 +214,7 @@ export function Sidebar() {
                 </Avatar>
 
                 {!isCollapsed && (
-                  <Link href={`/${server}/@${user.username}`} className="flex-1 min-w-0">
+                  <Link href={`/${server}/@${user.username}`} prefetch className="flex-1 min-w-0">
                     <div className="font-bold text-sm truncate text-primary mb-1">
                       {renderDisplayName({
                         displayName: user.displayName,

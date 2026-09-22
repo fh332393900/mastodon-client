@@ -24,6 +24,7 @@ export function ProfileTabs({ tabs }: { tabs: TabItem[] }) {
           <Link
             key={tab.href}
             href={tab.href}
+            prefetch
             className={cn(
               "min-w-fit rounded-full px-4 py-2 text-sm font-medium transition-colors",
               isActive
