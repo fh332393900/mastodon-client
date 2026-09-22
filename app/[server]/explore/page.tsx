@@ -5,6 +5,7 @@ import { TrendingUp } from "lucide-react"
 import { InfiniteScroller, LoadingSkeleton } from "@/components/mastodon/infinite-scroller"
 import { StatusCard, StatusThread } from "@/components/mastodon/Status"
 import { Badge } from "@/components/ui/badge"
+import { PremierLeagueFixtures } from "@/components/explore/PremierLeagueFixtures"
 import { useExplorePostsCache } from "@/hooks/mastodon/useExplorePostsCache"
 import { groupThreadPosts } from "@/lib/mastodon/groupThreads"
 import type { mastodon } from "masto"
@@ -23,6 +24,7 @@ export default function ExplorePostsPage() {
   if (!isReady || isLoading) {
     return (
       <div className="space-y-4">
+        <PremierLeagueFixtures />
         <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-primary" />
@@ -36,6 +38,8 @@ export default function ExplorePostsPage() {
 
   return (
     <div className="space-y-4">
+      <PremierLeagueFixtures />
+
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-primary" />
