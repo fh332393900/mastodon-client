@@ -47,7 +47,7 @@ export function AboutDialog({ children, server }: AboutDialogProps) {
         showCloseButton={false}
         className="gap-0 overflow-hidden rounded-2xl p-0 sm:max-w-lg"
       >
-        <DialogClose className="absolute top-3 right-3 z-10 cursor-pointer rounded-full bg-muted/80 p-1.5 text-muted-foreground opacity-90 backdrop-blur-sm transition hover:bg-muted hover:text-foreground hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden">
+        <DialogClose className="absolute top-3 right-6 z-10 cursor-pointer rounded-full bg-muted/80 p-1.5 text-muted-foreground opacity-90 backdrop-blur-sm transition hover:bg-muted hover:text-foreground hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden">
           <X className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </DialogClose>
