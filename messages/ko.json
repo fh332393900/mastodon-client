@@ -327,7 +327,24 @@
     "about": {
       "title": "정보",
       "description": "클라이언트 정보, 버전 및 유용한 링크.",
-      "placeholder": "버전, 빌드 정보, 오픈 소스 크레딧을 표시합니다."
+      "openButton": "이 프로젝트 정보",
+      "dialog": {
+        "subtitle": "오픈 소스 범용 Mastodon 웹 클라이언트",
+        "intro": "MastoClient를 사용해 주셔서 감사합니다. 활발히 개발 중인 범용 Mastodon 클라이언트입니다. Next.js와 React로 만들어졌으며 빠르고 깔끔하고 자체 호스팅이 가능한 Mastodon 환경을 목표로 합니다.",
+        "notice": "프로젝트는 아직 발전 중이라 일부 버그나 빠진 기능이 있을 수 있습니다. 계속 개발하며 시간이 지나면서 개선해 나가고 있습니다.",
+        "openSource": "MastoClient는 완전한 오픈 소스입니다. 테스트, 피드백, 코드 기여를 원하신다면 GitHub에서 함께해 주세요.",
+        "appSection": "앱 정보",
+        "versionLabel": "버전",
+        "techStackLabel": "기술 스택",
+        "instanceLabel": "현재 인스턴스",
+        "developerSection": "개발자",
+        "developerRole": "디자인 및 개발",
+        "profileLink": "GitHub 프로필",
+        "repoLink": "저장소",
+        "contributeSection": "기여하기",
+        "contributeDesc": "이슈 등록, 버그 제보, Pull Request를 환영합니다.",
+        "issuesLink": "문제 제보"
+      }
     },
     "media": {
       "upload": "업로드",

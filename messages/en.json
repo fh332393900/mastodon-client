@@ -327,7 +327,24 @@
     "about": {
       "title": "About",
       "description": "Client information, version, and helpful links.",
-      "placeholder": "About details will include app version, build info, and open-source credits."
+      "openButton": "About this project",
+      "dialog": {
+        "subtitle": "an open-source, general-purpose Mastodon web client",
+        "intro": "Thanks for trying MastoClient, a general-purpose Mastodon client under active development. Built with Next.js and React, it aims to deliver a fast, clean, and self-hostable Mastodon experience.",
+        "notice": "The project is still evolving, so you may run into bugs or missing features. We are actively working on it and improving it over time.",
+        "openSource": "MastoClient is fully open source. If you would like to help with testing, share feedback, or contribute code, you are welcome to join us on GitHub.",
+        "appSection": "App information",
+        "versionLabel": "Version",
+        "techStackLabel": "Tech stack",
+        "instanceLabel": "Current instance",
+        "developerSection": "Developer",
+        "developerRole": "Design and development",
+        "profileLink": "GitHub profile",
+        "repoLink": "Repository",
+        "contributeSection": "Contributing",
+        "contributeDesc": "Open an issue, report a bug, or send a pull request to help make MastoClient better.",
+        "issuesLink": "Report an issue"
+      }
     },
     "media": {
       "upload": "Upload",

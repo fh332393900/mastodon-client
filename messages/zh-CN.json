@@ -327,7 +327,24 @@
     "about": {
       "title": "关于",
       "description": "客户端信息、版本和帮助链接。",
-      "placeholder": "此处将显示版本、构建信息和开源致谢。"
+      "openButton": "关于本项目",
+      "dialog": {
+        "subtitle": "开源的通用 Mastodon 网页客户端",
+        "intro": "感谢你有兴趣试用 MastoClient —— 一个正在积极开发的通用 Mastodon 客户端。它基于 Next.js 与 React 构建，目标是提供快速、清爽、可自托管的 Mastodon 使用体验。",
+        "notice": "目前项目仍在持续迭代，某些地方可能会出现 bug 或缺失的功能。我们正在努力开发，并会随时间推移不断完善。",
+        "openSource": "MastoClient 是完全开源的。如果你愿意帮助测试、提供反馈或直接贡献代码，欢迎在 GitHub 上参与其中。",
+        "appSection": "应用信息",
+        "versionLabel": "版本",
+        "techStackLabel": "技术栈",
+        "instanceLabel": "当前实例",
+        "developerSection": "开发者",
+        "developerRole": "设计与开发",
+        "profileLink": "GitHub 主页",
+        "repoLink": "项目仓库",
+        "contributeSection": "参与贡献",
+        "contributeDesc": "欢迎提交 Issue、反馈问题或发起 Pull Request，一起让 MastoClient 变得更好。",
+        "issuesLink": "问题反馈"
+      }
     },
     "media": {
       "upload": "上传",

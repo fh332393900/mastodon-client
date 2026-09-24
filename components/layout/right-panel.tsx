@@ -9,6 +9,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import dynamic from "next/dynamic"
 import { useTranslations } from "next-intl"
 import { SearchPopover } from "@/components/search/search-popover"
+import { AboutDialog } from "@/components/mastodon/settings/about-dialog"
+import { useMasto } from "@/components/auth/masto-provider"
 
 // const SearchPopover = dynamic(
 //   () => import("@/components/search/search-popover").then((mod) => mod.SearchPopover),
@@ -28,6 +30,7 @@ import { SearchPopover } from "@/components/search/search-popover"
 
 export function RightPanel() {
   const t = useTranslations("common")
+  const { server } = useMasto()
 
   return (
     <aside className="hidden lg:flex lg:w-[18rem] lg:flex-col lg:sticky lg:top-0 lg:self-start h-screen bg-card/50 border-l border-border overflow-hidden">
@@ -65,10 +68,12 @@ export function RightPanel() {
               <Info className="h-3 w-3 mr-2" />
               Terms of Service
             </Button>
-            <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
-              <Info className="h-3 w-3 mr-2" />
-              About
-            </Button>
+            <AboutDialog server={server}>
+              <Button variant="ghost" size="sm" className="w-full justify-start text-xs">
+                <Info className="h-3 w-3 mr-2" />
+                About
+              </Button>
+            </AboutDialog>
             <Button
               asChild
               variant="ghost"

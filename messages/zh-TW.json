@@ -327,7 +327,24 @@
     "about": {
       "title": "關於",
       "description": "用戶端資訊、版本與有用連結。",
-      "placeholder": "此處將顯示版本、建置資訊與開源致謝。"
+      "openButton": "關於本專案",
+      "dialog": {
+        "subtitle": "開源的通用 Mastodon 網頁用戶端",
+        "intro": "感謝你有興趣試用 MastoClient —— 一個正在積極開發的通用 Mastodon 用戶端。它基於 Next.js 與 React 建置，目標是提供快速、清爽且可自架的 Mastodon 使用體驗。",
+        "notice": "專案仍在持續迭代，某些地方可能會出現 bug 或缺失的功能。我們正在努力開發，並會隨時間推移不斷完善。",
+        "openSource": "MastoClient 是完全開源的。如果你願意協助測試、提供回饋或直接貢獻程式碼，歡迎在 GitHub 上參與其中。",
+        "appSection": "應用資訊",
+        "versionLabel": "版本",
+        "techStackLabel": "技術堆疊",
+        "instanceLabel": "目前實例",
+        "developerSection": "開發者",
+        "developerRole": "設計與開發",
+        "profileLink": "GitHub 主頁",
+        "repoLink": "專案倉庫",
+        "contributeSection": "參與貢獻",
+        "contributeDesc": "歡迎提交 Issue、回報問題或發起 Pull Request，一起讓 MastoClient 變得更好。",
+        "issuesLink": "問題回報"
+      }
     },
     "media": {
       "upload": "上傳",
