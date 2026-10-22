@@ -29,11 +29,11 @@ export type ThreadItem = {
 // ─── Factory ───────────────────────────────────────────────────────────────────
 
 let _idCounter = 0
-export function createEmptyPost(): ThreadItem {
+export function createEmptyPost(content = ""): ThreadItem {
   _idCounter += 1
   return {
     id: `post-${Date.now()}-${_idCounter}`,
-    content: "",
+    content,
     mediaList: [],
     pollEnabled: false,
     pollOptions: ["", ""],
@@ -46,11 +46,19 @@ export function createEmptyPost(): ThreadItem {
 
 // ─── Hook ──────────────────────────────────────────────────────────────────────
 
-export function useComposeThread() {
+export interface UseComposeThreadOptions {
+  /** 初始预填文本（例如体育板块带话题跳转发帖） */
+  initialContent?: string
+}
+
+export function useComposeThread(options?: UseComposeThreadOptions) {
   const { maxCharacters, maxMediaAttachments, maxPollOptions } = useInstanceConfig()
   const { isReady, uploadMedia, createStatus } = useComposeActions()
 
-  const [posts, setPosts] = useState<ThreadItem[]>(() => [createEmptyPost()])
+  const [posts, setPosts] = useState<ThreadItem[]>(() => {
+    const initial = options?.initialContent?.trim() ?? ""
+    return [createEmptyPost(initial)]
+  })
   const [visibility, setVisibility] = useState<mastodon.v1.StatusVisibility>("public")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submittingIndex, setSubmittingIndex] = useState(-1)

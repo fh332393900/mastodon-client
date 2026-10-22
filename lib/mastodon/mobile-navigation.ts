@@ -3,6 +3,7 @@ export const MOBILE_BOTTOM_MENU_ROUTES = [
   "favorites",
   "compose",
   "explore",
+  "sports",
   "notifications",
   "settings",
 ] as const
@@ -28,6 +29,7 @@ export const MOBILE_BOTTOM_MENU_LABEL_KEY: Record<
   favorites: "common.menu.favorites",
   compose: "common.menu.compose",
   explore: "common.menu.explore",
+  sports: "common.menu.sports",
   notifications: "common.menu.notifications",
   settings: "common.menu.settings",
 }

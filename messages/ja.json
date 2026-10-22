@@ -8,6 +8,7 @@
       "favorites": "お気に入り",
       "compose": "作成",
       "explore": "探索",
+      "sports": "スポーツ",
       "notifications": "通知",
       "settings": "設定"
     },
@@ -254,6 +255,82 @@
     "cleanerSuffix": "よりクリーンです。",
     "learnMore": "websitecarbon.com →",
     "ariaLabel": "ウェブサイトカーボンバッジ"
+  },
+  "sports": {
+    "title": "スポーツパルス",
+    "subtitle": "5大リーグ × F1:日程・順位・ニュース・コミュニティを一か所に。",
+    "switch": {
+      "football": "サッカー",
+      "f1": "F1"
+    },
+    "tabs": {
+      "fixtures": "日程 / 結果",
+      "standings": "順位表",
+      "schedule": "シーズンカレンダー",
+      "results": "最新レース結果",
+      "drivers": "ドライバー順位",
+      "teams": "コンストラクター順位"
+    },
+    "matchday": "第{matchday}節",
+    "round": "第{round}戦",
+    "status": {
+      "live": "ライブ",
+      "halftime": "ハーフタイム",
+      "finished": "終了",
+      "upcoming": "開催予定"
+    },
+    "detail": {
+      "halfTime": "ハーフタイム",
+      "grid": "グリッド",
+      "laps": "ラップ",
+      "fastestLap": "ファステストラップ",
+      "pitStops": "ピットストップ"
+    },
+    "table": {
+      "rank": "#",
+      "team": "チーム",
+      "played": "試合",
+      "win": "勝",
+      "draw": "分",
+      "loss": "敗",
+      "goalDiff": "得失",
+      "points": "勝点",
+      "driver": "ドライバー",
+      "constructor": "コンストラクター",
+      "wins": "勝利",
+      "form": "直近5戦"
+    },
+    "news": {
+      "title": "最新ニュース",
+      "empty": "ニュースはまだありません"
+    },
+    "community": {
+      "title": "コミュニティの話題",
+      "subtitle": "フェディバースで何が話題かチェック",
+      "quickPostPlaceholder": "感想をシェア…",
+      "quickPostAction": "ハッシュタグ付きで投稿",
+      "quickPostHint": "投稿ページを開き、ハッシュタグを自動で添付します",
+      "mentionPlaceholder": "@user@instance でメンション",
+      "mentionAdd": "追加",
+      "emptyPosts": "このハッシュタグの投稿はまだありません",
+      "autocompleteHint": "# または @ で話題とアカウントを自動検索。投稿時に現在のハッシュタグが自動で付きます"
+    },
+    "background": {
+      "customize": "背景をカスタマイズ",
+      "presets": "プリセット",
+      "imageUrlLabel": "画像 URL",
+      "imageUrlPlaceholder": "https://…",
+      "apply": "適用",
+      "reset": "リセット"
+    },
+    "official": {
+      "title": "公式サイト"
+    },
+    "empty": {
+      "fixtures": "日程データがありません",
+      "standings": "順位データがありません",
+      "f1": "データがありません"
+    }
   },
   "settings": {
     "title": "設定",

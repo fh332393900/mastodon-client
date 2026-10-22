@@ -8,6 +8,7 @@
       "favorites": "Favorites",
       "compose": "Compose",
       "explore": "Explore",
+      "sports": "Sports",
       "notifications": "Notifications",
       "settings": "Settings"
     },
@@ -254,6 +255,82 @@
     "cleanerSuffix": "of all web pages globally.",
     "learnMore": "websitecarbon.com →",
     "ariaLabel": "Website Carbon Badge"
+  },
+  "sports": {
+    "title": "SportsPulse",
+    "subtitle": "Top-5 leagues × F1 — fixtures, standings, news and community buzz, all in one place.",
+    "switch": {
+      "football": "Football",
+      "f1": "F1"
+    },
+    "tabs": {
+      "fixtures": "Fixtures / Results",
+      "standings": "Standings",
+      "schedule": "Season Calendar",
+      "results": "Latest Results",
+      "drivers": "Driver Standings",
+      "teams": "Constructor Standings"
+    },
+    "matchday": "MD {matchday}",
+    "round": "Round {round}",
+    "status": {
+      "live": "LIVE",
+      "halftime": "HT",
+      "finished": "FT",
+      "upcoming": "Upcoming"
+    },
+    "detail": {
+      "halfTime": "Half-time",
+      "grid": "Grid",
+      "laps": "Laps",
+      "fastestLap": "Fastest lap",
+      "pitStops": "Pit stops"
+    },
+    "table": {
+      "rank": "#",
+      "team": "Team",
+      "played": "P",
+      "win": "W",
+      "draw": "D",
+      "loss": "L",
+      "goalDiff": "GD",
+      "points": "Pts",
+      "driver": "Driver",
+      "constructor": "Team",
+      "wins": "Wins",
+      "form": "Form"
+    },
+    "news": {
+      "title": "Latest News",
+      "empty": "No news yet"
+    },
+    "community": {
+      "title": "Community Buzz",
+      "subtitle": "See what the fediverse is saying",
+      "quickPostPlaceholder": "Share your take…",
+      "quickPostAction": "Post with hashtag",
+      "quickPostHint": "Opens the composer with the hashtag attached",
+      "mentionPlaceholder": "@user@instance to mention",
+      "mentionAdd": "Add",
+      "emptyPosts": "No posts under this hashtag yet",
+      "autocompleteHint": "Type # or @ to search hashtags and accounts — the current hashtag is attached automatically"
+    },
+    "background": {
+      "customize": "Customize background",
+      "presets": "Presets",
+      "imageUrlLabel": "Image URL",
+      "imageUrlPlaceholder": "https://…",
+      "apply": "Apply",
+      "reset": "Reset"
+    },
+    "official": {
+      "title": "Official Sites"
+    },
+    "empty": {
+      "fixtures": "No fixture data",
+      "standings": "No standings data",
+      "f1": "No data available"
+    }
   },
   "settings": {
     "title": "Settings",

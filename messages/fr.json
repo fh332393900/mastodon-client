@@ -8,6 +8,7 @@
       "favorites": "Favoris",
       "compose": "Composer",
       "explore": "Explorer",
+      "sports": "Sports",
       "notifications": "Notifications",
       "settings": "Paramètres"
     },
@@ -254,6 +255,82 @@
     "cleanerSuffix": "de toutes les pages web dans le monde.",
     "learnMore": "websitecarbon.com →",
     "ariaLabel": "Badge carbone du site web"
+  },
+  "sports": {
+    "title": "SportsPulse",
+    "subtitle": "Top 5 des championnats × F1 : calendriers, classements, actus et communauté au même endroit.",
+    "switch": {
+      "football": "Football",
+      "f1": "F1"
+    },
+    "tabs": {
+      "fixtures": "Calendrier / Résultats",
+      "standings": "Classement",
+      "schedule": "Calendrier de la saison",
+      "results": "Derniers résultats",
+      "drivers": "Classement pilotes",
+      "teams": "Classement constructeurs"
+    },
+    "matchday": "Journée {matchday}",
+    "round": "Manche {round}",
+    "status": {
+      "live": "EN DIRECT",
+      "halftime": "Mi-temps",
+      "finished": "Terminé",
+      "upcoming": "À venir"
+    },
+    "detail": {
+      "halfTime": "Mi-temps",
+      "grid": "Grille",
+      "laps": "Tours",
+      "fastestLap": "Meilleur tour",
+      "pitStops": "Arrêts"
+    },
+    "table": {
+      "rank": "#",
+      "team": "Équipe",
+      "played": "J",
+      "win": "V",
+      "draw": "N",
+      "loss": "D",
+      "goalDiff": "Diff",
+      "points": "Pts",
+      "driver": "Pilote",
+      "constructor": "Écurie",
+      "wins": "Victoires",
+      "form": "Forme"
+    },
+    "news": {
+      "title": "Dernières actus",
+      "empty": "Pas encore d'actus"
+    },
+    "community": {
+      "title": "La communauté en parle",
+      "subtitle": "Découvrez ce que dit le fediverse",
+      "quickPostPlaceholder": "Partagez votre avis…",
+      "quickPostAction": "Publier avec le hashtag",
+      "quickPostHint": "Ouvre l'éditeur avec le hashtag ajouté",
+      "mentionPlaceholder": "@user@instance pour mentionner",
+      "mentionAdd": "Ajouter",
+      "emptyPosts": "Aucun post sous ce hashtag",
+      "autocompleteHint": "Tapez # ou @ pour rechercher des hashtags et comptes — le hashtag actuel est ajouté automatiquement"
+    },
+    "background": {
+      "customize": "Personnaliser le fond",
+      "presets": "Préréglages",
+      "imageUrlLabel": "URL de l'image",
+      "imageUrlPlaceholder": "https://…",
+      "apply": "Appliquer",
+      "reset": "Réinitialiser"
+    },
+    "official": {
+      "title": "Sites officiels"
+    },
+    "empty": {
+      "fixtures": "Aucun match",
+      "standings": "Aucun classement",
+      "f1": "Aucune donnée"
+    }
   },
   "settings": {
     "title": "Paramètres",

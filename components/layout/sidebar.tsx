@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Home, Heart, Search, Settings, LogOut, PenSquare, ArrowLeft, User, Bell } from "lucide-react"
+import { Home, Heart, Search, Settings, LogOut, PenSquare, ArrowLeft, User, Bell, Trophy } from "lucide-react"
 import { LoginModal } from "@/components/auth/login-modal"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
@@ -30,6 +30,7 @@ export function Sidebar() {
     { icon: Bell, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.notifications), route: "notifications", color: "text-amber-400" },
     { icon: PenSquare, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.compose), route: "compose", color: "text-violet-400" },
     { icon: Search, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.explore), route: "explore", color: "text-emerald-400" },
+    { icon: Trophy, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.sports), route: "sports", color: "text-orange-400" },
     { icon: Settings, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.settings), route: "settings", color: "text-slate-400" },
   ]
 

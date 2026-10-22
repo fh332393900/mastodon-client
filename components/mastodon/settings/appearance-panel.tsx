@@ -18,7 +18,7 @@ import {
 } from "@/lib/mastodon/mobile-navigation"
 import { cn } from "@/lib/utils"
 import { Reorder, AnimatePresence } from "framer-motion"
-import { Bell, Heart, Home, Palette, PenSquare, Search, Settings, GripVertical } from "lucide-react"
+import { Bell, Heart, Home, Palette, PenSquare, Search, Settings, GripVertical, Trophy } from "lucide-react"
 import { useTranslations } from "next-intl"
 
 const routeIconMap: Record<MobileBottomMenuRoute, ComponentType<{ className?: string }>> = {
@@ -26,6 +26,7 @@ const routeIconMap: Record<MobileBottomMenuRoute, ComponentType<{ className?: st
   favorites: Heart,
   compose: PenSquare,
   explore: Search,
+  sports: Trophy,
   notifications: Bell,
   settings: Settings,
 }

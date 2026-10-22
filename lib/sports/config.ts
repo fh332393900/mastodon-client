@@ -1,0 +1,125 @@
+/**
+ * 燃动赛场（SportsPulse）静态配置：联赛、主题色、社区话题、官网与背景预设。
+ * 该文件同时被服务端与客户端引用，不要引入 Node 专属依赖。
+ */
+
+export type SportId = "football" | "f1"
+
+export interface FootballLeague {
+  /** football-data.org competition code */
+  code: string
+  name: string
+  /** 社区讨论使用的 Mastodon 话题 */
+  hashtag: string
+  brandColor: string
+  officialSite: string
+}
+
+export const FOOTBALL_LEAGUES: FootballLeague[] = [
+  {
+    code: "PL",
+    name: "Premier League",
+    hashtag: "PremierLeague",
+    brandColor: "#3d195b",
+    officialSite: "https://www.premierleague.com",
+  },
+  {
+    code: "PD",
+    name: "LaLiga",
+    hashtag: "LaLiga",
+    brandColor: "#ff4b44",
+    officialSite: "https://www.laliga.com/en-GB",
+  },
+  {
+    code: "BL1",
+    name: "Bundesliga",
+    hashtag: "Bundesliga",
+    brandColor: "#d20515",
+    officialSite: "https://www.bundesliga.com/en/bundesliga",
+  },
+  {
+    code: "SA",
+    name: "Serie A",
+    hashtag: "SerieA",
+    brandColor: "#0e8a4c",
+    officialSite: "https://www.legaseriea.it/en",
+  },
+  {
+    code: "FL1",
+    name: "Ligue 1",
+    hashtag: "Ligue1",
+    brandColor: "#091f43",
+    officialSite: "https://www.ligue1.com",
+  },
+]
+
+export interface SportTheme {
+  id: SportId
+  /** 品牌主色（F1 红 / 足球草皮绿） */
+  brandColor: string
+  /** hero 区域默认渐变（未设置自定义背景图时使用） */
+  heroGradient: string
+  /** 社区热议默认话题列表 */
+  hashtags: string[]
+  officialSites: { label: string; url: string }[]
+}
+
+export const SPORT_THEMES: Record<SportId, SportTheme> = {
+  football: {
+    id: "football",
+    brandColor: "#16a34a",
+    heroGradient:
+      "linear-gradient(135deg, #04120a 0%, #14532d 45%, #16a34a 85%, #4ade80 130%)",
+    hashtags: [
+      "Football",
+      "PremierLeague",
+      "LaLiga",
+      "Bundesliga",
+      "SerieA",
+      "Ligue1",
+      "ChampionsLeague",
+    ],
+    officialSites: FOOTBALL_LEAGUES.map((league) => ({
+      label: league.name,
+      url: league.officialSite,
+    })),
+  },
+  f1: {
+    id: "f1",
+    brandColor: "#e10600",
+    heroGradient:
+      "linear-gradient(135deg, #150505 0%, #7f1d1d 40%, #e10600 85%, #ff7a66 130%)",
+    hashtags: ["F1", "Formula1", "GrandPrix", "Motorsport"],
+    officialSites: [
+      { label: "Formula 1", url: "https://www.formula1.com" },
+      { label: "FIA", url: "https://www.fia.com" },
+    ],
+  },
+}
+
+export interface SportsBackgroundPreset {
+  id: string
+  css: string
+}
+
+/** 预设背景（活力渐变），用于 hero 区域自定义。 */
+export const SPORTS_BACKGROUND_PRESETS: SportsBackgroundPreset[] = [
+  {
+    id: "stadium-night",
+    css: "radial-gradient(ellipse at top, #14532d 0%, #04120a 70%)",
+  },
+  {
+    id: "pit-lane",
+    css: "radial-gradient(ellipse at top, #7f1d1d 0%, #150505 70%)",
+  },
+  {
+    id: "sunset-turf",
+    css: "linear-gradient(160deg, #0f172a 0%, #166534 55%, #eab308 140%)",
+  },
+  {
+    id: "neon-grid",
+    css: "linear-gradient(160deg, #111827 0%, #312e81 55%, #e10600 140%)",
+  },
+]
+
+export const SPORTS_IDS: SportId[] = ["football", "f1"]

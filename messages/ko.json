@@ -8,6 +8,7 @@
       "favorites": "즐겨찾기",
       "compose": "작성",
       "explore": "탐색",
+      "sports": "스포츠",
       "notifications": "알림",
       "settings": "설정"
     },
@@ -254,6 +255,82 @@
     "cleanerSuffix": "보다 친환경적입니다.",
     "learnMore": "websitecarbon.com →",
     "ariaLabel": "웹사이트 탄소 배지"
+  },
+  "sports": {
+    "title": "스포츠 펄스",
+    "subtitle": "5대 리그 × F1: 일정, 순위, 뉴스, 커뮤니티 반응을 한곳에서.",
+    "switch": {
+      "football": "축구",
+      "f1": "F1"
+    },
+    "tabs": {
+      "fixtures": "일정 / 결과",
+      "standings": "순위표",
+      "schedule": "시즌 캘린더",
+      "results": "최근 결과",
+      "drivers": "드라이버 순위",
+      "teams": "컨스트럭터 순위"
+    },
+    "matchday": "{matchday}라운드",
+    "round": "R{round}",
+    "status": {
+      "live": "라이브",
+      "halftime": "하프타임",
+      "finished": "종료",
+      "upcoming": "예정"
+    },
+    "detail": {
+      "halfTime": "하프타임",
+      "grid": "그리드",
+      "laps": "랩",
+      "fastestLap": "패스티스트 랩",
+      "pitStops": "피트 스톱"
+    },
+    "table": {
+      "rank": "#",
+      "team": "팀",
+      "played": "경기",
+      "win": "승",
+      "draw": "무",
+      "loss": "패",
+      "goalDiff": "득실",
+      "points": "승점",
+      "driver": "드라이버",
+      "constructor": "팀",
+      "wins": "우승",
+      "form": "최근 5경기"
+    },
+    "news": {
+      "title": "최신 뉴스",
+      "empty": "아직 뉴스가 없습니다"
+    },
+    "community": {
+      "title": "커뮤니티 반응",
+      "subtitle": "페디버스에서 어떤 이야기를 하는지 확인해 보세요",
+      "quickPostPlaceholder": "의견을 남겨보세요…",
+      "quickPostAction": "해시태그와 함께 글쓰기",
+      "quickPostHint": "작성 페이지로 이동하며 해시태그가 자동으로 붙습니다",
+      "mentionPlaceholder": "@user@instance 멘션",
+      "mentionAdd": "추가",
+      "emptyPosts": "이 해시태그의 글이 아직 없습니다",
+      "autocompleteHint": "# 또는 @ 입력 시 해시태그와 계정을 자동 검색하며, 글 작성 시 현재 해시태그가 자동으로 붙습니다"
+    },
+    "background": {
+      "customize": "배경 사용자 지정",
+      "presets": "프리셋",
+      "imageUrlLabel": "이미지 URL",
+      "imageUrlPlaceholder": "https://…",
+      "apply": "적용",
+      "reset": "기본값으로"
+    },
+    "official": {
+      "title": "공식 사이트"
+    },
+    "empty": {
+      "fixtures": "일정 데이터가 없습니다",
+      "standings": "순위 데이터가 없습니다",
+      "f1": "데이터가 없습니다"
+    }
   },
   "settings": {
     "title": "설정",

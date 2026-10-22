@@ -1,5 +1,7 @@
 "use client"
 
+import { useMemo } from "react"
+import { useSearchParams } from "next/navigation"
 import { useAuth } from "@/components/auth/auth-provider"
 import { useMasto } from "@/components/auth/masto-provider"
 import { useComposeThread } from "@/hooks/mastodon/useComposeThread"
@@ -10,6 +12,9 @@ export function ComposePage() {
   const t = useTranslations()
   const { isAuthenticated, isLoading, user } = useAuth()
   const { server } = useMasto()
+  const searchParams = useSearchParams()
+  // 支持 /compose?text=... 预填（仅在初始化时取一次，避免后续输入被重置）
+  const initialContent = useMemo(() => searchParams.get("text") ?? "", [searchParams])
   const {
     posts,
     visibility,
@@ -26,7 +31,7 @@ export function ComposePage() {
     addPost,
     removePost,
     handleSubmit,
-  } = useComposeThread()
+  } = useComposeThread({ initialContent })
 
   if (isLoading) {
     return (

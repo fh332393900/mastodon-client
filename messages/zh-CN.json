@@ -8,6 +8,7 @@
       "favorites": "收藏",
       "compose": "发布",
       "explore": "探索",
+      "sports": "体育",
       "notifications": "通知",
       "settings": "设置"
     },
@@ -254,6 +255,82 @@
     "cleanerSuffix": "的网页更环保。",
     "learnMore": "websitecarbon.com →",
     "ariaLabel": "网站碳排放徽章"
+  },
+  "sports": {
+    "title": "燃动赛场",
+    "subtitle": "五大联赛 × F1:赛程、积分榜、资讯与社区热议,一站直达。",
+    "switch": {
+      "football": "足球",
+      "f1": "F1"
+    },
+    "tabs": {
+      "fixtures": "赛程 / 赛果",
+      "standings": "积分榜",
+      "schedule": "赛季赛历",
+      "results": "最近赛果",
+      "drivers": "车手积分榜",
+      "teams": "车队积分榜"
+    },
+    "matchday": "第 {matchday} 轮",
+    "round": "第 {round} 站",
+    "status": {
+      "live": "直播中",
+      "halftime": "中场",
+      "finished": "完场",
+      "upcoming": "未开赛"
+    },
+    "detail": {
+      "halfTime": "半场",
+      "grid": "发车位",
+      "laps": "圈数",
+      "fastestLap": "最快圈",
+      "pitStops": "换胎"
+    },
+    "table": {
+      "rank": "#",
+      "team": "球队",
+      "played": "赛",
+      "win": "胜",
+      "draw": "平",
+      "loss": "负",
+      "goalDiff": "净胜",
+      "points": "分",
+      "driver": "车手",
+      "constructor": "车队",
+      "wins": "胜场",
+      "form": "近5场"
+    },
+    "news": {
+      "title": "最新资讯",
+      "empty": "暂无资讯"
+    },
+    "community": {
+      "title": "社区热议",
+      "subtitle": "看看联邦宇宙里大家在聊什么",
+      "quickPostPlaceholder": "分享你的观点…",
+      "quickPostAction": "带话题发帖",
+      "quickPostHint": "将跳转发帖页,并自动带上当前话题",
+      "mentionPlaceholder": "@user@instance 提及账号",
+      "mentionAdd": "添加",
+      "emptyPosts": "该话题下暂无贴文",
+      "autocompleteHint": "输入 # 或 @ 可自动搜索话题与账号；发帖时自动带上当前话题"
+    },
+    "background": {
+      "customize": "自定义背景",
+      "presets": "预设背景",
+      "imageUrlLabel": "背景图 URL",
+      "imageUrlPlaceholder": "https://…",
+      "apply": "应用",
+      "reset": "恢复默认"
+    },
+    "official": {
+      "title": "官方网站"
+    },
+    "empty": {
+      "fixtures": "暂无赛程数据",
+      "standings": "暂无积分榜数据",
+      "f1": "暂无数据"
+    }
   },
   "settings": {
     "title": "设置",

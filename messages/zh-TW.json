@@ -8,6 +8,7 @@
       "favorites": "收藏",
       "compose": "發文",
       "explore": "探索",
+      "sports": "體育",
       "notifications": "通知",
       "settings": "設定"
     },
@@ -254,6 +255,82 @@
     "cleanerSuffix": "的網頁更環保。",
     "learnMore": "websitecarbon.com →",
     "ariaLabel": "網站碳排放徽章"
+  },
+  "sports": {
+    "title": "燃動賽場",
+    "subtitle": "五大聯賽 × F1:賽程、積分榜、資訊與社群熱議,一站直達。",
+    "switch": {
+      "football": "足球",
+      "f1": "F1"
+    },
+    "tabs": {
+      "fixtures": "賽程 / 賽果",
+      "standings": "積分榜",
+      "schedule": "賽季賽歷",
+      "results": "最近賽果",
+      "drivers": "車手積分榜",
+      "teams": "車隊積分榜"
+    },
+    "matchday": "第 {matchday} 輪",
+    "round": "第 {round} 站",
+    "status": {
+      "live": "直播中",
+      "halftime": "中場",
+      "finished": "完場",
+      "upcoming": "未開賽"
+    },
+    "detail": {
+      "halfTime": "半場",
+      "grid": "發車位",
+      "laps": "圈數",
+      "fastestLap": "最快圈",
+      "pitStops": "進站換胎"
+    },
+    "table": {
+      "rank": "#",
+      "team": "球隊",
+      "played": "賽",
+      "win": "勝",
+      "draw": "和",
+      "loss": "負",
+      "goalDiff": "淨勝",
+      "points": "分",
+      "driver": "車手",
+      "constructor": "車隊",
+      "wins": "勝場",
+      "form": "近5場"
+    },
+    "news": {
+      "title": "最新資訊",
+      "empty": "暫無資訊"
+    },
+    "community": {
+      "title": "社群熱議",
+      "subtitle": "看看聯邦宇宙裡大家在聊什麼",
+      "quickPostPlaceholder": "分享你的觀點…",
+      "quickPostAction": "帶話題發文",
+      "quickPostHint": "將跳轉發文頁,並自動帶上目前話題",
+      "mentionPlaceholder": "@user@instance 提及帳號",
+      "mentionAdd": "新增",
+      "emptyPosts": "該話題下暫無貼文",
+      "autocompleteHint": "輸入 # 或 @ 可自動搜尋話題與帳號；發文時自動帶上目前話題"
+    },
+    "background": {
+      "customize": "自訂背景",
+      "presets": "預設背景",
+      "imageUrlLabel": "背景圖 URL",
+      "imageUrlPlaceholder": "https://…",
+      "apply": "套用",
+      "reset": "恢復預設"
+    },
+    "official": {
+      "title": "官方網站"
+    },
+    "empty": {
+      "fixtures": "暫無賽程資料",
+      "standings": "暫無積分榜資料",
+      "f1": "暫無資料"
+    }
   },
   "settings": {
     "title": "設定",
