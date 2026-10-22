@@ -5,9 +5,9 @@ import { Wrench } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { F1Compound, F1Pit, F1Stint } from "@/lib/sports/f1"
 
-/** 轮胎配方视觉规范（与 F1 官方转播一致：红软/黄中/白硬/绿半雨/蓝全雨） */
+/** 轮胎配方视觉规范（与 F1 官方转播一致：红软/黄中/白硬/绿半雨/蓝全雨，已压低明度避免刺眼） */
 export const COMPOUND_STYLE: Record<F1Compound, { color: string; letter: string }> = {
-  SOFT: { color: "#e8002d", letter: "S" },
+  SOFT: { color: "#b30f2a", letter: "S" },
   MEDIUM: { color: "#ffd12e", letter: "M" },
   HARD: { color: "#e8e8e8", letter: "H" },
   INTERMEDIATE: { color: "#43b02a", letter: "I" },
@@ -121,14 +121,14 @@ export function TyreStintBar({ stints, pits, totalLaps }: TyreStintBarProps) {
           return (
             <div
               key={`${stint.lapStart}-${index}`}
-              className="relative flex min-w-0 basis-0 items-center justify-center overflow-hidden rounded-md shadow-sm"
+              className="relative flex min-w-0 basis-0 items-center justify-center overflow-hidden rounded-[3px]"
               style={{
                 flexGrow: laps,
                 backgroundColor: color,
                 backgroundImage:
-                  "linear-gradient(180deg, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0) 45%, rgba(0,0,0,0.18) 100%)",
+                  "linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0) 45%, rgba(0,0,0,0.22) 100%)",
                 color: readableTextColor(color),
-                boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.18)",
+                boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.22)",
               }}
               title={`${compoundLabel(stint.compound)} · L${lapStart}-${lapEnd}`}
             >
@@ -141,10 +141,10 @@ export function TyreStintBar({ stints, pits, totalLaps }: TyreStintBarProps) {
       </div>
 
       {/* 图例 */}
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-muted-foreground">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm font-medium text-muted-foreground">
         {Array.from(new Set(stints.map((stint) => stint.compound))).map((compound) => (
-          <span key={compound} className="flex items-center gap-1.5">
-            <TyreIcon compound={compound} size={16} />
+          <span key={compound} className="flex items-center gap-2">
+            <TyreIcon compound={compound} size={32} />
             <span className="font-semibold">{compoundLabel(compound)}</span>
           </span>
         ))}
@@ -156,11 +156,11 @@ export function TyreStintBar({ stints, pits, totalLaps }: TyreStintBarProps) {
           {pits.map((pit, index) => (
             <span
               key={`${pit.lap}-${index}`}
-              className="flex items-center gap-1 rounded-full border border-border/60 bg-muted/40 px-2 py-0.5 text-xs font-medium tabular-nums text-muted-foreground"
+              className="flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/40 px-2.5 py-1 text-sm font-medium tabular-nums text-muted-foreground"
             >
-              <Wrench className="h-3 w-3 text-[var(--sport-brand)]" />
-              L{pit.lap}
-              <TyreIcon compound={compoundAfterLap(pit.lap)} size={16} />
+              <Wrench className="h-3.5 w-3.5 text-[var(--sport-brand)]" />
+              <span className="font-semibold">L{pit.lap}</span>
+              <TyreIcon compound={compoundAfterLap(pit.lap)} size={24} />
               {pit.duration != null ? `${pit.duration.toFixed(1)}s` : ""}
             </span>
           ))}

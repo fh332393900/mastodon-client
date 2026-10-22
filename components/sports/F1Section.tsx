@@ -28,7 +28,7 @@ import type {
   F1Weather,
 } from "@/lib/sports/f1"
 import { f1TeamMeta } from "@/lib/sports/f1-teams"
-import { F1_COUNTRY_FLAGS } from "@/lib/sports/config"
+import { F1_COUNTRY_FLAGS, f1TrackImage } from "@/lib/sports/config"
 import {
   Select,
   SelectContent,
@@ -263,6 +263,7 @@ function WeatherGrid({ weather }: { weather: F1Weather }) {
 /** 赛事头部：轮次 / 分站名 / 赛道 / 地点 / 圈数 / 天气 */
 function RaceHeader({ race }: { race: F1RaceDetail }) {
   const t = useTranslations("sports")
+  const trackImage = f1TrackImage(race.circuitId, race.season)
 
   return (
     <div className="relative overflow-hidden bg-[#101010] text-white">
@@ -270,43 +271,55 @@ function RaceHeader({ race }: { race: F1RaceDetail }) {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_120%_at_0%_0%,rgba(225,6,0,0.55)_0%,rgba(225,6,0,0.12)_38%,transparent_70%)]" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-[repeating-linear-gradient(115deg,rgba(255,255,255,0.06)_0px,rgba(255,255,255,0.06)_2px,transparent_2px,transparent_9px)]" />
 
-      <div className="relative space-y-3 p-4 sm:p-5">
-        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
-          <span className="rounded-sm bg-[var(--sport-brand)] px-1.5 py-0.5 text-white">
-            R{race.round}
-          </span>
-          <span>{formatRaceDate(race.date)}</span>
-        </div>
-
-        <div>
-          <h3 className="flex flex-wrap items-center gap-2 text-xl font-black uppercase italic leading-none tracking-tight sm:text-2xl">
-            <span className="not-italic">{countryFlag(race.country)}</span>
-            {race.raceName}
-          </h3>
-          <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-white/70">
-            <span className="flex items-center gap-1 font-medium">
-              <MapPin className="h-3.5 w-3.5 text-[var(--sport-brand)]" />
-              {race.circuitName}
+      <div className="relative flex items-start gap-4 p-4 sm:p-5">
+        <div className="min-w-0 flex-1 space-y-3">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
+            <span className="rounded-sm bg-[var(--sport-brand)] px-1.5 py-0.5 text-white">
+              R{race.round}
             </span>
-            <span className="text-white/25">•</span>
-            <span>
-              {race.locality}
-              {race.locality && race.country ? ", " : ""}
-              {race.country}
-            </span>
-            {race.totalLaps > 0 ? (
-              <>
-                <span className="text-white/25">•</span>
-                <span className="flex items-center gap-1">
-                  <Flag className="h-3.5 w-3.5" />
-                  {t("detail.lapsTotal", { laps: race.totalLaps })}
-                </span>
-              </>
-            ) : null}
+            <span>{formatRaceDate(race.date)}</span>
           </div>
+
+          <div>
+            <h3 className="flex flex-wrap items-center gap-2 text-xl font-black uppercase italic leading-none tracking-tight sm:text-2xl">
+              <span className="not-italic">{countryFlag(race.country)}</span>
+              {race.raceName}
+            </h3>
+            <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-white/70">
+              <span className="flex items-center gap-1 font-medium">
+                <MapPin className="h-3.5 w-3.5 text-[var(--sport-brand)]" />
+                {race.circuitName}
+              </span>
+              <span className="text-white/25">•</span>
+              <span>
+                {race.locality}
+                {race.locality && race.country ? ", " : ""}
+                {race.country}
+              </span>
+              {race.totalLaps > 0 ? (
+                <>
+                  <span className="text-white/25">•</span>
+                  <span className="flex items-center gap-1">
+                    <Flag className="h-3.5 w-3.5" />
+                    {t("detail.lapsTotal", { laps: race.totalLaps })}
+                  </span>
+                </>
+              ) : null}
+            </div>
+          </div>
+
+          {race.weather ? <WeatherGrid weather={race.weather} /> : null}
         </div>
 
-        {race.weather ? <WeatherGrid weather={race.weather} /> : null}
+        {/* 赛道缩略图：F1 官网当赛季赛道图（深色描边，invert 后适配深色头部） */}
+        {trackImage ? (
+          <img
+            src={trackImage}
+            alt={race.circuitName}
+            loading="lazy"
+            className="mt-1 h-11 w-auto shrink-0 select-none opacity-75 invert sm:h-20"
+          />
+        ) : null}
       </div>
     </div>
   )
@@ -469,6 +482,8 @@ function RaceResults() {
     enabled: !scheduleLoading,
   })
   const loading = scheduleLoading || (!data && (isLoading || isFetching))
+  // 赛季来自接口（Jolpica RaceTable），赛历未就绪时回退首场
+  const season = data?.season || schedule?.[0]?.season || ""
 
   // 赛历缺失时至少保留当前已加载的分站，避免下拉为空
   const roundOptions = useMemo(() => {
@@ -490,6 +505,12 @@ function RaceResults() {
       {/* 分站筛选：下拉定位最近完赛一场 */}
       <div className="flex items-center gap-2">
         <CalendarDays className="h-4 w-4 shrink-0 text-[var(--sport-brand)]" />
+        {/* 当前赛季（动态取自接口） */}
+        {season ? (
+          <span className="flex h-11 shrink-0 items-center rounded-xl border border-[var(--sport-brand)]/30 bg-[var(--sport-brand)]/10 px-3 text-sm font-black tabular-nums text-[var(--sport-brand)]">
+            {season}
+          </span>
+        ) : null}
         <Select
           value={activeRound != null ? String(activeRound) : undefined}
           onValueChange={(value) => setRound(Number(value))}

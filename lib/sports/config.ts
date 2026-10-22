@@ -154,4 +154,40 @@ export const F1_COUNTRY_FLAGS: Record<string, string> = {
   Germany: "🇩🇪",
   Portugal: "🇵🇹",
   Turkey: "🇹🇷",
+  Malaysia: "🇲🇾",
+}
+
+/** Jolpica circuitId → F1 官网赛道缩略图文件名（media.formula1.com 素材命名）。 */
+const F1_TRACK_SLUGS: Record<string, string> = {
+  albert_park: "melbourne",
+  shanghai: "shanghai",
+  suzuka: "suzuka",
+  miami: "miami",
+  villeneuve: "montreal",
+  monaco: "montecarlo",
+  catalunya: "catalunya",
+  red_bull_ring: "spielberg",
+  silverstone: "silverstone",
+  spa: "spafrancorchamps",
+  hungaroring: "hungaroring",
+  zandvoort: "zandvoort",
+  monza: "monza",
+  madring: "madring",
+  baku: "baku",
+  sepang: "kualalumpur",
+  marina_bay: "singapore",
+  americas: "austin",
+  rodriguez: "mexicocity",
+  interlagos: "interlagos",
+  vegas: "lasvegas",
+  losail: "lusail",
+  yas_marina: "yasmarinacircuit",
+}
+
+/** 赛道缩略图：F1 官网当赛季赛道图（黑色描边 SVG，深色底可配合 invert 使用）。 */
+export function f1TrackImage(circuitId: string | undefined, season: string | undefined): string | null {
+  const slug = circuitId ? F1_TRACK_SLUGS[circuitId] : undefined
+  if (!slug) return null
+  const year = season || "2026"
+  return `https://media.formula1.com/image/upload/c_lfill,w_3392/v1740000001/common/f1/${year}/track/${year}track${slug}blackoutline.svg`
 }

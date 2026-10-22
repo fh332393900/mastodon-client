@@ -12,8 +12,12 @@ const OPENF1_BASE = "https://api.openf1.org/v1"
 const REVALIDATE_SECONDS = 3600
 
 export interface F1Race {
+  /** 赛季（如 2026） */
+  season: string
   round: number
   raceName: string
+  /** Jolpica 赛道 ID，用于匹配赛道缩略图 */
+  circuitId: string
   circuitName: string
   locality: string
   country: string
@@ -75,9 +79,13 @@ export interface F1RaceResult {
 }
 
 export interface F1RaceDetail {
+  /** 赛季（如 2026） */
+  season: string
   raceName: string
   round: number
   date: string
+  /** Jolpica 赛道 ID，用于匹配赛道缩略图 */
+  circuitId: string
   circuitName: string
   locality: string
   country: string
@@ -144,8 +152,10 @@ export async function fetchF1Schedule(): Promise<F1Race[]> {
   if (!Array.isArray(races)) return []
 
   return races.map((race: any) => ({
+    season: String(race.season ?? payload?.MRData?.RaceTable?.season ?? ""),
     round: Number(race.round) || 0,
     raceName: race.raceName ?? "",
+    circuitId: race.Circuit?.circuitId ?? "",
     circuitName: race.Circuit?.circuitName ?? "",
     locality: race.Circuit?.Location?.locality ?? "",
     country: race.Circuit?.Location?.country ?? "",
@@ -384,9 +394,11 @@ export async function fetchF1RaceResults(round?: number): Promise<F1RaceDetail |
   })
 
   return {
+    season: String(race.season ?? payload?.MRData?.RaceTable?.season ?? ""),
     raceName: race.raceName ?? "",
     round: Number(race.round) || 0,
     date: race.date ?? "",
+    circuitId: race.Circuit?.circuitId ?? "",
     circuitName: race.Circuit?.circuitName ?? "",
     locality: race.Circuit?.Location?.locality ?? "",
     country: race.Circuit?.Location?.country ?? "",
