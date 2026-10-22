@@ -240,9 +240,9 @@ function FixturesList({ league }: { league: string }) {
       .slice(-5)
       .reverse()
     const live = list.filter((f) => f.status === "IN_PLAY" || f.status === "PAUSED")
-    const upcoming = list.filter(
-      (f) => f.status === "SCHEDULED" || f.status === "TIMED",
-    )
+    const upcoming = list
+      .filter((f) => f.status === "SCHEDULED" || f.status === "TIMED")
+      .slice(0, 12)
     return [...live, ...past, ...upcoming]
   }, [data])
 

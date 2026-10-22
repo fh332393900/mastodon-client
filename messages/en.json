@@ -284,7 +284,20 @@
       "grid": "Grid",
       "laps": "Laps",
       "fastestLap": "Fastest lap",
-      "pitStops": "Pit stops"
+      "pitStops": "Pit stops",
+      "tyreStrategy": "Tyre strategy",
+      "compounds": {
+        "soft": "Soft",
+        "medium": "Medium",
+        "hard": "Hard",
+        "intermediate": "Intermediate",
+        "wet": "Wet",
+        "unknown": "Unknown"
+      },
+      "rain": "Rain",
+      "noRain": "Dry",
+      "airTemp": "Air",
+      "trackTemp": "Track"
     },
     "table": {
       "rank": "#",

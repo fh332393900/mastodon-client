@@ -4,12 +4,12 @@ import { useQuery } from "@tanstack/react-query"
 import type {
   F1ConstructorStanding,
   F1DriverStanding,
-  F1LastRace,
+  F1RaceDetail,
   F1Race,
 } from "@/lib/sports/f1"
 
-async function fetchF1<T>(type: string, key: string): Promise<T> {
-  const response = await fetch(`/api/sports/f1?type=${type}`)
+async function fetchF1<T>(query: string, key: string): Promise<T> {
+  const response = await fetch(`/api/sports/f1?${query}`)
   if (!response.ok) throw new Error("f1 fetch failed")
   const payload = (await response.json()) as Record<string, T>
   return payload[key]
@@ -25,16 +25,20 @@ const sharedOptions = {
 export function useF1Schedule() {
   return useQuery({
     queryKey: ["sports", "f1", "schedule"] as const,
-    queryFn: () => fetchF1<F1Race[]>("schedule", "races"),
+    queryFn: () => fetchF1<F1Race[]>("type=schedule", "races"),
     ...sharedOptions,
   })
 }
 
-/** 最近一场大奖赛结果。 */
-export function useF1LastResults() {
+/** 指定轮次大奖赛结果（不传为最近一场），含轮胎策略/天气细节。 */
+export function useF1RaceResults(round?: number) {
   return useQuery({
-    queryKey: ["sports", "f1", "results"] as const,
-    queryFn: () => fetchF1<F1LastRace | null>("results", "race"),
+    queryKey: ["sports", "f1", "results", round ?? "last"] as const,
+    queryFn: () =>
+      fetchF1<F1RaceDetail | null>(
+        round ? `type=results&round=${round}` : "type=results",
+        "race",
+      ),
     ...sharedOptions,
   })
 }
@@ -43,7 +47,7 @@ export function useF1LastResults() {
 export function useF1DriverStandings() {
   return useQuery({
     queryKey: ["sports", "f1", "drivers"] as const,
-    queryFn: () => fetchF1<F1DriverStanding[]>("drivers", "standings"),
+    queryFn: () => fetchF1<F1DriverStanding[]>("type=drivers", "standings"),
     ...sharedOptions,
   })
 }
@@ -52,7 +56,7 @@ export function useF1DriverStandings() {
 export function useF1ConstructorStandings() {
   return useQuery({
     queryKey: ["sports", "f1", "teams"] as const,
-    queryFn: () => fetchF1<F1ConstructorStanding[]>("teams", "standings"),
+    queryFn: () => fetchF1<F1ConstructorStanding[]>("type=teams", "standings"),
     ...sharedOptions,
   })
 }

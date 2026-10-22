@@ -284,7 +284,20 @@
       "grid": "發車位",
       "laps": "圈數",
       "fastestLap": "最快圈",
-      "pitStops": "進站換胎"
+      "pitStops": "進站換胎",
+      "tyreStrategy": "輪胎策略",
+      "compounds": {
+        "soft": "軟胎",
+        "medium": "中性胎",
+        "hard": "硬胎",
+        "intermediate": "半雨胎",
+        "wet": "雨胎",
+        "unknown": "未知"
+      },
+      "rain": "有雨",
+      "noRain": "無雨",
+      "airTemp": "氣溫",
+      "trackTemp": "賽道溫度"
     },
     "table": {
       "rank": "#",

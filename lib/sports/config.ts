@@ -123,3 +123,35 @@ export const SPORTS_BACKGROUND_PRESETS: SportsBackgroundPreset[] = [
 ]
 
 export const SPORTS_IDS: SportId[] = ["football", "f1"]
+
+/** F1 举办国 → 国旗 emoji,用于赛历与赛果点缀。 */
+export const F1_COUNTRY_FLAGS: Record<string, string> = {
+  Australia: "🇦🇺",
+  China: "🇨🇳",
+  Japan: "🇯🇵",
+  Bahrain: "🇧🇭",
+  "Saudi Arabia": "🇸🇦",
+  USA: "🇺🇸",
+  "United States": "🇺🇸",
+  Italy: "🇮🇹",
+  Monaco: "🇲🇨",
+  Spain: "🇪🇸",
+  Canada: "🇨🇦",
+  Austria: "🇦🇹",
+  UK: "🇬🇧",
+  "Great Britain": "🇬🇧",
+  Belgium: "🇧🇪",
+  Hungary: "🇭🇺",
+  Netherlands: "🇳🇱",
+  Azerbaijan: "🇦🇿",
+  Singapore: "🇸🇬",
+  Mexico: "🇲🇽",
+  Brazil: "🇧🇷",
+  Qatar: "🇶🇦",
+  UAE: "🇦🇪",
+  "United Arab Emirates": "🇦🇪",
+  France: "🇫🇷",
+  Germany: "🇩🇪",
+  Portugal: "🇵🇹",
+  Turkey: "🇹🇷",
+}

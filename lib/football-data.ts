@@ -1,5 +1,6 @@
 /**
- * football-data.org 英超赛程数据：只在服务端调用，避免把 token 暴露给浏览器。
+ * football-data.org 赛程/积分榜数据:只在服务端调用，避免把 token 暴露给浏览器。
+ * 需配置 FOOTBALL_DATA_TOKEN；未配置或请求失败时返回空数组，由调用方降级。
  */
 
 const API_BASE = "https://api.football-data.org/v4"

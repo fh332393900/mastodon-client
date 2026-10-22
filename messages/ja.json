@@ -284,7 +284,20 @@
       "grid": "グリッド",
       "laps": "ラップ",
       "fastestLap": "ファステストラップ",
-      "pitStops": "ピットストップ"
+      "pitStops": "ピットストップ",
+      "tyreStrategy": "タイヤ戦略",
+      "compounds": {
+        "soft": "ソフト",
+        "medium": "ミディアム",
+        "hard": "ハード",
+        "intermediate": "インターミディエイト",
+        "wet": "ウェット",
+        "unknown": "不明"
+      },
+      "rain": "雨",
+      "noRain": "晴れ",
+      "airTemp": "気温",
+      "trackTemp": "路面温度"
     },
     "table": {
       "rank": "#",

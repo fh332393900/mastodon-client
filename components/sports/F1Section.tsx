@@ -5,20 +5,27 @@ import { useTranslations } from "next-intl"
 import {
   CalendarDays,
   ChevronDown,
+  CloudRain,
   Crown,
+  Droplets,
   Flag,
   Gauge,
+  Sun,
+  Thermometer,
   Trophy,
   Users,
+  Wind,
   Wrench,
   Zap,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import type { F1DriverStanding, F1RaceResult } from "@/lib/sports/f1"
+import type { F1DriverStanding, F1RaceDetail, F1RaceResult } from "@/lib/sports/f1"
+import { F1_COUNTRY_FLAGS } from "@/lib/sports/config"
+import { TyreStintBar } from "./TyreStintBar"
 import {
   useF1ConstructorStandings,
   useF1DriverStandings,
-  useF1LastResults,
+  useF1RaceResults,
   useF1Schedule,
 } from "@/hooks/sports/useF1"
 
@@ -61,7 +68,7 @@ export function F1Section() {
       </div>
 
       {view === "schedule" && <ScheduleList />}
-      {view === "results" && <LastResults />}
+      {view === "results" && <RaceResults />}
       {view === "drivers" && <DriverStandings />}
       {view === "teams" && <ConstructorStandings />}
     </section>
@@ -117,6 +124,7 @@ function ScheduleList() {
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold">
+                {F1_COUNTRY_FLAGS[race.country] ? `${F1_COUNTRY_FLAGS[race.country]} ` : ""}
                 {race.raceName}
                 {isNext ? (
                   <span className="ml-2 rounded-full bg-[var(--sport-brand)] px-2 py-0.5 text-[10px] font-bold uppercase text-white">
@@ -195,40 +203,44 @@ function ResultRow({ result }: { result: F1RaceResult }) {
       </button>
 
       {open ? (
-        <div className="grid grid-cols-2 gap-2 border-t border-border/40 bg-muted/20 px-4 py-3 sm:grid-cols-4">
-          <DetailItem
-            icon={<Flag className="h-3.5 w-3.5" />}
-            label={t("detail.grid")}
-            value={`P${result.grid}`}
-            extra={
-              gained > 0 ? (
-                <span className="font-bold text-emerald-500">▲{gained}</span>
-              ) : gained < 0 ? (
-                <span className="font-bold text-red-500">▼{-gained}</span>
-              ) : undefined
-            }
-          />
-          <DetailItem
-            icon={<Gauge className="h-3.5 w-3.5" />}
-            label={t("detail.laps")}
-            value={String(result.laps)}
-          />
-          {result.fastestLap ? (
+        <div className="space-y-3 border-t border-border/40 bg-muted/20 px-4 py-3">
+          {/* 轮胎策略时间轴(F1 Manager 风格) */}
+          <TyreStintBar stints={result.stints} pits={result.pits} totalLaps={result.laps} />
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             <DetailItem
-              icon={<Zap className="h-3.5 w-3.5 text-yellow-500" />}
-              label={t("detail.fastestLap")}
-              value={result.fastestLap.time}
-              extra={`P${result.fastestLap.rank}`}
+              icon={<Flag className="h-3.5 w-3.5" />}
+              label={t("detail.grid")}
+              value={`P${result.grid}`}
+              extra={
+                gained > 0 ? (
+                  <span className="font-bold text-emerald-500">▲{gained}</span>
+                ) : gained < 0 ? (
+                  <span className="font-bold text-red-500">▼{-gained}</span>
+                ) : undefined
+              }
             />
-          ) : null}
-          {result.pitStops ? (
             <DetailItem
-              icon={<Wrench className="h-3.5 w-3.5 text-[var(--sport-brand)]" />}
-              label={t("detail.pitStops")}
-              value={`${result.pitStops.count}×`}
-              extra={`${result.pitStops.totalSeconds.toFixed(1)}s`}
+              icon={<Gauge className="h-3.5 w-3.5" />}
+              label={t("detail.laps")}
+              value={String(result.laps)}
             />
-          ) : null}
+            {result.fastestLap ? (
+              <DetailItem
+                icon={<Zap className="h-3.5 w-3.5 text-yellow-500" />}
+                label={t("detail.fastestLap")}
+                value={result.fastestLap.time}
+                extra={`P${result.fastestLap.rank}`}
+              />
+            ) : null}
+            {result.pitStops ? (
+              <DetailItem
+                icon={<Wrench className="h-3.5 w-3.5 text-[var(--sport-brand)]" />}
+                label={t("detail.pitStops")}
+                value={`${result.pitStops.count}×`}
+                extra={`${result.pitStops.totalSeconds.toFixed(1)}s`}
+              />
+            ) : null}
+          </div>
         </div>
       ) : null}
     </div>
@@ -260,28 +272,103 @@ function DetailItem({
   )
 }
 
-function LastResults() {
-  const t = useTranslations("sports")
-  const { data, isLoading } = useF1LastResults()
-
-  if (isLoading) return <Skeleton />
-  if (!data) return <Empty text={t("empty.f1")} />
+function WeatherStrip({ race }: { race: F1RaceDetail }) {
+  const t = useTranslations("sports.detail")
+  const weather = race.weather
+  if (!weather) return null
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border/60 bg-card/80">
-      <div className="border-b border-border/60 bg-[var(--sport-brand)]/10 px-4 py-3">
-        <p className="text-sm font-bold">
-          🏁 {data.raceName}
-          <span className="ml-2 text-xs font-medium text-muted-foreground">
-            {t("round", { round: data.round })} · {formatRaceDate(data.date)}
-          </span>
-        </p>
-      </div>
-      <div className="divide-y divide-border/50">
-        {data.results.map((result) => (
-          <ResultRow key={result.position} result={result} />
-        ))}
-      </div>
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs text-muted-foreground">
+      <span className="flex items-center gap-1 font-semibold">
+        {weather.rainfall ? (
+          <CloudRain className="h-3.5 w-3.5 text-sky-400" />
+        ) : (
+          <Sun className="h-3.5 w-3.5 text-amber-400" />
+        )}
+        {weather.rainfall ? t("rain") : t("noRain")}
+      </span>
+      <span className="flex items-center gap-1 tabular-nums">
+        <Thermometer className="h-3.5 w-3.5" />
+        {t("airTemp")} <b className="text-foreground">{weather.airTemp}°C</b>
+      </span>
+      <span className="flex items-center gap-1 tabular-nums">
+        <Flag className="h-3.5 w-3.5" />
+        {t("trackTemp")} <b className="text-foreground">{weather.trackTemp}°C</b>
+      </span>
+      <span className="flex items-center gap-1 tabular-nums">
+        <Droplets className="h-3.5 w-3.5" />
+        {weather.humidity}%
+      </span>
+      <span className="flex items-center gap-1 tabular-nums">
+        <Wind className="h-3.5 w-3.5" />
+        {weather.windSpeed} m/s
+      </span>
+    </div>
+  )
+}
+
+function RaceResults() {
+  const t = useTranslations("sports")
+  const { data: schedule } = useF1Schedule()
+  const [round, setRound] = useState<number | undefined>(undefined)
+  const { data, isLoading } = useF1RaceResults(round)
+
+  // 已完成的分站(按轮次倒序),用于筛选
+  const completedRounds = useMemo(() => {
+    const today = new Date().toISOString().slice(0, 10)
+    return (schedule ?? [])
+      .filter((race) => race.date && race.date <= today)
+      .slice()
+      .sort((a, b) => b.round - a.round)
+  }, [schedule])
+
+  const activeRound = round ?? data?.round
+
+  return (
+    <div className="space-y-3">
+      {/* 赛历筛选(横滑) */}
+      {completedRounds.length > 0 ? (
+        <div className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1">
+          {completedRounds.map((race) => (
+            <button
+              key={race.round}
+              type="button"
+              onClick={() => setRound(race.round)}
+              className={cn(
+                "shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors",
+                activeRound === race.round
+                  ? "bg-[var(--sport-brand)] text-white shadow-sm"
+                  : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground",
+              )}
+            >
+              R{race.round} {race.raceName.replace(/ Grand Prix$/i, "")}
+            </button>
+          ))}
+        </div>
+      ) : null}
+
+      {isLoading ? <Skeleton /> : !data ? <Empty text={t("empty.f1")} /> : (
+        <div className="overflow-hidden rounded-2xl border border-border/60 bg-card/80">
+          <div className="border-b border-border/60 bg-[var(--sport-brand)]/10 px-4 py-3">
+            <p className="text-sm font-bold">
+              🏁 {F1_COUNTRY_FLAGS[data.country] ? `${F1_COUNTRY_FLAGS[data.country]} ` : ""}
+              {data.raceName}
+              <span className="ml-2 text-xs font-medium text-muted-foreground">
+                {t("round", { round: data.round })} · {formatRaceDate(data.date)}
+              </span>
+            </p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              {data.circuitName} · {data.locality}, {data.country}
+            </p>
+            <WeatherStrip race={data} />
+          </div>
+          <div className="divide-y divide-border/50">
+            {data.results.map((result) => (
+              <ResultRow key={result.position} result={result} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

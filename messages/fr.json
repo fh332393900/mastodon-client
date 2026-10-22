@@ -284,7 +284,20 @@
       "grid": "Grille",
       "laps": "Tours",
       "fastestLap": "Meilleur tour",
-      "pitStops": "Arrêts"
+      "pitStops": "Arrêts",
+      "tyreStrategy": "Stratégie pneus",
+      "compounds": {
+        "soft": "Tendres",
+        "medium": "Médiums",
+        "hard": "Durs",
+        "intermediate": "Intermédiaires",
+        "wet": "Pluie",
+        "unknown": "Inconnu"
+      },
+      "rain": "Pluie",
+      "noRain": "Sec",
+      "airTemp": "Air",
+      "trackTemp": "Piste"
     },
     "table": {
       "rank": "#",
