@@ -3,6 +3,8 @@
  * 只在服务端调用，结果经 Next.js fetch 缓存。
  */
 
+import { f1DriverHeadshot, f1TeamMeta } from "./f1-teams"
+
 const API_BASE = "https://api.jolpi.ca/ergast/f1"
 /** OpenF1 提供车手头像与车队配色（免费，无需 key）。 */
 const OPENF1_BASE = "https://api.openf1.org/v1"
@@ -48,6 +50,12 @@ export interface F1RaceResult {
   driver: string
   driverCode: string
   team: string
+  /** 车队 ID，用于徽标与配色 */
+  constructorId: string
+  /** 车队主色（不含 #） */
+  teamColor: string | null
+  /** 车手头像（F1 官方当季定妆照） */
+  headshot: string | null
   points: number
   /** 完赛时间/差距；未完赛时为空 */
   time: string
@@ -89,9 +97,11 @@ export interface F1DriverStanding {
   driverCode: string
   nationality: string
   team: string
+  /** 车队 ID，用于徽标与配色 */
+  constructorId: string
   points: number
   wins: number
-  /** 车手头像（OpenF1），可能为 null */
+  /** 车手头像（F1 官方当季定妆照，回退 OpenF1），可能为 null */
   headshot: string | null
   /** 车队主题色（OpenF1，不含 #），可能为 null */
   teamColor: string | null
@@ -100,9 +110,15 @@ export interface F1DriverStanding {
 export interface F1ConstructorStanding {
   position: number
   team: string
+  /** 车队 ID，用于徽标与配色 */
+  constructorId: string
   nationality: string
   points: number
   wins: number
+  /** 车队主色（不含 #），可能为 null */
+  teamColor: string | null
+  /** 车队徽标（本地静态资源），可能为 null */
+  logo: string | null
 }
 
 async function fetchJson(path: string): Promise<any | null> {
@@ -330,6 +346,8 @@ export async function fetchF1RaceResults(round?: number): Promise<F1RaceDetail |
   const results: F1RaceResult[] = (race.Results ?? []).map((entry: any) => {
     const driverId: string = entry.Driver?.driverId ?? ""
     const driverNumber = Number(entry.Driver?.permanentNumber) || 0
+    const constructorId: string = entry.Constructor?.constructorId ?? ""
+    const team = f1TeamMeta(constructorId)
     const pit = pitStops.get(driverId) ?? null
     // 越界圈数裁到本场总圈数，避免出现超出终点的色块
     const stints = (extras.stintsByDriver.get(driverNumber) ?? []).map((stint) =>
@@ -341,6 +359,13 @@ export async function fetchF1RaceResults(round?: number): Promise<F1RaceDetail |
       driver: `${entry.Driver?.givenName ?? ""} ${entry.Driver?.familyName ?? ""}`.trim(),
       driverCode: entry.Driver?.code ?? "",
       team: entry.Constructor?.name ?? "",
+      constructorId,
+      teamColor: team?.color ?? null,
+      headshot: f1DriverHeadshot(
+        entry.Driver?.givenName ?? "",
+        entry.Driver?.familyName ?? "",
+        constructorId,
+      ),
       points: Number(entry.points) || 0,
       time: entry.Time?.time ?? "",
       status: entry.status ?? "",
@@ -413,16 +438,25 @@ export async function fetchF1DriverStandings(): Promise<F1DriverStanding[]> {
   return list.map((entry: any) => {
     const code = String(entry.Driver?.code ?? "").toUpperCase()
     const profile = profiles.get(code)
+    const constructorId: string = entry.Constructors?.[0]?.constructorId ?? ""
+    const team = f1TeamMeta(constructorId)
     return {
       position: Number(entry.position) || 0,
       driver: `${entry.Driver?.givenName ?? ""} ${entry.Driver?.familyName ?? ""}`.trim(),
       driverCode: entry.Driver?.code ?? "",
       nationality: entry.Driver?.nationality ?? "",
       team: entry.Constructors?.[0]?.name ?? "",
+      constructorId,
       points: Number(entry.points) || 0,
       wins: Number(entry.wins) || 0,
-      headshot: profile?.headshot ?? null,
-      teamColor: profile?.teamColor ?? null,
+      // 官方当季定妆照优先，缺失时回退 OpenF1 头像
+      headshot:
+        f1DriverHeadshot(
+          entry.Driver?.givenName ?? "",
+          entry.Driver?.familyName ?? "",
+          constructorId,
+        ) ?? profile?.headshot ?? null,
+      teamColor: profile?.teamColor ?? team?.color ?? null,
     }
   })
 }
@@ -433,11 +467,18 @@ export async function fetchF1ConstructorStandings(): Promise<F1ConstructorStandi
   const list = payload?.MRData?.StandingsTable?.StandingsLists?.[0]?.ConstructorStandings
   if (!Array.isArray(list)) return []
 
-  return list.map((entry: any) => ({
-    position: Number(entry.position) || 0,
-    team: entry.Constructor?.name ?? "",
-    nationality: entry.Constructor?.nationality ?? "",
-    points: Number(entry.points) || 0,
-    wins: Number(entry.wins) || 0,
-  }))
+  return list.map((entry: any) => {
+    const constructorId: string = entry.Constructor?.constructorId ?? ""
+    const team = f1TeamMeta(constructorId)
+    return {
+      position: Number(entry.position) || 0,
+      team: entry.Constructor?.name ?? "",
+      constructorId,
+      nationality: entry.Constructor?.nationality ?? "",
+      points: Number(entry.points) || 0,
+      wins: Number(entry.wins) || 0,
+      teamColor: team?.color ?? null,
+      logo: team?.logo ?? null,
+    }
+  })
 }

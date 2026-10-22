@@ -27,6 +27,7 @@ import type {
   F1RaceResult,
   F1Weather,
 } from "@/lib/sports/f1"
+import { f1TeamMeta } from "@/lib/sports/f1-teams"
 import { F1_COUNTRY_FLAGS } from "@/lib/sports/config"
 import {
   Select,
@@ -102,6 +103,38 @@ function formatRaceDate(date: string, time?: string): string {
 
 function countryFlag(country: string): string {
   return F1_COUNTRY_FLAGS[country] ? `${F1_COUNTRY_FLAGS[country]} ` : ""
+}
+
+/** 车队徽标：白底小方块，保证彩色 logo 在深浅主题下都清晰可辨 */
+function TeamLogo({
+  constructorId,
+  size = 18,
+  className,
+}: {
+  constructorId: string
+  size?: number
+  className?: string
+}) {
+  const logo = f1TeamMeta(constructorId)?.logo
+  if (!logo) return null
+
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "flex shrink-0 items-center justify-center overflow-hidden rounded-[5px] bg-white ring-1 ring-black/10",
+        className,
+      )}
+      style={{ width: size, height: size }}
+    >
+      <img
+        src={logo}
+        alt=""
+        loading="lazy"
+        className="h-full w-full object-contain p-[2px]"
+      />
+    </span>
+  )
 }
 
 function ScheduleList() {
@@ -303,6 +336,18 @@ function ResultRow({ result, totalLaps }: { result: F1RaceResult; totalLaps: num
         >
           P{result.position}
         </span>
+        {result.headshot ? (
+          <img
+            src={result.headshot}
+            alt={result.driver}
+            loading="lazy"
+            className="h-9 w-9 shrink-0 rounded-full bg-muted/50 object-cover object-top"
+          />
+        ) : (
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted/60 text-xs font-black text-muted-foreground">
+            {result.driverCode || result.driver.slice(0, 2).toUpperCase()}
+          </span>
+        )}
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold">
             {result.driver}
@@ -312,14 +357,17 @@ function ResultRow({ result, totalLaps }: { result: F1RaceResult; totalLaps: num
               </span>
             ) : null}
           </p>
-          <p className="truncate text-xs text-muted-foreground">{result.team}</p>
+          <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <TeamLogo constructorId={result.constructorId} size={16} />
+            <span className="truncate">{result.team}</span>
+          </p>
         </div>
-        <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
-          {result.time || result.status}
-        </span>
-        <span className="w-10 shrink-0 text-right text-sm font-bold tabular-nums">
-          {result.points}
-        </span>
+        <div className="max-w-[88px] shrink-0 text-right">
+          <p className="text-sm font-bold tabular-nums">{result.points}</p>
+          <p className="truncate text-xs tabular-nums text-muted-foreground">
+            {result.time || result.status}
+          </p>
+        </div>
         <ChevronDown
           className={cn(
             "h-4 w-4 shrink-0 text-muted-foreground transition-transform",
@@ -557,7 +605,10 @@ function PodiumCard({ entry, rank }: { entry: F1DriverStanding; rank: 1 | 2 | 3 
           </div>
         )}
         <p className="w-full truncate text-sm font-bold">{entry.driver}</p>
-        <p className="w-full truncate text-xs font-medium text-muted-foreground">{entry.team}</p>
+        <p className="flex w-full items-center justify-center gap-1 text-xs font-medium text-muted-foreground">
+          <TeamLogo constructorId={entry.constructorId} size={14} />
+          <span className="truncate">{entry.team}</span>
+        </p>
         <p className="text-lg font-black leading-none text-[var(--sport-brand)]">
           {entry.points}
           <span className="ml-1 text-xs font-semibold text-muted-foreground">
@@ -631,7 +682,10 @@ function DriverStandings() {
                     {entry.driverCode}
                   </span>
                 </p>
-                <p className="truncate text-xs text-muted-foreground">{entry.team}</p>
+                <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <TeamLogo constructorId={entry.constructorId} size={16} />
+                  <span className="truncate">{entry.team}</span>
+                </p>
               </div>
               {entry.wins > 0 ? (
                 <span className="flex shrink-0 items-center gap-1 text-xs font-semibold text-amber-500">
@@ -664,16 +718,22 @@ function ConstructorStandings() {
     <div className="space-y-2 rounded-2xl border border-border/60 bg-card/80 p-4">
       {standings.map((entry) => (
         <div key={entry.position} className="flex items-center gap-3">
-          <span className="w-6 text-center text-xs font-bold text-muted-foreground">
+          <span className="w-6 shrink-0 text-center text-xs font-bold text-muted-foreground">
             {entry.position}
           </span>
-          <span className="w-28 shrink-0 truncate text-sm font-semibold sm:w-40">
+          <TeamLogo constructorId={entry.constructorId} size={24} />
+          <span className="w-24 shrink-0 truncate text-sm font-semibold sm:w-36">
             {entry.team}
           </span>
           <div className="h-5 flex-1 overflow-hidden rounded-full bg-muted/40">
             <div
-              className="h-full rounded-full bg-[var(--sport-brand)] transition-all"
-              style={{ width: `${Math.max((entry.points / maxPoints) * 100, 2)}%` }}
+              className="h-full rounded-full transition-all"
+              style={{
+                width: `${Math.max((entry.points / maxPoints) * 100, 2)}%`,
+                backgroundColor: entry.teamColor
+                  ? `#${entry.teamColor}`
+                  : "var(--sport-brand)",
+              }}
             />
           </div>
           <span className="w-12 shrink-0 text-right text-sm font-bold tabular-nums">
