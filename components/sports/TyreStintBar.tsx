@@ -15,9 +15,17 @@ export const COMPOUND_STYLE: Record<F1Compound, { color: string; letter: string 
   UNKNOWN: { color: "#8b8b8b", letter: "?" },
 }
 
-const TYRE_TICKS = Array.from({ length: 16 }, (_, index) => (index * 360) / 16)
+/** 官方 Pirelli 配方轮胎图（本地 96px，取自 Pirelli F1 官网素材） */
+const COMPOUND_IMAGE: Record<F1Compound, string | null> = {
+  SOFT: "/f1-tyres/soft.png",
+  MEDIUM: "/f1-tyres/medium.png",
+  HARD: "/f1-tyres/hard.png",
+  INTERMEDIATE: "/f1-tyres/intermediate.png",
+  WET: "/f1-tyres/wet.png",
+  UNKNOWN: null,
+}
 
-/** 轮胎图标：胎面刻纹 + 配方色胎壁 + 配方字母，贴近 F1 官方图形 */
+/** 轮胎图标：使用官方配方轮胎图，未知配方回退为灰色问号 */
 export function TyreIcon({
   compound,
   size = 22,
@@ -27,53 +35,34 @@ export function TyreIcon({
   size?: number
   className?: string
 }) {
-  const style = COMPOUND_STYLE[compound] ?? COMPOUND_STYLE.UNKNOWN
+  const src = COMPOUND_IMAGE[compound] ?? null
+
+  if (!src) {
+    return (
+      <span
+        aria-hidden="true"
+        className={cn(
+          "inline-flex shrink-0 items-center justify-center rounded-full bg-muted text-xs font-black text-muted-foreground",
+          className,
+        )}
+        style={{ width: size, height: size }}
+      >
+        ?
+      </span>
+    )
+  }
+
   return (
-    <svg
+    <img
+      src={src}
+      alt=""
+      aria-hidden="true"
       width={size}
       height={size}
-      viewBox="0 0 32 32"
-      className={cn("shrink-0", className)}
-      aria-hidden
-    >
-      {/* 胎体 */}
-      <circle cx="16" cy="16" r="15.4" fill="#0e0e0e" />
-      <circle cx="16" cy="16" r="15.1" fill="none" stroke="#3a3a3a" strokeWidth="0.9" />
-      {/* 胎面刻纹 */}
-      <g stroke="#4a4a4a" strokeWidth="1.5" strokeLinecap="round">
-        {TYRE_TICKS.map((angle) => {
-          const rad = (angle * Math.PI) / 180
-          const inner = 12.1
-          const outer = 14.6
-          return (
-            <line
-              key={angle}
-              x1={16 + Math.cos(rad) * inner}
-              y1={16 + Math.sin(rad) * inner}
-              x2={16 + Math.cos(rad) * outer}
-              y2={16 + Math.sin(rad) * outer}
-            />
-          )
-        })}
-      </g>
-      {/* 配方色胎壁 */}
-      <circle cx="16" cy="16" r="10.4" fill="#141414" />
-      <circle cx="16" cy="16" r="10.4" fill="none" stroke={style.color} strokeWidth="3.1" />
-      {/* 轮毂中心 + 配方字母 */}
-      <circle cx="16" cy="16" r="7.1" fill="#070707" />
-      <text
-        x="16"
-        y="16"
-        dy="0.36em"
-        textAnchor="middle"
-        fontSize="10.5"
-        fontWeight="900"
-        fill={style.color}
-        fontFamily="ui-sans-serif, system-ui, sans-serif"
-      >
-        {style.letter}
-      </text>
-    </svg>
+      loading="lazy"
+      className={cn("shrink-0 select-none object-contain", className)}
+      style={{ width: size, height: size }}
+    />
   )
 }
 
@@ -114,10 +103,10 @@ export function TyreStintBar({ stints, pits, totalLaps }: TyreStintBarProps) {
   return (
     <div className="space-y-2">
       <div className="flex items-baseline justify-between">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
           {t("tyreStrategy")}
         </p>
-        <span className="text-[10px] font-medium tabular-nums text-muted-foreground">
+        <span className="text-xs font-semibold tabular-nums text-muted-foreground">
           {maxLap} LAPS
         </span>
       </div>
@@ -143,7 +132,7 @@ export function TyreStintBar({ stints, pits, totalLaps }: TyreStintBarProps) {
               }}
               title={`${compoundLabel(stint.compound)} · L${lapStart}-${lapEnd}`}
             >
-              <span className="truncate px-1 text-[10px] font-black tabular-nums tracking-tight">
+              <span className="truncate px-1 text-xs font-black tabular-nums tracking-tight">
                 L{lapStart}-{lapEnd}
               </span>
             </div>
@@ -152,11 +141,11 @@ export function TyreStintBar({ stints, pits, totalLaps }: TyreStintBarProps) {
       </div>
 
       {/* 图例 */}
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-muted-foreground">
         {Array.from(new Set(stints.map((stint) => stint.compound))).map((compound) => (
-          <span key={compound} className="flex items-center gap-1">
-            <TyreIcon compound={compound} size={14} />
-            {compoundLabel(compound)}
+          <span key={compound} className="flex items-center gap-1.5">
+            <TyreIcon compound={compound} size={16} />
+            <span className="font-semibold">{compoundLabel(compound)}</span>
           </span>
         ))}
       </div>
@@ -167,11 +156,11 @@ export function TyreStintBar({ stints, pits, totalLaps }: TyreStintBarProps) {
           {pits.map((pit, index) => (
             <span
               key={`${pit.lap}-${index}`}
-              className="flex items-center gap-1 rounded-full border border-border/60 bg-muted/40 px-2 py-0.5 text-[11px] tabular-nums text-muted-foreground"
+              className="flex items-center gap-1 rounded-full border border-border/60 bg-muted/40 px-2 py-0.5 text-xs font-medium tabular-nums text-muted-foreground"
             >
               <Wrench className="h-3 w-3 text-[var(--sport-brand)]" />
               L{pit.lap}
-              <TyreIcon compound={compoundAfterLap(pit.lap)} size={12} />
+              <TyreIcon compound={compoundAfterLap(pit.lap)} size={16} />
               {pit.duration != null ? `${pit.duration.toFixed(1)}s` : ""}
             </span>
           ))}

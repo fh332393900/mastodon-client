@@ -19,7 +19,11 @@ import { F1Section } from "./F1Section"
 import { SportsNews } from "./SportsNews"
 import { SportsCommunity } from "./SportsCommunity"
 
-const SPORT_ICONS: Record<SportId, string> = { football: "⚽", f1: "🏎️" }
+/** 足球用 emoji；F1 用官方红色 logo（已下载到本地 public/f1-logo.svg） */
+const SPORT_ICONS: Record<SportId, { emoji?: string; logo?: string }> = {
+  football: { emoji: "⚽" },
+  f1: { logo: "/f1-logo.svg" },
+}
 
 export function SportsHub() {
   const t = useTranslations("sports")
@@ -135,6 +139,7 @@ export function SportsHub() {
           <div className="flex flex-wrap gap-2">
             {(Object.keys(SPORT_THEMES) as SportId[]).map((id) => {
               const isActive = sport === id
+              const icon = SPORT_ICONS[id]
               return (
                 <button
                   key={id}
@@ -147,7 +152,16 @@ export function SportsHub() {
                       : "bg-white/15 text-white backdrop-blur hover:bg-white/25",
                   )}
                 >
-                  <span aria-hidden>{SPORT_ICONS[id]}</span>
+                  {icon.logo ? (
+                    <img
+                      src={icon.logo}
+                      alt=""
+                      aria-hidden="true"
+                      className="h-4 w-auto shrink-0"
+                    />
+                  ) : (
+                    <span aria-hidden>{icon.emoji}</span>
+                  )}
                   {t(`switch.${id}`)}
                 </button>
               )

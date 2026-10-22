@@ -145,7 +145,7 @@ function ScheduleList() {
                 {countryFlag(race.country)}
                 {race.raceName}
                 {isNext ? (
-                  <span className="ml-2 rounded-full bg-[var(--sport-brand)] px-2 py-0.5 text-[10px] font-bold uppercase text-white">
+                  <span className="ml-2 rounded-full bg-[var(--sport-brand)] px-2 py-0.5 text-xs font-bold uppercase text-white">
                     Next
                   </span>
                 ) : null}
@@ -214,7 +214,7 @@ function WeatherGrid({ weather }: { weather: F1Weather }) {
           key={item.label}
           className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm"
         >
-          <p className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-white/50">
+          <p className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-white/60">
             <item.icon className={cn("h-3 w-3", item.accent)} />
             {item.label}
           </p>
@@ -238,7 +238,7 @@ function RaceHeader({ race }: { race: F1RaceDetail }) {
       <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-[repeating-linear-gradient(115deg,rgba(255,255,255,0.06)_0px,rgba(255,255,255,0.06)_2px,transparent_2px,transparent_9px)]" />
 
       <div className="relative space-y-3 p-4 sm:p-5">
-        <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/60">
+        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
           <span className="rounded-sm bg-[var(--sport-brand)] px-1.5 py-0.5 text-white">
             R{race.round}
           </span>
@@ -390,7 +390,7 @@ function DetailItem({
 }) {
   return (
     <div className="rounded-xl border border-border/40 bg-card/70 px-3 py-2">
-      <p className="flex items-center gap-1 text-[11px] text-muted-foreground">
+      <p className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
         {icon}
         {label}
       </p>
@@ -457,14 +457,14 @@ function RaceResults() {
                 className="cursor-pointer py-2"
               >
                 <span className="flex items-center gap-2">
-                  <span className="w-9 shrink-0 rounded bg-muted px-1 py-0.5 text-center text-[10px] font-bold text-muted-foreground">
+                  <span className="w-9 shrink-0 rounded bg-muted px-1 py-0.5 text-center text-xs font-bold text-muted-foreground">
                     R{race.round}
                   </span>
                   <span className="truncate font-medium">
                     {countryFlag(race.country)}
                     {race.raceName}
                   </span>
-                  <span className="ml-1 shrink-0 text-[10px] tabular-nums text-muted-foreground">
+                  <span className="ml-1 shrink-0 text-xs tabular-nums text-muted-foreground">
                     {formatRaceDate(race.date)}
                   </span>
                 </span>
@@ -557,10 +557,10 @@ function PodiumCard({ entry, rank }: { entry: F1DriverStanding; rank: 1 | 2 | 3 
           </div>
         )}
         <p className="w-full truncate text-sm font-bold">{entry.driver}</p>
-        <p className="w-full truncate text-[11px] text-muted-foreground">{entry.team}</p>
+        <p className="w-full truncate text-xs font-medium text-muted-foreground">{entry.team}</p>
         <p className="text-lg font-black leading-none text-[var(--sport-brand)]">
           {entry.points}
-          <span className="ml-1 text-[10px] font-semibold text-muted-foreground">
+          <span className="ml-1 text-xs font-semibold text-muted-foreground">
             {t("table.points")}
           </span>
         </p>
@@ -620,7 +620,7 @@ function DriverStandings() {
                   className="h-9 w-9 shrink-0 rounded-full bg-muted/50 object-cover object-top"
                 />
               ) : (
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted/60 text-[11px] font-black text-muted-foreground">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted/60 text-xs font-black text-muted-foreground">
                   {entry.driverCode || entry.driver.slice(0, 2).toUpperCase()}
                 </span>
               )}
