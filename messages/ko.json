@@ -297,7 +297,12 @@
       "rain": "비",
       "noRain": "맑음",
       "airTemp": "기온",
-      "trackTemp": "트랙 온도"
+      "trackTemp": "트랙 온도",
+      "weather": "날씨",
+      "humidity": "습도",
+      "wind": "풍속",
+      "lapsTotal": "{laps} 랩",
+      "selectRound": "라운드 선택"
     },
     "table": {
       "rank": "#",
@@ -339,6 +344,7 @@
     "official": {
       "title": "공식 사이트"
     },
+    "loading": "불러오는 중…",
     "empty": {
       "fixtures": "일정 데이터가 없습니다",
       "standings": "순위 데이터가 없습니다",

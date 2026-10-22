@@ -73,6 +73,8 @@ export interface F1RaceDetail {
   circuitName: string
   locality: string
   country: string
+  /** 冠军完成圈数，即本场总圈数 */
+  totalLaps: number
   /** 比赛期间天气（OpenF1），无数据时 null */
   weather: F1Weather | null
   results: F1RaceResult[]
@@ -169,6 +171,39 @@ function normalizeCompound(value: string | undefined): F1Compound {
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
+/**
+ * 合并相邻同配方 stint（仅当后一段不是新胎）。
+ * OpenF1 偶尔会把一段连续使用同配方轮胎拆成两段，后一段的 tyre_age_at_start 会延续计数；
+ * 如果后一段是新胎（age=0），说明是真的换了同配方的新胎，必须保留，否则会吞掉一次进站。
+ */
+function mergeSameCompoundStints(list: F1Stint[]): F1Stint[] {
+  const merged: F1Stint[] = []
+  for (const stint of list) {
+    const prev = merged[merged.length - 1]
+    if (prev && prev.compound === stint.compound && stint.tyreAgeAtStart > 0) {
+      prev.lapEnd = Math.max(prev.lapEnd, stint.lapEnd)
+      continue
+    }
+    merged.push({ ...stint })
+  }
+  return merged
+}
+
+/**
+ * 进站记录以 stint 换胎点为锚，避免 OpenF1 pit 表与 stints 错位时多出/漏掉换胎点。
+ * 耗时从 pit 表中就近（±1 圈）匹配。
+ */
+function buildStintPits(stints: F1Stint[], rawPits: F1Pit[]): F1Pit[] {
+  const markers: F1Pit[] = []
+  for (let index = 1; index < stints.length; index += 1) {
+    const lap = stints[index].lapStart - 1
+    const match = rawPits.find((pit) => Math.abs(pit.lap - lap) <= 1)
+    markers.push({ lap, duration: match?.duration ?? null })
+  }
+  return markers
+}
+
+
 /** OpenF1 免费层限流 3 req/s，这里串行调用方自行控制节奏。 */
 async function fetchOpenF1(path: string): Promise<any[] | null> {
   try {
@@ -216,17 +251,22 @@ async function fetchOpenF1RaceExtras(raceDate: string): Promise<OpenF1RaceExtras
   for (const stint of stints ?? []) {
     const num = Number(stint.driver_number)
     if (!num) continue
+    const lapStart = Number(stint.lap_start) || 0
+    const lapEnd = Number(stint.lap_end) || 0
+    // 丢弃非法区间，避免时间轴出现 0 圈或倒挂的色块
+    if (lapStart < 1 || lapEnd < lapStart) continue
     const list = empty.stintsByDriver.get(num) ?? []
     list.push({
       compound: normalizeCompound(stint.compound),
-      lapStart: Number(stint.lap_start) || 0,
-      lapEnd: Number(stint.lap_end) || 0,
+      lapStart,
+      lapEnd,
       tyreAgeAtStart: Number(stint.tyre_age_at_start) || 0,
     })
     empty.stintsByDriver.set(num, list)
   }
-  for (const list of empty.stintsByDriver.values()) {
+  for (const [num, list] of empty.stintsByDriver) {
     list.sort((a, b) => a.lapStart - b.lapStart)
+    empty.stintsByDriver.set(num, mergeSameCompoundStints(list))
   }
 
   for (const pit of pits ?? []) {
@@ -248,18 +288,19 @@ async function fetchOpenF1RaceExtras(raceDate: string): Promise<OpenF1RaceExtras
     list.sort((a, b) => a.lap - b.lap)
   }
 
-  // 取比赛中段的天气记录作为代表
-  const weatherRow =
-    weatherRows && weatherRows.length > 0
-      ? weatherRows[Math.floor(weatherRows.length / 2)]
-      : null
-  if (weatherRow) {
+  // 取全场天气均值作为代表；只要任一次采样有降雨即视为雨战
+  const validRows = (weatherRows ?? []).filter(
+    (row) => Number.isFinite(Number(row?.air_temperature)),
+  )
+  if (validRows.length > 0) {
+    const avg = (pick: (row: any) => number) =>
+      validRows.reduce((sum, row) => sum + (Number(pick(row)) || 0), 0) / validRows.length
     empty.weather = {
-      airTemp: Number(weatherRow.air_temperature) || 0,
-      trackTemp: Number(weatherRow.track_temperature) || 0,
-      humidity: Number(weatherRow.humidity) || 0,
-      rainfall: Number(weatherRow.rainfall) > 0,
-      windSpeed: Number(weatherRow.wind_speed) || 0,
+      airTemp: Math.round(avg((row) => row.air_temperature)),
+      trackTemp: Math.round(avg((row) => row.track_temperature)),
+      humidity: Math.round(avg((row) => row.humidity)),
+      rainfall: validRows.some((row) => Number(row.rainfall) > 0),
+      windSpeed: Math.round(avg((row) => row.wind_speed) * 10) / 10,
     }
   }
 
@@ -281,10 +322,20 @@ export async function fetchF1RaceResults(round?: number): Promise<F1RaceDetail |
 
   const extras = await fetchOpenF1RaceExtras(race.date ?? "")
 
+  const totalLaps = (race.Results ?? []).reduce(
+    (max: number, entry: any) => Math.max(max, Number(entry.laps) || 0),
+    0,
+  )
+
   const results: F1RaceResult[] = (race.Results ?? []).map((entry: any) => {
     const driverId: string = entry.Driver?.driverId ?? ""
     const driverNumber = Number(entry.Driver?.permanentNumber) || 0
     const pit = pitStops.get(driverId) ?? null
+    // 越界圈数裁到本场总圈数，避免出现超出终点的色块
+    const stints = (extras.stintsByDriver.get(driverNumber) ?? []).map((stint) =>
+      totalLaps > 0 ? { ...stint, lapEnd: Math.min(stint.lapEnd, totalLaps) } : stint,
+    )
+    const pits = buildStintPits(stints, extras.pitsByDriver.get(driverNumber) ?? [])
     return {
       position: Number(entry.position) || 0,
       driver: `${entry.Driver?.givenName ?? ""} ${entry.Driver?.familyName ?? ""}`.trim(),
@@ -302,8 +353,8 @@ export async function fetchF1RaceResults(round?: number): Promise<F1RaceDetail |
           }
         : null,
       pitStops: pit,
-      stints: extras.stintsByDriver.get(driverNumber) ?? [],
-      pits: extras.pitsByDriver.get(driverNumber) ?? [],
+      stints,
+      pits,
     }
   })
 
@@ -314,6 +365,7 @@ export async function fetchF1RaceResults(round?: number): Promise<F1RaceDetail |
     circuitName: race.Circuit?.circuitName ?? "",
     locality: race.Circuit?.Location?.locality ?? "",
     country: race.Circuit?.Location?.country ?? "",
+    totalLaps,
     weather: extras.weather,
     results,
   }

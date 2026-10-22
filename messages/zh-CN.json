@@ -297,7 +297,12 @@
       "rain": "有雨",
       "noRain": "无雨",
       "airTemp": "气温",
-      "trackTemp": "赛道温度"
+      "trackTemp": "赛道温度",
+      "weather": "天气",
+      "humidity": "湿度",
+      "wind": "风速",
+      "lapsTotal": "{laps} 圈",
+      "selectRound": "选择分站"
     },
     "table": {
       "rank": "#",
@@ -339,6 +344,7 @@
     "official": {
       "title": "官方网站"
     },
+    "loading": "加载中…",
     "empty": {
       "fixtures": "暂无赛程数据",
       "standings": "暂无积分榜数据",

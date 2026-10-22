@@ -31,7 +31,7 @@ export function useF1Schedule() {
 }
 
 /** 指定轮次大奖赛结果（不传为最近一场），含轮胎策略/天气细节。 */
-export function useF1RaceResults(round?: number) {
+export function useF1RaceResults(round?: number, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ["sports", "f1", "results", round ?? "last"] as const,
     queryFn: () =>
@@ -39,6 +39,7 @@ export function useF1RaceResults(round?: number) {
         round ? `type=results&round=${round}` : "type=results",
         "race",
       ),
+    enabled: options?.enabled ?? true,
     ...sharedOptions,
   })
 }

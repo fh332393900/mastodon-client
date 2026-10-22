@@ -10,6 +10,8 @@ import {
   Droplets,
   Flag,
   Gauge,
+  Loader2,
+  MapPin,
   Sun,
   Thermometer,
   Trophy,
@@ -19,8 +21,20 @@ import {
   Zap,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import type { F1DriverStanding, F1RaceDetail, F1RaceResult } from "@/lib/sports/f1"
+import type {
+  F1DriverStanding,
+  F1RaceDetail,
+  F1RaceResult,
+  F1Weather,
+} from "@/lib/sports/f1"
 import { F1_COUNTRY_FLAGS } from "@/lib/sports/config"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { TyreStintBar } from "./TyreStintBar"
 import {
   useF1ConstructorStandings,
@@ -86,6 +100,10 @@ function formatRaceDate(date: string, time?: string): string {
   }).format(value)
 }
 
+function countryFlag(country: string): string {
+  return F1_COUNTRY_FLAGS[country] ? `${F1_COUNTRY_FLAGS[country]} ` : ""
+}
+
 function ScheduleList() {
   const t = useTranslations("sports")
   const { data, isLoading } = useF1Schedule()
@@ -96,7 +114,7 @@ function ScheduleList() {
     return races.find((race) => race.date >= today)?.round ?? null
   }, [races])
 
-  if (isLoading) return <Skeleton />
+  if (isLoading) return <Loading />
   if (races.length === 0) return <Empty text={t("empty.f1")} />
 
   return (
@@ -124,7 +142,7 @@ function ScheduleList() {
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold">
-                {F1_COUNTRY_FLAGS[race.country] ? `${F1_COUNTRY_FLAGS[race.country]} ` : ""}
+                {countryFlag(race.country)}
                 {race.raceName}
                 {isNext ? (
                   <span className="ml-2 rounded-full bg-[var(--sport-brand)] px-2 py-0.5 text-[10px] font-bold uppercase text-white">
@@ -153,7 +171,115 @@ function ScheduleList() {
   )
 }
 
-function ResultRow({ result }: { result: F1RaceResult }) {
+/** 天气指标卡：F1 官网风格的深色数据块 */
+function WeatherGrid({ weather }: { weather: F1Weather }) {
+  const t = useTranslations("sports.detail")
+  const items = [
+    {
+      icon: weather.rainfall ? CloudRain : Sun,
+      label: t("weather"),
+      value: weather.rainfall ? t("rain") : t("noRain"),
+      accent: weather.rainfall ? "text-sky-300" : "text-amber-300",
+    },
+    {
+      icon: Thermometer,
+      label: t("airTemp"),
+      value: `${weather.airTemp}°C`,
+      accent: "text-white",
+    },
+    {
+      icon: Gauge,
+      label: t("trackTemp"),
+      value: `${weather.trackTemp}°C`,
+      accent: "text-[var(--sport-brand)]",
+    },
+    {
+      icon: Droplets,
+      label: t("humidity"),
+      value: `${weather.humidity}%`,
+      accent: "text-white",
+    },
+    {
+      icon: Wind,
+      label: t("wind"),
+      value: `${weather.windSpeed} m/s`,
+      accent: "text-white",
+    },
+  ]
+
+  return (
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+      {items.map((item) => (
+        <div
+          key={item.label}
+          className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 backdrop-blur-sm"
+        >
+          <p className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-white/50">
+            <item.icon className={cn("h-3 w-3", item.accent)} />
+            {item.label}
+          </p>
+          <p className={cn("mt-0.5 text-sm font-bold tabular-nums", item.accent)}>
+            {item.value}
+          </p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/** 赛事头部：轮次 / 分站名 / 赛道 / 地点 / 圈数 / 天气 */
+function RaceHeader({ race }: { race: F1RaceDetail }) {
+  const t = useTranslations("sports")
+
+  return (
+    <div className="relative overflow-hidden bg-[#101010] text-white">
+      {/* 品牌红晕 + 斜纹底 */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_120%_at_0%_0%,rgba(225,6,0,0.55)_0%,rgba(225,6,0,0.12)_38%,transparent_70%)]" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-[repeating-linear-gradient(115deg,rgba(255,255,255,0.06)_0px,rgba(255,255,255,0.06)_2px,transparent_2px,transparent_9px)]" />
+
+      <div className="relative space-y-3 p-4 sm:p-5">
+        <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/60">
+          <span className="rounded-sm bg-[var(--sport-brand)] px-1.5 py-0.5 text-white">
+            R{race.round}
+          </span>
+          <span>{formatRaceDate(race.date)}</span>
+        </div>
+
+        <div>
+          <h3 className="flex flex-wrap items-center gap-2 text-xl font-black uppercase italic leading-none tracking-tight sm:text-2xl">
+            <span className="not-italic">{countryFlag(race.country)}</span>
+            {race.raceName}
+          </h3>
+          <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-white/70">
+            <span className="flex items-center gap-1 font-medium">
+              <MapPin className="h-3.5 w-3.5 text-[var(--sport-brand)]" />
+              {race.circuitName}
+            </span>
+            <span className="text-white/25">•</span>
+            <span>
+              {race.locality}
+              {race.locality && race.country ? ", " : ""}
+              {race.country}
+            </span>
+            {race.totalLaps > 0 ? (
+              <>
+                <span className="text-white/25">•</span>
+                <span className="flex items-center gap-1">
+                  <Flag className="h-3.5 w-3.5" />
+                  {t("detail.lapsTotal", { laps: race.totalLaps })}
+                </span>
+              </>
+            ) : null}
+          </div>
+        </div>
+
+        {race.weather ? <WeatherGrid weather={race.weather} /> : null}
+      </div>
+    </div>
+  )
+}
+
+function ResultRow({ result, totalLaps }: { result: F1RaceResult; totalLaps: number }) {
   const t = useTranslations("sports")
   const [open, setOpen] = useState(false)
   // 发车位与完赛名次之差：正数表示上升
@@ -204,8 +330,12 @@ function ResultRow({ result }: { result: F1RaceResult }) {
 
       {open ? (
         <div className="space-y-3 border-t border-border/40 bg-muted/20 px-4 py-3">
-          {/* 轮胎策略时间轴(F1 Manager 风格) */}
-          <TyreStintBar stints={result.stints} pits={result.pits} totalLaps={result.laps} />
+          {/* 轮胎策略时间轴（F1 官方转播风格） */}
+          <TyreStintBar
+            stints={result.stints}
+            pits={result.pits}
+            totalLaps={totalLaps || result.laps}
+          />
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             <DetailItem
               icon={<Flag className="h-3.5 w-3.5" />}
@@ -272,48 +402,12 @@ function DetailItem({
   )
 }
 
-function WeatherStrip({ race }: { race: F1RaceDetail }) {
-  const t = useTranslations("sports.detail")
-  const weather = race.weather
-  if (!weather) return null
-
-  return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs text-muted-foreground">
-      <span className="flex items-center gap-1 font-semibold">
-        {weather.rainfall ? (
-          <CloudRain className="h-3.5 w-3.5 text-sky-400" />
-        ) : (
-          <Sun className="h-3.5 w-3.5 text-amber-400" />
-        )}
-        {weather.rainfall ? t("rain") : t("noRain")}
-      </span>
-      <span className="flex items-center gap-1 tabular-nums">
-        <Thermometer className="h-3.5 w-3.5" />
-        {t("airTemp")} <b className="text-foreground">{weather.airTemp}°C</b>
-      </span>
-      <span className="flex items-center gap-1 tabular-nums">
-        <Flag className="h-3.5 w-3.5" />
-        {t("trackTemp")} <b className="text-foreground">{weather.trackTemp}°C</b>
-      </span>
-      <span className="flex items-center gap-1 tabular-nums">
-        <Droplets className="h-3.5 w-3.5" />
-        {weather.humidity}%
-      </span>
-      <span className="flex items-center gap-1 tabular-nums">
-        <Wind className="h-3.5 w-3.5" />
-        {weather.windSpeed} m/s
-      </span>
-    </div>
-  )
-}
-
 function RaceResults() {
   const t = useTranslations("sports")
-  const { data: schedule } = useF1Schedule()
-  const [round, setRound] = useState<number | undefined>(undefined)
-  const { data, isLoading } = useF1RaceResults(round)
+  const { data: schedule, isLoading: scheduleLoading } = useF1Schedule()
+  const [round, setRound] = useState<number | null>(null)
 
-  // 已完成的分站(按轮次倒序),用于筛选
+  // 已完成的分站（按轮次倒序），第一项即最近完赛一场
   const completedRounds = useMemo(() => {
     const today = new Date().toISOString().slice(0, 10)
     return (schedule ?? [])
@@ -322,49 +416,78 @@ function RaceResults() {
       .sort((a, b) => b.round - a.round)
   }, [schedule])
 
-  const activeRound = round ?? data?.round
+  const activeRound = round ?? completedRounds[0]?.round
+  const { data, isLoading, isFetching } = useF1RaceResults(activeRound, {
+    enabled: !scheduleLoading,
+  })
+  const loading = scheduleLoading || (!data && (isLoading || isFetching))
+
+  // 赛历缺失时至少保留当前已加载的分站，避免下拉为空
+  const roundOptions = useMemo(() => {
+    if (completedRounds.length > 0) return completedRounds
+    return data
+      ? [
+          {
+            round: data.round,
+            raceName: data.raceName,
+            country: data.country,
+            date: data.date,
+          },
+        ]
+      : []
+  }, [completedRounds, data])
 
   return (
     <div className="space-y-3">
-      {/* 赛历筛选(横滑) */}
-      {completedRounds.length > 0 ? (
-        <div className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1">
-          {completedRounds.map((race) => (
-            <button
-              key={race.round}
-              type="button"
-              onClick={() => setRound(race.round)}
-              className={cn(
-                "shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors",
-                activeRound === race.round
-                  ? "bg-[var(--sport-brand)] text-white shadow-sm"
-                  : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground",
-              )}
-            >
-              R{race.round} {race.raceName.replace(/ Grand Prix$/i, "")}
-            </button>
-          ))}
-        </div>
-      ) : null}
+      {/* 分站筛选：下拉定位最近完赛一场 */}
+      <div className="flex items-center gap-2">
+        <CalendarDays className="h-4 w-4 shrink-0 text-[var(--sport-brand)]" />
+        <Select
+          value={activeRound != null ? String(activeRound) : undefined}
+          onValueChange={(value) => setRound(Number(value))}
+        >
+          <SelectTrigger className="h-11 flex-1 rounded-xl border-border/60 bg-card/80 text-sm font-semibold">
+            <SelectValue placeholder={t("detail.selectRound")} />
+          </SelectTrigger>
+          <SelectContent className="max-h-72 rounded-xl border-border/60">
+            {roundOptions.map((race) => (
+              <SelectItem
+                key={race.round}
+                value={String(race.round)}
+                className="cursor-pointer py-2"
+              >
+                <span className="flex items-center gap-2">
+                  <span className="w-9 shrink-0 rounded bg-muted px-1 py-0.5 text-center text-[10px] font-bold text-muted-foreground">
+                    R{race.round}
+                  </span>
+                  <span className="truncate font-medium">
+                    {countryFlag(race.country)}
+                    {race.raceName}
+                  </span>
+                  <span className="ml-1 shrink-0 text-[10px] tabular-nums text-muted-foreground">
+                    {formatRaceDate(race.date)}
+                  </span>
+                </span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
-      {isLoading ? <Skeleton /> : !data ? <Empty text={t("empty.f1")} /> : (
+      {loading ? (
+        <Loading />
+      ) : !data ? (
+        <Empty text={t("empty.f1")} />
+      ) : (
         <div className="overflow-hidden rounded-2xl border border-border/60 bg-card/80">
-          <div className="border-b border-border/60 bg-[var(--sport-brand)]/10 px-4 py-3">
-            <p className="text-sm font-bold">
-              🏁 {F1_COUNTRY_FLAGS[data.country] ? `${F1_COUNTRY_FLAGS[data.country]} ` : ""}
-              {data.raceName}
-              <span className="ml-2 text-xs font-medium text-muted-foreground">
-                {t("round", { round: data.round })} · {formatRaceDate(data.date)}
-              </span>
-            </p>
-            <p className="mt-0.5 text-xs text-muted-foreground">
-              {data.circuitName} · {data.locality}, {data.country}
-            </p>
-            <WeatherStrip race={data} />
-          </div>
+          <RaceHeader race={data} />
           <div className="divide-y divide-border/50">
             {data.results.map((result) => (
-              <ResultRow key={result.position} result={result} />
+              <ResultRow
+                key={result.position}
+                result={result}
+                totalLaps={data.totalLaps}
+              />
             ))}
           </div>
         </div>
@@ -461,7 +584,7 @@ function DriverStandings() {
   const { data, isLoading } = useF1DriverStandings()
   const standings = data ?? []
 
-  if (isLoading) return <Skeleton />
+  if (isLoading) return <Loading />
   if (standings.length === 0) return <Empty text={t("empty.f1")} />
 
   const podium = standings.slice(0, 3)
@@ -532,7 +655,7 @@ function ConstructorStandings() {
   const { data, isLoading } = useF1ConstructorStandings()
   const standings = data ?? []
 
-  if (isLoading) return <Skeleton />
+  if (isLoading) return <Loading />
   if (standings.length === 0) return <Empty text={t("empty.f1")} />
 
   const maxPoints = Math.max(...standings.map((entry) => entry.points), 1)
@@ -562,12 +685,17 @@ function ConstructorStandings() {
   )
 }
 
-function Skeleton() {
+/** 统一的加载态：固定容器高度 + 居中转圈，避免骨架屏闪烁与布局跳动 */
+function Loading() {
+  const t = useTranslations("sports")
   return (
-    <div className="space-y-2">
-      {Array.from({ length: 6 }).map((_, index) => (
-        <div key={index} className="h-14 animate-pulse rounded-xl bg-muted/40" />
-      ))}
+    <div
+      className="flex min-h-[260px] flex-col items-center justify-center gap-3 rounded-2xl border border-border/60 bg-card/80"
+      role="status"
+      aria-live="polite"
+    >
+      <Loader2 className="h-6 w-6 animate-spin text-[var(--sport-brand)]" />
+      <p className="text-xs font-medium text-muted-foreground">{t("loading")}</p>
     </div>
   )
 }

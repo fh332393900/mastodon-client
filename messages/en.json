@@ -297,7 +297,12 @@
       "rain": "Rain",
       "noRain": "Dry",
       "airTemp": "Air",
-      "trackTemp": "Track"
+      "trackTemp": "Track",
+      "weather": "Weather",
+      "humidity": "Humidity",
+      "wind": "Wind",
+      "lapsTotal": "{laps} laps",
+      "selectRound": "Select round"
     },
     "table": {
       "rank": "#",
@@ -339,6 +344,7 @@
     "official": {
       "title": "Official Sites"
     },
+    "loading": "Loading…",
     "empty": {
       "fixtures": "No fixture data",
       "standings": "No standings data",

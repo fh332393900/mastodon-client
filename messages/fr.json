@@ -297,7 +297,12 @@
       "rain": "Pluie",
       "noRain": "Sec",
       "airTemp": "Air",
-      "trackTemp": "Piste"
+      "trackTemp": "Piste",
+      "weather": "Météo",
+      "humidity": "Humidité",
+      "wind": "Vent",
+      "lapsTotal": "{laps} tours",
+      "selectRound": "Choisir une manche"
     },
     "table": {
       "rank": "#",
@@ -339,6 +344,7 @@
     "official": {
       "title": "Sites officiels"
     },
+    "loading": "Chargement…",
     "empty": {
       "fixtures": "Aucun match",
       "standings": "Aucun classement",
