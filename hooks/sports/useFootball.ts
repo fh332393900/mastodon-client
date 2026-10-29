@@ -3,9 +3,6 @@
 import { useQuery } from "@tanstack/react-query"
 import type { FootballFixture, FootballStandingEntry } from "@/lib/football-data"
 
-const EMPTY_FIXTURES: FootballFixture[] = []
-const EMPTY_STANDINGS: FootballStandingEntry[] = []
-
 async function fetchJson<T>(url: string, key: string): Promise<T[]> {
   const response = await fetch(url)
   if (!response.ok) return []
@@ -25,7 +22,6 @@ export function useFootballFixtures(league: string) {
     staleTime: 5 * 60_000,
     gcTime: 30 * 60_000,
     refetchOnWindowFocus: false,
-    placeholderData: EMPTY_FIXTURES,
   })
 }
 
@@ -41,6 +37,5 @@ export function useFootballStandings(league: string) {
     staleTime: 5 * 60_000,
     gcTime: 30 * 60_000,
     refetchOnWindowFocus: false,
-    placeholderData: EMPTY_STANDINGS,
   })
 }

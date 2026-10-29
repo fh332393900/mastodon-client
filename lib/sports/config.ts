@@ -5,51 +5,123 @@
 
 export type SportId = "football" | "f1"
 
+/** 欧战资格区：欧冠 / 欧联 / 欧协联 */
+export type FootballZoneId = "ucl" | "uel" | "uecl"
+
+export interface FootballZoneRange {
+  id: FootballZoneId
+  /** 起始名次（含） */
+  from: number
+  /** 结束名次（含） */
+  to: number
+}
+
+export interface FootballZoneStyle {
+  /** 资格区行的浅色背景 */
+  bgClassName: string
+  /** 资格区行 hover 时略深的背景 */
+  hoverClassName: string
+}
+
+export const FOOTBALL_ZONE_STYLES: Record<FootballZoneId, FootballZoneStyle> = {
+  ucl: {
+    bgClassName: "bg-blue-500/[0.07]",
+    hoverClassName: "hover:bg-blue-500/[0.14]",
+  },
+  uel: {
+    bgClassName: "bg-amber-500/[0.08]",
+    hoverClassName: "hover:bg-amber-500/[0.15]",
+  },
+  uecl: {
+    bgClassName: "bg-emerald-500/[0.07]",
+    hoverClassName: "hover:bg-emerald-500/[0.14]",
+  },
+}
+
 export interface FootballLeague {
   /** football-data.org competition code */
   code: string
   name: string
+  /** 联赛官方标志（football-data.org 徽标资源） */
+  emblem: string
   /** 社区讨论使用的 Mastodon 话题 */
   hashtag: string
   brandColor: string
   officialSite: string
+  /** 当前赛季欧战席位区间（含欧战表现席位），赛季规则调整时同步更新 */
+  zones: FootballZoneRange[]
 }
 
 export const FOOTBALL_LEAGUES: FootballLeague[] = [
   {
     code: "PL",
     name: "Premier League",
+    emblem: "https://crests.football-data.org/PL.png",
     hashtag: "PremierLeague",
     brandColor: "#3d195b",
     officialSite: "https://www.premierleague.com",
+    // 英超近赛季获得欧战表现席位：前 5 进欧冠，第 6 欧联，第 7 欧协联
+    zones: [
+      { id: "ucl", from: 1, to: 5 },
+      { id: "uel", from: 6, to: 6 },
+      { id: "uecl", from: 7, to: 7 },
+    ],
   },
   {
     code: "PD",
     name: "LaLiga",
+    emblem: "https://crests.football-data.org/PD.png",
     hashtag: "LaLiga",
     brandColor: "#ff4b44",
     officialSite: "https://www.laliga.com/en-GB",
+    // 西甲含欧战表现席位：前 5 进欧冠，第 6 欧联，第 7 欧协联
+    zones: [
+      { id: "ucl", from: 1, to: 5 },
+      { id: "uel", from: 6, to: 6 },
+      { id: "uecl", from: 7, to: 7 },
+    ],
   },
   {
     code: "BL1",
     name: "Bundesliga",
+    emblem: "https://crests.football-data.org/BL1.png",
     hashtag: "Bundesliga",
     brandColor: "#d20515",
     officialSite: "https://www.bundesliga.com/en/bundesliga",
+    // 德甲：前 4 进欧冠，第 5 欧联，第 6 欧协联资格赛
+    zones: [
+      { id: "ucl", from: 1, to: 4 },
+      { id: "uel", from: 5, to: 5 },
+      { id: "uecl", from: 6, to: 6 },
+    ],
   },
   {
     code: "SA",
     name: "Serie A",
+    emblem: "https://crests.football-data.org/SA.png",
     hashtag: "SerieA",
     brandColor: "#0e8a4c",
     officialSite: "https://www.legaseriea.it/en",
+    // 意甲：前 4 进欧冠，第 5 欧联，第 6 欧协联资格赛
+    zones: [
+      { id: "ucl", from: 1, to: 4 },
+      { id: "uel", from: 5, to: 5 },
+      { id: "uecl", from: 6, to: 6 },
+    ],
   },
   {
     code: "FL1",
     name: "Ligue 1",
+    emblem: "https://crests.football-data.org/FL1.png",
     hashtag: "Ligue1",
     brandColor: "#091f43",
     officialSite: "https://www.ligue1.com",
+    // 法甲：前 3 直接进欧冠，第 4 打欧冠资格赛，第 5 欧联，第 6 欧协联资格赛
+    zones: [
+      { id: "ucl", from: 1, to: 4 },
+      { id: "uel", from: 5, to: 5 },
+      { id: "uecl", from: 6, to: 6 },
+    ],
   },
 ]
 

@@ -9,6 +9,7 @@
       "compose": "發文",
       "explore": "探索",
       "sports": "體育",
+      "sportsBeta": "實驗",
       "notifications": "通知",
       "settings": "設定"
     },
@@ -317,6 +318,15 @@
       "constructor": "車隊",
       "wins": "勝場",
       "form": "近5場"
+    },
+    "standings": {
+      "zones": {
+        "ucl": "歐冠",
+        "uel": "歐聯",
+        "uecl": "歐協聯"
+      },
+      "showAll": "展開全部 {count} 隊",
+      "showLess": "收起"
     },
     "news": {
       "title": "最新資訊",

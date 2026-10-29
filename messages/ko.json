@@ -9,6 +9,7 @@
       "compose": "작성",
       "explore": "탐색",
       "sports": "스포츠",
+      "sportsBeta": "실험",
       "notifications": "알림",
       "settings": "설정"
     },
@@ -317,6 +318,15 @@
       "constructor": "팀",
       "wins": "우승",
       "form": "최근 5경기"
+    },
+    "standings": {
+      "zones": {
+        "ucl": "챔피언스리그",
+        "uel": "유로파리그",
+        "uecl": "컨퍼런스리그"
+      },
+      "showAll": "전체 {count}팀 보기",
+      "showLess": "접기"
     },
     "news": {
       "title": "최신 뉴스",

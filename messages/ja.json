@@ -9,6 +9,7 @@
       "compose": "作成",
       "explore": "探索",
       "sports": "スポーツ",
+      "sportsBeta": "実験",
       "notifications": "通知",
       "settings": "設定"
     },
@@ -317,6 +318,15 @@
       "constructor": "コンストラクター",
       "wins": "勝利",
       "form": "直近5戦"
+    },
+    "standings": {
+      "zones": {
+        "ucl": "チャンピオンズリーグ",
+        "uel": "ヨーロッパリーグ",
+        "uecl": "カンファレンスリーグ"
+      },
+      "showAll": "全{count}チームを表示",
+      "showLess": "折りたたむ"
     },
     "news": {
       "title": "最新ニュース",

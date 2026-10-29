@@ -9,6 +9,7 @@
       "compose": "Compose",
       "explore": "Explore",
       "sports": "Sports",
+      "sportsBeta": "BETA",
       "notifications": "Notifications",
       "settings": "Settings"
     },
@@ -317,6 +318,15 @@
       "constructor": "Team",
       "wins": "Wins",
       "form": "Form"
+    },
+    "standings": {
+      "zones": {
+        "ucl": "Champions League",
+        "uel": "Europa League",
+        "uecl": "Conference League"
+      },
+      "showAll": "Show all {count} teams",
+      "showLess": "Show less"
     },
     "news": {
       "title": "Latest News",

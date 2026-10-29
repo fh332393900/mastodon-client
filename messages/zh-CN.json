@@ -9,6 +9,7 @@
       "compose": "发布",
       "explore": "探索",
       "sports": "体育",
+      "sportsBeta": "实验",
       "notifications": "通知",
       "settings": "设置"
     },
@@ -317,6 +318,15 @@
       "constructor": "车队",
       "wins": "胜场",
       "form": "近5场"
+    },
+    "standings": {
+      "zones": {
+        "ucl": "欧冠",
+        "uel": "欧联",
+        "uecl": "欧协联"
+      },
+      "showAll": "展开全部 {count} 队",
+      "showLess": "收起"
     },
     "news": {
       "title": "最新资讯",

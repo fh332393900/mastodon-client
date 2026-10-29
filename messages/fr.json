@@ -9,6 +9,7 @@
       "compose": "Composer",
       "explore": "Explorer",
       "sports": "Sports",
+      "sportsBeta": "BÊTA",
       "notifications": "Notifications",
       "settings": "Paramètres"
     },
@@ -317,6 +318,15 @@
       "constructor": "Écurie",
       "wins": "Victoires",
       "form": "Forme"
+    },
+    "standings": {
+      "zones": {
+        "ucl": "Ligue des champions",
+        "uel": "Ligue Europa",
+        "uecl": "Ligue Conférence"
+      },
+      "showAll": "Afficher les {count} équipes",
+      "showLess": "Réduire"
     },
     "news": {
       "title": "Dernières actus",

@@ -14,6 +14,7 @@ import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToR
 import { useTranslations } from "next-intl"
 import { useMobileBottomMenuSettings } from "@/hooks/mastodon/useMobileBottomMenuSettings"
 import { MOBILE_BOTTOM_MENU_LABEL_KEY } from "@/lib/mastodon/mobile-navigation"
+import { SportsNavIcon } from "@/components/layout/SportsNavIcon"
 
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -94,7 +95,7 @@ export function Sidebar() {
                     isActive ? "bg-primary/10 text-primary" : "text-muted-foreground",
                   )}
                 >
-                  <item.icon className="h-6 w-6" />
+                  {item.route === "sports" ? <SportsNavIcon /> : <item.icon className="h-6 w-6" />}
                 </div>
               </Link>
             )
@@ -157,14 +158,40 @@ export function Sidebar() {
                       isCollapsed ? "justify-center px-0" : "justify-start px-4",
                     )}
                   >
-                    <item.icon
-                      className={cn(
-                        "!h-6 !w-6 transition-all duration-300",
-                        isActive ? item.color : "group-hover:text-foreground",
-                        !isCollapsed && "mr-4",
-                      )}
-                    />
-                    {!isCollapsed && <span className="font-bold text-base tracking-tight">{item.label}</span>}
+                    {item.route === "sports" ? (
+                      <span className="relative flex shrink-0">
+                        <SportsNavIcon className={cn("transition-all duration-300", !isCollapsed && "mr-4")} />
+                        {isCollapsed && (
+                          <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-amber-500" />
+                        )}
+                      </span>
+                    ) : (
+                      <item.icon
+                        className={cn(
+                          "!h-6 !w-6 transition-all duration-300",
+                          isActive ? item.color : "group-hover:text-foreground",
+                          !isCollapsed && "mr-4",
+                        )}
+                      />
+                    )}
+                    {!isCollapsed && (
+                      <span className="flex items-center gap-2">
+                        <span
+                          className={cn(
+                            "font-bold text-base tracking-tight",
+                            item.route === "sports" &&
+                              "font-['Rajdhani'] text-[19px] font-bold uppercase tracking-[0.16em] -skew-x-6",
+                          )}
+                        >
+                          {item.label}
+                        </span>
+                        {item.route === "sports" && (
+                          <span className="rounded-sm border border-amber-500/40 bg-amber-500/10 px-1 py-0.5 text-[9px] font-bold uppercase leading-none tracking-wider text-amber-600 dark:text-amber-400">
+                            {t("common.menu.sportsBeta")}
+                          </span>
+                        )}
+                      </span>
+                    )}
                   </Button>
                 </Link>
               )
