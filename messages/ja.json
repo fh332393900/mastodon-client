@@ -259,6 +259,12 @@
   "sports": {
     "title": "スポーツパルス",
     "subtitle": "5大リーグ × F1:日程・順位・ニュース・コミュニティを一か所に。",
+    "hero": {
+      "featured": "注目",
+      "readMore": "続きを読む",
+      "prev": "前へ",
+      "next": "次へ"
+    },
     "switch": {
       "football": "サッカー",
       "f1": "Formula 1"

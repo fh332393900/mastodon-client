@@ -259,6 +259,12 @@
   "sports": {
     "title": "SportsPulse",
     "subtitle": "Top 5 des championnats × F1 : calendriers, classements, actus et communauté au même endroit.",
+    "hero": {
+      "featured": "À la une",
+      "readMore": "Lire la suite",
+      "prev": "Précédent",
+      "next": "Suivant"
+    },
     "switch": {
       "football": "Football",
       "f1": "Formula 1"

@@ -259,6 +259,12 @@
   "sports": {
     "title": "燃动赛场",
     "subtitle": "五大联赛 × F1:赛程、积分榜、资讯与社区热议,一站直达。",
+    "hero": {
+      "featured": "精选",
+      "readMore": "阅读全文",
+      "prev": "上一条",
+      "next": "下一条"
+    },
     "switch": {
       "football": "足球",
       "f1": "Formula 1"

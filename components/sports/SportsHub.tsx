@@ -1,8 +1,8 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, type CSSProperties } from "react"
 import { useTranslations } from "next-intl"
-import { Flame, ImageIcon, Zap } from "lucide-react"
+import { ImageIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,16 +14,12 @@ import {
   type SportId,
 } from "@/lib/sports/config"
 import { useSportsBackground } from "@/hooks/sports/useSportsBackground"
+import { useSportsNews } from "@/hooks/sports/useSportsNews"
 import { FootballSection } from "./FootballSection"
 import { F1Section } from "./F1Section"
+import { SportsHeroCarousel } from "./SportsHeroCarousel"
 import { SportsNews } from "./SportsNews"
 import { SportsCommunity } from "./SportsCommunity"
-
-/** 足球用 emoji；F1 用官方红色 logo（已下载到本地 public/f1-logo.svg） */
-const SPORT_ICONS: Record<SportId, { emoji?: string; logo?: string }> = {
-  football: { emoji: "⚽" },
-  f1: { logo: "/f1-logo.svg" },
-}
 
 export function SportsHub() {
   const t = useTranslations("sports")
@@ -31,6 +27,7 @@ export function SportsHub() {
   const [leagueCode, setLeagueCode] = useState(FOOTBALL_LEAGUES[0].code)
   const { background, setPreset, setImageUrl, reset } = useSportsBackground()
   const [draftUrl, setDraftUrl] = useState("")
+  const { data: heroNews, isLoading: isHeroLoading } = useSportsNews(sport)
 
   const theme = SPORT_THEMES[sport]
   const activeLeague = useMemo(
@@ -38,137 +35,95 @@ export function SportsHub() {
     [leagueCode],
   )
 
+  /** 轮播无配图时的兜底背景：自定义背景图 > 预设渐变 > 主题渐变 */
   const heroStyle = useMemo(() => {
     if (background.imageUrl) {
       return {
-        backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 100%), url(${background.imageUrl})`,
+        backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 100%), url(${background.imageUrl})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-      } as const
+      } as CSSProperties
     }
     const preset = SPORTS_BACKGROUND_PRESETS.find((p) => p.id === background.presetId)
-    return { background: preset?.css ?? theme.heroGradient }
+    return { background: preset?.css ?? theme.heroGradient } as CSSProperties
   }, [background, theme])
 
   return (
-    <div className="space-y-6" style={{ "--sport-brand": theme.brandColor } as React.CSSProperties}>
-      {/* ── Hero ─────────────────────────────────────────────── */}
-      <section
-        className="relative overflow-hidden rounded-3xl border border-border/40 text-white shadow-lg"
-        style={heroStyle}
-      >
-        <div className="relative flex flex-col gap-5 p-6 md:p-10">
-          <div className="flex items-start justify-between gap-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold tracking-wide backdrop-blur">
-              <Zap className="h-3.5 w-3.5" />
-              SportsPulse
-            </span>
+    <div className="space-y-6" style={{ "--sport-brand": theme.brandColor } as CSSProperties}>
+      {/* ── 标题（紧凑单行，避免占用首屏高度） ─────────────────── */}
+      <div className="flex min-w-0 items-baseline gap-2.5">
+        <h1 className="shrink-0 text-xl font-black tracking-tight md:text-2xl">{t("title")}</h1>
+        <p className="hidden truncate text-xs text-muted-foreground sm:block">{t("subtitle")}</p>
+      </div>
 
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 gap-1.5 rounded-full bg-white/15 px-3 text-xs text-white hover:bg-white/25 hover:text-white"
-                >
-                  <ImageIcon className="h-3.5 w-3.5" />
-                  {t("background.customize")}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent align="end" className="w-72 space-y-3">
+      {/* ── 头条轮播（足球 / F1 切换在轮播左下角） ─────────────── */}
+      <SportsHeroCarousel
+        key={sport}
+        sport={sport}
+        onSportChange={setSport}
+        items={heroNews ?? []}
+        isLoading={isHeroLoading}
+        fallbackStyle={heroStyle}
+        actions={
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 gap-1.5 rounded-full bg-black/25 px-3 text-xs text-white backdrop-blur hover:bg-black/45 hover:text-white"
+              >
+                <ImageIcon className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">{t("background.customize")}</span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-72 space-y-3">
+              <p className="text-xs font-medium text-muted-foreground">{t("background.presets")}</p>
+              <div className="grid grid-cols-4 gap-2">
+                {SPORTS_BACKGROUND_PRESETS.map((preset) => (
+                  <button
+                    key={preset.id}
+                    type="button"
+                    aria-label={preset.id}
+                    onClick={() => setPreset(preset.id)}
+                    className={cn(
+                      "h-10 rounded-lg border-2 transition-transform hover:scale-105",
+                      background.presetId === preset.id ? "border-primary" : "border-transparent",
+                    )}
+                    style={{ background: preset.css }}
+                  />
+                ))}
+              </div>
+              <div className="space-y-2">
                 <p className="text-xs font-medium text-muted-foreground">
-                  {t("background.presets")}
+                  {t("background.imageUrlLabel")}
                 </p>
-                <div className="grid grid-cols-4 gap-2">
-                  {SPORTS_BACKGROUND_PRESETS.map((preset) => (
-                    <button
-                      key={preset.id}
-                      type="button"
-                      aria-label={preset.id}
-                      onClick={() => setPreset(preset.id)}
-                      className={cn(
-                        "h-10 rounded-lg border-2 transition-transform hover:scale-105",
-                        background.presetId === preset.id
-                          ? "border-primary"
-                          : "border-transparent",
-                      )}
-                      style={{ background: preset.css }}
-                    />
-                  ))}
+                <div className="flex gap-2">
+                  <Input
+                    value={draftUrl}
+                    onChange={(event) => setDraftUrl(event.target.value)}
+                    placeholder={t("background.imageUrlPlaceholder")}
+                    className="h-8 text-xs"
+                  />
+                  <Button
+                    size="sm"
+                    className="h-8 shrink-0"
+                    onClick={() => {
+                      setImageUrl(draftUrl)
+                      setDraftUrl("")
+                    }}
+                    disabled={!draftUrl.trim()}
+                  >
+                    {t("background.apply")}
+                  </Button>
                 </div>
-                <div className="space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground">
-                    {t("background.imageUrlLabel")}
-                  </p>
-                  <div className="flex gap-2">
-                    <Input
-                      value={draftUrl}
-                      onChange={(event) => setDraftUrl(event.target.value)}
-                      placeholder={t("background.imageUrlPlaceholder")}
-                      className="h-8 text-xs"
-                    />
-                    <Button
-                      size="sm"
-                      className="h-8 shrink-0"
-                      onClick={() => {
-                        setImageUrl(draftUrl)
-                        setDraftUrl("")
-                      }}
-                      disabled={!draftUrl.trim()}
-                    >
-                      {t("background.apply")}
-                    </Button>
-                  </div>
-                </div>
-                <Button variant="outline" size="sm" className="w-full" onClick={reset}>
-                  {t("background.reset")}
-                </Button>
-              </PopoverContent>
-            </Popover>
-          </div>
-
-          <div className="space-y-2">
-            <h1 className="flex items-center gap-3 text-3xl font-black tracking-tight md:text-4xl">
-              <Flame className="h-8 w-8 text-white/90" />
-              {t("title")}
-            </h1>
-            <p className="max-w-xl text-sm text-white/85 md:text-base">{t("subtitle")}</p>
-          </div>
-
-          {/* 运动切换 */}
-          <div className="flex flex-wrap gap-2">
-            {(Object.keys(SPORT_THEMES) as SportId[]).map((id) => {
-              const isActive = sport === id
-              const icon = SPORT_ICONS[id]
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => setSport(id)}
-                  className={cn(
-                    "flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-all",
-                    isActive
-                      ? "bg-white text-black shadow-md scale-105"
-                      : "bg-white/15 text-white backdrop-blur hover:bg-white/25",
-                  )}
-                >
-                  {icon.logo ? (
-                    <img
-                      src={icon.logo}
-                      alt=""
-                      aria-hidden="true"
-                      className="h-4 w-auto shrink-0"
-                    />
-                  ) : (
-                    <span aria-hidden>{icon.emoji}</span>
-                  )}
-                  {t(`switch.${id}`)}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      </section>
+              </div>
+              <Button variant="outline" size="sm" className="w-full" onClick={reset}>
+                {t("background.reset")}
+              </Button>
+            </PopoverContent>
+          </Popover>
+        }
+      />
 
       {/* ── 数据板块 ─────────────────────────────────────────── */}
       {sport === "football" ? (

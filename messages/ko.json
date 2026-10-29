@@ -259,6 +259,12 @@
   "sports": {
     "title": "스포츠 펄스",
     "subtitle": "5대 리그 × F1: 일정, 순위, 뉴스, 커뮤니티 반응을 한곳에서.",
+    "hero": {
+      "featured": "추천",
+      "readMore": "자세히 보기",
+      "prev": "이전",
+      "next": "다음"
+    },
     "switch": {
       "football": "축구",
       "f1": "Formula 1"

@@ -259,6 +259,12 @@
   "sports": {
     "title": "SportsPulse",
     "subtitle": "Top-5 leagues × F1 — fixtures, standings, news and community buzz, all in one place.",
+    "hero": {
+      "featured": "Featured",
+      "readMore": "Read more",
+      "prev": "Previous story",
+      "next": "Next story"
+    },
     "switch": {
       "football": "Football",
       "f1": "Formula 1"

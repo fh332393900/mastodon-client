@@ -26,12 +26,13 @@ export function SportsNavIcon({ className }: { className?: string }) {
     <span
       aria-hidden="true"
       className={cn(
-        "relative flex h-6 w-6 shrink-0 overflow-hidden",
-        "[mask-image:linear-gradient(to_bottom,transparent,black_18%,black_82%,transparent)]",
+        // 注意：外层不能加 items-center，否则 288px 高的轮播列会被垂直居中，位移与 24px 步长错开半格
+        "relative -top-px flex h-6 w-6 shrink-0 overflow-hidden",
+        "[mask-image:linear-gradient(to_bottom,transparent,black_6%,black_94%,transparent)]",
         className,
       )}
     >
-      <span className="flex animate-sports-nav-roll flex-col motion-reduce:animate-none group-hover:[animation-play-state:paused]">
+      <span className="flex animate-sports-nav-roll flex-col items-center motion-reduce:animate-none group-hover:[animation-play-state:paused]">
         {[...ROLL_MARKS, ...ROLL_MARKS].map((mark, index) => (
           <span key={`${mark.key}-${index}`} className="flex h-6 w-6 shrink-0 items-center justify-center">
             <img

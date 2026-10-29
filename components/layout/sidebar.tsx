@@ -31,7 +31,8 @@ export function Sidebar() {
     { icon: Bell, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.notifications), route: "notifications", color: "text-amber-400" },
     { icon: PenSquare, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.compose), route: "compose", color: "text-violet-400" },
     { icon: Search, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.explore), route: "explore", color: "text-emerald-400" },
-    { icon: Trophy, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.sports), route: "sports", color: "text-orange-400" },
+    // Sports 为固定品牌名，不随语言变化
+    { icon: Trophy, label: "Sports", route: "sports", color: "text-orange-400" },
     { icon: Settings, label: t(MOBILE_BOTTOM_MENU_LABEL_KEY.settings), route: "settings", color: "text-slate-400" },
   ]
 
@@ -147,7 +148,7 @@ export function Sidebar() {
               const href = `/${server}/${item.route}`
               const isActive = pathname.includes(item.route)
               return (
-                <Link key={item.route} href={href} prefetch className="block">
+                <Link key={item.route} href={href} prefetch className="flex">
                   <Button
                     variant="ghost"
                     className={cn(
@@ -156,6 +157,8 @@ export function Sidebar() {
                         ? "bg-primary/10 text-primary hover:bg-primary/15" 
                         : "hover:bg-muted/80 text-foreground/80 hover:text-foreground",
                       isCollapsed ? "justify-center px-0" : "justify-start px-4",
+                      // Sports 首个子元素是 span，不会命中文案里的 has-[>svg]:px-3，需手动对齐
+                      item.route === "sports" && !isCollapsed && "px-3",
                     )}
                   >
                     {item.route === "sports" ? (

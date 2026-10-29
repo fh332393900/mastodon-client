@@ -259,6 +259,12 @@
   "sports": {
     "title": "燃動賽場",
     "subtitle": "五大聯賽 × F1:賽程、積分榜、資訊與社群熱議,一站直達。",
+    "hero": {
+      "featured": "精選",
+      "readMore": "閱讀全文",
+      "prev": "上一則",
+      "next": "下一則"
+    },
     "switch": {
       "football": "足球",
       "f1": "Formula 1"
