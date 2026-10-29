@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Home, Heart, Search, Settings, LogOut, PenSquare, ArrowLeft, User, Bell, Trophy } from "lucide-react"
+import { Home, Heart, Search, Settings, LogOut, PenSquare, ArrowLeft, User, Bell, Trophy, FlaskConical } from "lucide-react"
 import { LoginModal } from "@/components/auth/login-modal"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
@@ -162,7 +162,7 @@ export function Sidebar() {
                       <span className="relative flex shrink-0">
                         <SportsNavIcon className={cn("transition-all duration-300", !isCollapsed && "mr-4")} />
                         {isCollapsed && (
-                          <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-amber-500" />
+                          <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-muted-foreground/60" />
                         )}
                       </span>
                     ) : (
@@ -180,15 +180,17 @@ export function Sidebar() {
                           className={cn(
                             "font-bold text-base tracking-tight",
                             item.route === "sports" &&
-                              "font-['Rajdhani'] text-[19px] font-bold uppercase tracking-[0.16em] -skew-x-6",
+                              "bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 bg-clip-text font-['Rajdhani'] text-[19px] font-bold uppercase tracking-[0.16em] text-transparent -skew-x-6",
                           )}
                         >
                           {item.label}
                         </span>
                         {item.route === "sports" && (
-                          <span className="rounded-sm border border-amber-500/40 bg-amber-500/10 px-1 py-0.5 text-[9px] font-bold uppercase leading-none tracking-wider text-amber-600 dark:text-amber-400">
-                            {t("common.menu.sportsBeta")}
-                          </span>
+                          <FlaskConical
+                            className="h-3.5 w-3.5 shrink-0 text-muted-foreground/70"
+                            strokeWidth={2}
+                            aria-hidden="true"
+                          />
                         )}
                       </span>
                     )}
