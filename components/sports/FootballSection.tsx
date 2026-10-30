@@ -49,6 +49,8 @@ export function FootballSection({ league, onLeagueChange }: FootballSectionProps
                   alt={item.name}
                   className="h-5 w-5 object-contain"
                   loading="lazy"
+                  decoding="async"
+                  fetchPriority="low"
                 />
               </span>
               {item.name}
@@ -187,7 +189,14 @@ function FixtureRow({
           <div className="flex flex-1 items-center justify-end gap-2 text-right">
             <span className="truncate text-sm font-medium">{fixture.home.shortName}</span>
             {fixture.home.crest ? (
-              <img src={fixture.home.crest} alt={fixture.home.tla} className="h-6 w-6 object-contain" loading="lazy" />
+              <img
+                src={fixture.home.crest}
+                alt={fixture.home.tla}
+                className="h-6 w-6 object-contain"
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+              />
             ) : null}
           </div>
           <div className="w-16 shrink-0 text-center">
@@ -201,7 +210,14 @@ function FixtureRow({
           </div>
           <div className="flex flex-1 items-center gap-2">
             {fixture.away.crest ? (
-              <img src={fixture.away.crest} alt={fixture.away.tla} className="h-6 w-6 object-contain" loading="lazy" />
+              <img
+                src={fixture.away.crest}
+                alt={fixture.away.tla}
+                className="h-6 w-6 object-contain"
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+              />
             ) : null}
             <span className="truncate text-sm font-medium">{fixture.away.shortName}</span>
           </div>
@@ -347,6 +363,8 @@ function StandingsTable({ league }: { league: string }) {
                             alt={entry.team.tla}
                             className="h-5 w-5 object-contain"
                             loading="lazy"
+                            decoding="async"
+                            fetchPriority="low"
                           />
                         ) : null}
                         <span className="hidden sm:inline">{entry.team.shortName}</span>

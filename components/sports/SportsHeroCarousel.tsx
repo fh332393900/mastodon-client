@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl"
 import { ChevronLeft, ChevronRight, ExternalLink, Zap } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SPORT_THEMES, type SportId } from "@/lib/sports/config"
-import type { SportsNewsItem } from "@/lib/sports/news"
+import { newsImage, type SportsNewsItem } from "@/lib/sports/news"
 
 /** 精选条数 */
 const MAX_SLIDES = 5
@@ -76,6 +76,8 @@ export function SportsHeroCarousel({
   }, [go, paused, slides.length])
 
   const activeSlide = slides[index]
+  /** 只挂载当前与下一张的图片，首屏不必为 5 张大图买单 */
+  const nextIndex = slides.length > 1 ? (index + 1) % slides.length : -1
 
   return (
     <section
@@ -98,6 +100,7 @@ export function SportsHeroCarousel({
       <div className="relative h-[240px] sm:h-[260px] md:h-[300px]">
         {slides.map((item, slideIndex) => {
           const isActive = slideIndex === index
+          const image = slideIndex === index || slideIndex === nextIndex ? newsImage(item.image, "hero") : null
           return (
             <a
               key={item.id}
@@ -111,11 +114,15 @@ export function SportsHeroCarousel({
                 isActive ? "z-10 opacity-100" : "pointer-events-none opacity-0",
               )}
             >
-              {item.image ? (
+              {image?.src ? (
                 <img
-                  src={item.image}
+                  src={image.src}
+                  srcSet={image.srcSet}
+                  sizes="(min-width: 768px) 640px, 100vw"
                   alt=""
-                  loading={slideIndex === 0 ? "eager" : "lazy"}
+                  loading={isActive ? "eager" : "lazy"}
+                  fetchPriority={isActive ? "high" : "auto"}
+                  decoding="async"
                   className={cn(
                     "absolute inset-0 h-full w-full object-cover transition-transform ease-out",
                     isActive ? "scale-105 duration-[7000ms]" : "scale-100 duration-700",

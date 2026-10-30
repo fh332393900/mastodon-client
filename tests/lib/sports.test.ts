@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { parseRssItems } from "@/lib/sports/news"
+import { newsImage, parseRssItems } from "@/lib/sports/news"
 import {
   FOOTBALL_LEAGUES,
   SPORT_THEMES,
@@ -49,6 +49,36 @@ describe("parseRssItems", () => {
 
   it("空 XML 返回空数组", () => {
     expect(parseRssItems("", "BBC Sport")).toEqual([])
+  })
+})
+
+describe("newsImage", () => {
+  it("BBC 图片改用更小宽度并生成 srcSet", () => {
+    const image = newsImage(
+      "https://ichef.bbci.co.uk/ace/standard/624/cpsprodpb/abc/live/x.png",
+      "hero",
+    )
+    expect(image.src).toContain("/ace/standard/624/")
+    expect(image.srcSet?.split(", ")).toHaveLength(2)
+    expect(image.srcSet).toContain("480w")
+
+    const thumb = newsImage(
+      "https://ichef.bbci.co.uk/ace/standard/624/cpsprodpb/abc/live/x.png",
+      "thumb",
+    )
+    expect(thumb.src).toContain("/ace/standard/320/")
+  })
+
+  it("Sky Sports 图片降到 CDN 支持的小尺寸档位", () => {
+    const url = "https://e0.365dm.com/26/10/1920x1080/skysports-x_1.jpg?202610"
+    expect(newsImage(url, "thumb").src).toContain("/320x180/")
+    expect(newsImage(url, "hero").src).toContain("/768x432/")
+    expect(newsImage(url, "hero").srcSet).toContain("1280w")
+  })
+
+  it("Guardian 等签名图片保持原样", () => {
+    const url = "https://i.guim.co.uk/img/media/x/0_0_1_1/master/1.jpg?width=1200&s=abc"
+    expect(newsImage(url, "thumb")).toEqual({ src: url })
   })
 })
 

@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl"
 import { ExternalLink, Newspaper } from "lucide-react"
 import { useSportsNews } from "@/hooks/sports/useSportsNews"
+import { newsImage } from "@/lib/sports/news"
 
 /** 首屏展示的资讯条数。 */
 const NEWS_COUNT = 6
@@ -61,7 +62,9 @@ export function SportsNews({ sport, officialSites }: SportsNewsProps) {
         </div>
       ) : (
         <div className="grid gap-3 sm:grid-cols-2">
-          {news.map((item) => (
+          {news.map((item) => {
+            const image = newsImage(item.image, "thumb")
+            return (
             <a
               key={item.id}
               href={item.link}
@@ -69,11 +72,14 @@ export function SportsNews({ sport, officialSites }: SportsNewsProps) {
               rel="noopener noreferrer"
               className="group flex h-24 overflow-hidden rounded-2xl border border-border/60 bg-card/80 transition-all hover:border-[var(--sport-brand)]/50 hover:shadow-md"
             >
-              {item.image ? (
+              {image.src ? (
                 <img
-                  src={item.image}
+                  src={image.src}
+                  srcSet={image.srcSet}
+                  sizes="96px"
                   alt=""
                   loading="lazy"
+                  decoding="async"
                   className="h-full w-24 shrink-0 object-cover"
                 />
               ) : (
@@ -90,7 +96,8 @@ export function SportsNews({ sport, officialSites }: SportsNewsProps) {
                 </p>
               </div>
             </a>
-          ))}
+            )
+          })}
         </div>
       )}
     </section>

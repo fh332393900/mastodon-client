@@ -104,6 +104,74 @@ export function parseRssItems(xml: string, source: string): SportsNewsItem[] {
   return items
 }
 
+/** 图片用途：hero 首屏大图、thumb 列表缩略图 */
+export type NewsImageUsage = "hero" | "thumb"
+
+export interface NewsImageSources {
+  src: string
+  /** 多档位候选，配合 sizes 让浏览器按视口/DPR 取最小可用图 */
+  srcSet?: string
+}
+
+/** BBC ichef 支持的宽度档位（该 CDN 不提供 WebP/AVIF 变体，宽度越大 PNG 体积翻倍，故封顶 624） */
+const BBC_WIDTHS: Record<NewsImageUsage, number[]> = {
+  hero: [480, 624],
+  thumb: [240, 320, 480],
+}
+
+/** Sky Sports 365dm 仅支持固定的 16:9 档位 */
+const SKY_SIZES: Record<NewsImageUsage, Array<[number, number]>> = {
+  hero: [
+    [320, 180],
+    [768, 432],
+    [1280, 720],
+  ],
+  thumb: [[320, 180]],
+}
+
+/**
+ * 把资讯配图重写为更小的 CDN 档位并生成 srcSet，避免 1920px 大图缩到 96px 展示。
+ * Guardian（guim.co.uk）使用签名 URL，改动参数会 401，因此保持原样。
+ */
+export function newsImage(url: string, usage: NewsImageUsage): NewsImageSources {
+  if (!url) return { src: "" }
+
+  try {
+    const parsed = new URL(url)
+
+    // BBC: /ace/standard|ws/{width}/...
+    if (parsed.hostname.endsWith("bbci.co.uk")) {
+      const matched = parsed.pathname.match(/^(\/ace\/(?:standard|ws)\/)(\d+)(\/.*)$/)
+      if (matched) {
+        const widths = BBC_WIDTHS[usage]
+        const build = (width: number) => `${parsed.origin}${matched[1]}${width}${matched[3]}${parsed.search}`
+        return {
+          src: build(usage === "hero" ? 624 : 320),
+          srcSet: widths.map((width) => `${build(width)} ${width}w`).join(", "),
+        }
+      }
+    }
+
+    // Sky Sports: /{yyyy}/{mm}/{W}x{H}/name.jpg
+    if (/(^|\.)365dm\.com$/.test(parsed.hostname)) {
+      const matched = parsed.pathname.match(/^(\/.+\/)(\d+x\d+)\/(.+)$/)
+      if (matched) {
+        const sizes = SKY_SIZES[usage]
+        const build = ([width, height]: [number, number]) =>
+          `${parsed.origin}${matched[1]}${width}x${height}/${matched[3]}${parsed.search}`
+        return {
+          src: build(usage === "hero" ? sizes[sizes.length - 2] : sizes[0]),
+          srcSet: sizes.map((size) => `${build(size)} ${size[0]}w`).join(", "),
+        }
+      }
+    }
+  } catch {
+    // URL 解析失败时按原图返回
+  }
+
+  return { src: url }
+}
+
 async function fetchFeed(feed: RssFeed): Promise<SportsNewsItem[]> {
   try {
     const response = await fetch(feed.url, {
