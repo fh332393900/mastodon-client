@@ -17,6 +17,7 @@ import { getDisplayNameText, renderDisplayName } from "@/lib/mastodon/contentToR
 import { useProfileViewData } from "@/hooks/mastodon/useProfileViewData"
 import { useAuth } from "@/components/auth/auth-provider"
 import { useFormat } from "@/hooks/format"
+import { cn } from "@/lib/utils"
 
 function getFieldIcon(value: string) {
   const hrefMatch = value.match(/href="([^"]+)"/)
@@ -86,19 +87,90 @@ function ProfileShell({
   }, [isError, router])
 
   if (isLoading || !data) {
+    const pulse = "animate-pulse bg-border/60 dark:bg-muted-foreground/40"
     return (
       <div className="mx-auto max-w-4xl space-y-6">
-        <section className="overflow-hidden border border-border/70 bg-card/90 p-8">
-          <div className="h-40 w-full animate-pulse rounded-2xl bg-border/60 dark:bg-muted-foreground/40" />
-          {
-            Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="mt-6 space-y-4">
-                <div className="h-6 w-40 animate-pulse rounded bg-border/60 dark:bg-muted-foreground/40" />
-                <div className="h-4 w-3/4 animate-pulse rounded bg-border/60 dark:bg-muted-foreground/40" />
+        <section className="overflow-hidden bg-card/90 shadow-xl shadow-primary/5">
+          <div className={cn("h-40 w-full sm:h-56", pulse)} />
+
+          <div className="px-4">
+            <div className="relative px-0 pb-5 sm:px-8 sm:pb-7">
+              <div className="-mt-10 flex items-end justify-between gap-5 sm:-mt-14">
+                <div
+                  className={cn(
+                    "h-22 w-22 shrink-0 rounded-full border-2 border-card shadow-lg sm:h-32 sm:w-32 md:h-28 md:w-28",
+                    pulse,
+                  )}
+                />
+                <div className={cn("h-11 w-28 rounded-full", pulse)} />
               </div>
-            ))
-          }
+
+              <div className="mt-4 space-y-2 pb-2">
+                <div className="flex items-center gap-2">
+                  <div className={cn("h-6 w-36 rounded", pulse)} />
+                  <div className={cn("h-6 w-14 rounded-sm", pulse)} />
+                </div>
+                <div className={cn("h-4 w-24 rounded", pulse)} />
+              </div>
+
+              <div className="mt-2 space-y-5">
+                <div className="space-y-2">
+                  <div className={cn("h-4 w-full rounded", pulse)} />
+                  <div className={cn("h-4 w-11/12 rounded", pulse)} />
+                  <div className={cn("h-4 w-2/5 rounded", pulse)} />
+                </div>
+
+                <div className="grid gap-3 rounded-3xl bg-muted/40 p-4 sm:grid-cols-2">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="space-y-2">
+                      <div className={cn("h-3 w-20 rounded", pulse)} />
+                      <div className={cn("h-4 w-32 rounded", pulse)} />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap gap-x-6 gap-y-3">
+                  <div className={cn("h-4 w-36 rounded", pulse)} />
+                  <div className={cn("h-4 w-28 rounded", pulse)} />
+                </div>
+
+                <div className="flex flex-wrap gap-5">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <div key={i} className={cn("h-6 w-16 rounded", pulse)} />
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-2 overflow-hidden border-t border-border/70 px-2 pb-2 pt-3">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className={cn("h-9 w-24 shrink-0 rounded-full", pulse)} />
+                ))}
+              </div>
+            </div>
+          </div>
         </section>
+
+        <div className="space-y-4 px-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="space-y-4 rounded-3xl border border-border/70 bg-card/90 p-4"
+            >
+              <div className="flex items-center gap-3">
+                <div className="h-11 w-11 shrink-0 rounded-full bg-border/60 dark:bg-muted-foreground/40" />
+                <div className="space-y-2">
+                  <div className="h-3.5 w-32 rounded bg-border/60 dark:bg-muted-foreground/40" />
+                  <div className="h-3 w-20 rounded bg-border/60 dark:bg-muted-foreground/40" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="h-4 w-full rounded bg-border/60 dark:bg-muted-foreground/40" />
+                <div className="h-4 w-4/5 rounded bg-border/60 dark:bg-muted-foreground/40" />
+                <div className="h-4 w-1/3 rounded bg-border/60 dark:bg-muted-foreground/40" />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     )
   }
